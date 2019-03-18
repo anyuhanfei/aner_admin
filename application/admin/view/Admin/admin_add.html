@@ -1,0 +1,111 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>添加管理员</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="{:url('Index/index')}">首页</a></li>
+                            <li><a href="###">管理员管理</a></li>
+                            <li><a href="{:url('Admin/admin')}">管理员列表</a></li>
+                            <li class="active">添加管理员</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body card-block">
+                        <div class="form-group">
+                            <label for="account" class=" form-control-label">管理员账号</label>
+                            <input type="text" id="account" placeholder="请填写管理员账号" class="form-control">
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-9"><label for="select" class=" form-control-label">所属角色</label></div>
+                            <div class="col-12 col-md-12">
+                                <select name="role_id" id="role_id" class="form-control">
+                                    <option value="0">请选择所属角色</option>
+                                    {volist name="role" id="vo"}
+                                    <option value="{$vo.role_id}">{$vo.role_name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname" class=" form-control-label">管理员昵称</label>
+                            <input type="text" id="nickname" placeholder="请填写管理员昵称" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class=" form-control-label">管理员密码</label>
+                            <input type="text" id="password" placeholder="请填写管理员密码" class="form-control">
+                        </div>
+                        <div>
+                            <button id="submit" type="button" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-arrow-up fa-lg"></i>&nbsp;
+                                <span id="payment-button-amount">提交</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+{/block}
+
+{block name="custom_js"}
+    <script>
+        $("#submit").click(function(){
+            var account = $("#account").val();
+            var role_id = $("#role_id").val();
+            var nickname = $("#nickname").val();
+            var password = $("#password").val();
+            if(account == ''){
+                layer.msg('请填写管理员账号！');
+                return;
+            }
+            if(nickname == ''){
+                layer.msg('请填写管理员昵称！');
+                return;
+            }
+            if(password == ''){
+                layer.msg('请填写管理员密码！');
+                return;
+            }
+            //if(role_id == 0){
+            //    layer.msg('请选择所属角色！');
+            //    return;
+            //}
+            $.ajax({
+                url: "{:url('Admin/admin_add_submit')}",
+                type: "post",
+                data: {account: account, role_id: role_id, nickname: nickname, password: password},
+                success: function(data){
+                    layer.msg(data.msg);
+                    if(data.status == 1){
+                        setTimeout(function(){
+                            window.location.href = "{:url('Admin/admin_add')}";
+                        }, 1000);
+                    }
+                }
+            })
+        })
+    </script>
+{/block}

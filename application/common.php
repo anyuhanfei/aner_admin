@@ -10,3 +10,112 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+/**
+ * 前后端数据传输格式
+ *
+ * @param [type] $status 状态,1成功2失败
+ * @param [type] $data 数据
+ * @param [type] $msg 提示信息
+ * @return void
+ */
+function json_data($status, $data, $msg, $type = 'array'){
+    if($type == 'array'){
+        return array('status'=>$status, 'data'=>$data, 'msg'=>$msg);
+    }else{
+        return json_encode(array('status'=>$status, 'data'=>$data, 'msg'=>$msg));
+    }
+}
+
+/**
+ * 生成简单验证码
+ *
+ * @param [type] $number 验证码位数
+ * @param string $type 验证码内容类型
+ * @return void
+ */
+function create_captcha($number, $type = 'figure'){
+    $array_figure = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    $array_lowercase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    $array_uppercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    switch($type){
+        case 'lowercase':
+            $res_array = $array_lowercase;
+            break;
+        case 'uppercase':
+            $res_array = $array_uppercase;
+            break;
+        case 'lowercase+figure':
+            $res_array = array_merge($array_lowercase, $array_figure);
+            break;
+        case 'uppercase+figure':
+            $res_array = array_merge($array_uppercase, $array_figure);
+            break;
+        case 'lowercase+uppercase':
+            $res_array = array_merge($array_lowercase, $array_uppercase);
+            break;
+        case 'lowercase+uppercase+figure':
+            $res_array = array_merge(array_merge($array_lowercase, $array_uppercase), $array_figure);
+            break;
+        default:
+            $res_array = $array_figure;
+            break;
+    }
+    $resstr = '';
+    shuffle($res_array);
+    foreach(array_rand($res_array, $number) as $v){
+        $resstr .= $res_array[$v];
+    }
+    return $resstr;
+}
+
+/**
+ * 文件上传
+ * 
+ * @param file $file 文件资源句柄
+ * @param string $save_path 文件保存子文件夹
+ * @param array $file_validate 文件上传验证
+ * @return void
+ */
+function file_upload($file, $save_path, $file_validate = array('size'=>156780, 'ext'=>'jpg,png,gif')){
+    if($file){
+        $info = $file->validate(['size'=>$file_validate['size'],'ext'=>$file_validate['ext']])->move(ROOT_PATH . 'public' . DS . 'uploads'. DS . $save_path);
+        if($info){
+            return array('status'=>1, 'file_path'=>'/public/uploads'. DS . $save_path . DS . $info->getSaveName(), 'error'=>'');
+        }else{
+            return array('status'=>2, 'file_path'=>'', 'error'=>$file->getError());
+        }
+    }
+}
+
+/**
+ * 二维码生成
+ *
+ * @param [type] $url
+ * @param [type] $phone
+ * @return void
+ */
+function png_erwei($url, $phone)
+{
+   include_once EXTEND_PATH.'phpqrcode/phpqrcode.php';//放在extend中
+    //vendor('phpqrcode.phpqrcode');//放在vender中
+    $errorCorrectionLevel = 'H';//容错级别
+    $matrixPointSize = 5;//图片大小慢慢自己调整，只要是int就行
+    $path = ROOT_PATH . 'public/uploads/qrcode/';
+    $QR = $QRB = $path . $phone . ".png";
+    \QRcode::png($url, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
+    if(file_exists($path . $phone . ".png")){
+        return "/public/uploads/qrcode/" . $phone . ".png";
+    }else{
+        return false;
+    }
+}
+
+/**
+ * 随机生成订单号
+ *
+ * @return void
+ */
+function order_sn(){
+    return date('ymdhis') . str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
+}
