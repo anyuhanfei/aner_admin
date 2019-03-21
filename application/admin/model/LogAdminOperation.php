@@ -8,6 +8,15 @@ class LogAdminOperation extends Model{
     protected $table = 'log_admin_operation';
 
     /**
+     * 关联管理员表
+     *
+     * @return void
+     */
+    public function admin(){
+        return $this->hasOne('sys_admin', 'admin_id', 'admin_id');
+    }
+
+    /**
      * 添加一条记录
      *
      * @param [type] $admin_id 管理员id

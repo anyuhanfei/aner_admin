@@ -26,4 +26,23 @@ class Base extends Controller{
             $this->assign($k, $v);
         }
     }
+
+    /**
+     * 时间检索
+     *
+     * @param [type] $model 模型实例化对象
+     * @param [type] $start_time 检索起始时间
+     * @param [type] $end_time 检索结束时间
+     * @return void
+     */
+    public function where_time($model, $start_time, $end_time){
+        if($start_time != '' && $end_time == ''){
+            $model->where('insert_time', '>= time', $start_time);
+        }elseif($start_time == '' && $end_time != ''){
+            $model->where('insert_time', '<= time', $start_time);
+        }elseif($start_time != '' && $end_time != ''){
+            $model->where('insert_time', 'between time', [$start_time, $end_time]);
+        }
+        return $model;
+    }
 }
