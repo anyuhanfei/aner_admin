@@ -5,6 +5,9 @@ use think\Controller;
 use think\Session;
 use think\Request;
 
+use app\admin\model\SysCatalogAdmin;
+use app\admin\model\SysAdminRole;
+
 class Base extends Controller{
     protected $page_number = 20;
 
@@ -13,6 +16,22 @@ class Base extends Controller{
             $this->redirect('Login/login');
             return;
         }
+        $catalog_list = SysCatalogAdmin::order('sort asc')->select();
+        $this->assign('catalog_list', $catalog_list);
+
+        // $controller = Request::instance()->controller();
+        // $action = Request::instance()->action();
+        // $current_url = strtolower($controller . '/' . $action . ',');
+        // if($action != 'index'){
+        //     $admin = Session::get('admin');
+        //     if($admin->role_id == 0){
+        //         return $this->redirect('Login/login');
+        //     }
+        //     $role = SysAdminRole::where('role_id', $admin->role_id)->find();
+        //     if(strpos($role->action_ids, $current_url) === false){
+        //         return $this->redirect('index/index');
+        //     }
+        // }
     }
 
     /**

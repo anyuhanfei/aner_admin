@@ -7,7 +7,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>添加模块</h1>
+                        <h1>修改角色</h1>
                     </div>
                 </div>
             </div>
@@ -16,9 +16,9 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="{:url('Index/index')}">首页</a></li>
-                            <li><a href="###">模块管理</a></li>
-                            <li><a href="{:url('Module/module')}">模块列表</a></li>
-                            <li class="active">添加模块</li>
+                            <li><a href="###">管理员管理</a></li>
+                            <li><a href="{:url('Admin/role')}">角色列表</a></li>
+                            <li class="active">修改角色</li>
                         </ol>
                     </div>
                 </div>
@@ -34,22 +34,23 @@
                 <div class="card">
                     <div class="card-body card-block">
                         <div class="form-group">
-                            <label for="module_name" class=" form-control-label">模块名称</label>
-                            <input type="text" id="module_name" placeholder="请填写模块名称" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="remark" class=" form-control-label">备注</label>
-                            <input type="text" id="remark" placeholder="请填写备注" class="form-control">
+                            <label for="role_name" class=" form-control-label">角色名称</label>
+                            <input type="text" id="role_name" value="{$detail.role_name}" class="form-control">
                         </div>
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
                                     <label for="sort" class="form-control-label">排序</label>
-                                    <input type="number" id="sort" value="0" class="form-control" min="0" step="1">
+                                    <input type="number" id="sort" value="{$detail.sort}" class="form-control" min="0" step="1">
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="remark" class=" form-control-label">备注</label>
+                            <input type="text" id="remark" value="{$detail.remark}" placeholder="请填写备注" class="form-control">
+                        </div>
                         <div>
+                            <input type="hidden" id="role_id" value="{$detail.role_id}"/>
                             <button id="submit" type="button" class="btn btn-lg btn-info btn-block">
                                 <i class="fa fa-arrow-up fa-lg"></i>&nbsp;
                                 <span id="payment-button-amount">提交</span>
@@ -66,22 +67,23 @@
 {block name="custom_js"}
     <script>
         $("#submit").click(function(){
-            var module_name = $("#module_name").val();
-            var remark = $("#remark").val();
+            var role_id = $("#role_id").val();
+            var role_name = $("#role_name").val();
             var sort = $("#sort").val();
-            if(module_name == ''){
-                layer.msg('请填写模块名称！');
+            var remark = $("#remark").val();
+            if(role_name == ''){
+                layer.msg('请填写角色名称！');
                 return;
             }
             $.ajax({
-                url: "{:url('Module/module_add_submit')}",
+                url: "{:url('Admin/role_update_submit')}",
                 type: "post",
-                data: {module_name: module_name, remark: remark, sort: sort},
+                data: {role_name: role_name, sort: sort, remark: remark, role_id: role_id},
                 success: function(data){
                     layer.msg(data.msg);
                     if(data.status == 1){
                         setTimeout(function(){
-                            window.location.href = "{:url('Module/module_add')}";
+                            window.location.href = "{:url('Admin/role')}";
                         }, 1000);
                     }
                 }

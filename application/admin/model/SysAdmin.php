@@ -6,6 +6,10 @@ use think\Model;
 class SysAdmin extends Model{
     protected $table = 'sys_admin';
 
+    public function role(){
+        return $this->hasOne('sys_admin_role', 'role_id', 'role_id');
+    }
+
     /**
      * 判断管理员登录账号密码
      *

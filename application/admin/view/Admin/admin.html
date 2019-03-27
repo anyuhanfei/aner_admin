@@ -52,11 +52,18 @@
                                     <td>{$vo.admin_id}</td>
                                     <td id="nickname{$vo.admin_id}">{$vo.nickname}</td>
                                     <td>{$vo.account}</td>
-                                    <td>{$vo.role_id}</td>
                                     <td>
-                                        <button onclick="update_nickname({$vo.admin_id})" type="button" class="btn btn-outline-primary">修改昵称</button>
-                                        <button onclick="update_password({$vo.admin_id})" type="button" class="btn btn-outline-primary">修改密码</button>
-                                        <button onclick="delete_item({$vo.admin_id})" type="button" class="btn btn-outline-danger">删除</button>
+                                        {$vo.role.role_name}
+                                    </td>
+                                    <td>
+                                        <button onclick="update_role({$vo.admin_id})" type="button"
+                                            class="btn btn-outline-primary">修改角色</button>
+                                        <button onclick="update_nickname({$vo.admin_id})" type="button"
+                                            class="btn btn-outline-primary">修改昵称</button>
+                                        <button onclick="update_password({$vo.admin_id})" type="button"
+                                            class="btn btn-outline-primary">修改密码</button>
+                                        <button onclick="delete_item({$vo.admin_id})" type="button"
+                                            class="btn btn-outline-danger">删除</button>
                                     </td>
                                 </tr>
                                 {/volist}
@@ -73,66 +80,132 @@
 {/block}
 
 {block name="custom_js"}
-    <script>
-        //添加
-        $("#add").click(function(){
-            window.location.href = "{:url('Admin/admin_add')}";
-        })
+<div class="card-body card-block" id="role" style="display:none;">
+    <div class="row form-group">
+        <div class="col col-md-9"><label for="select" class=" form-control-label">所属角色</label></div>
+        <div class="col-12 col-md-12">
+            <select name="role_id" id="role_id" class="form-control">
+                <option value="0">请选择所属角色</option>
+                {volist name="role" id="v"}
+                <option value="{$v.role_id}">{$v.role_name}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div>
+        <input type="hidden" id="admin_id"/>
+        <button id="submit" type="button" class="btn btn-lg btn-info btn-block">
+            <i class="fa fa-arrow-up fa-lg"></i>&nbsp;
+            <span id="payment-button-amount">提交</span>
+        </button>
+    </div>
+</div>
+<script>
+    //添加
+    $("#add").click(function () {
+        window.location.href = "{:url('Admin/admin_add')}";
+    })
 
-        //修改昵称
-        function update_nickname(admin_id){
-            layer.prompt({title: '请输入新昵称:', formType: 0}, function(value, index){
-                if(value == ''){
-                    layer.msg('请输入新昵称！');
-                    return;
-                }
-                layer.close(index);
-                $.ajax({
-                    url: "{:url('Admin/admin_update_nickname')}",
-                    type: "post",
-                    data: {admin_id: admin_id, nickname: value},
-                    success: function(data){
-                        layer.msg(data.msg);
-                        if(data.status == 1){
-                            $("#nickname"+admin_id).text(value);
-                        }
-                    }
-                })
-            });
-        }
-
-        //修改密码
-        function update_password(admin_id){
-            layer.prompt({title: '请输入新密码:', formType: 1}, function(value, index){
-                if(value == ''){
-                    layer.msg('请输入新密码！');
-                    return;
-                }
-                layer.close(index);
-                $.ajax({
-                    url: "{:url('Admin/admin_update_password')}",
-                    type: "post",
-                    data: {admin_id: admin_id, password: value},
-                    success: function(data){
-                        layer.msg(data.msg);
-                    }
-                })
-            });
-        }
-
-        // 删除
-        function delete_item(module_id){
+    //修改昵称
+    function update_nickname(admin_id) {
+        layer.prompt({
+            title: '请输入新昵称:',
+            formType: 0
+        }, function (value, index) {
+            if (value == '') {
+                layer.msg('请输入新昵称！');
+                return;
+            }
+            layer.close(index);
             $.ajax({
-                url: "{:url('Module/module_delete_submit')}",
-                type: 'post',
-                data: {module_id: module_id},
-                success: function(data){
+                url: "{:url('Admin/admin_update_nickname')}",
+                type: "post",
+                data: {
+                    admin_id: admin_id,
+                    nickname: value
+                },
+                success: function (data) {
                     layer.msg(data.msg);
-                    if(data.status == 1){
-                        $("#item"+module_id).remove();
+                    if (data.status == 1) {
+                        $("#nickname" + admin_id).text(value);
                     }
                 }
             })
-        }
-    </script>
+        });
+    }
+
+    //修改密码
+    function update_password(admin_id) {
+        layer.prompt({
+            title: '请输入新密码:',
+            formType: 1
+        }, function (value, index) {
+            if (value == '') {
+                layer.msg('请输入新密码！');
+                return;
+            }
+            layer.close(index);
+            $.ajax({
+                url: "{:url('Admin/admin_update_password')}",
+                type: "post",
+                data: {
+                    admin_id: admin_id,
+                    password: value
+                },
+                success: function (data) {
+                    layer.msg(data.msg);
+                }
+            })
+        });
+    }
+    //修改权限
+    function update_role(admin_id) {
+        $("#admin_id").val(admin_id);
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false,
+            content: $('#role'),
+            area: ['300px', '200px'],
+            cancel: function () {
+
+            }
+        });
+    }
+
+    // 删除
+    function delete_item(id) {
+        $.ajax({
+            url: "{:url('Admin/admin_delete_submit')}",
+            type: 'post',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                layer.msg(data.msg);
+                if (data.status == 1) {
+                    $("#item" + id).remove();
+                }
+            }
+        })
+    }
+
+    $("#submit").click(function(){
+        var admin_id = $("#admin_id").val();
+        var role_id = $("#role_id").val();
+        $.ajax({
+            url: "{:url('Admin/admin_update_role')}",
+            type: "post",
+            data: {admin_id: admin_id, role_id: role_id},
+            success: function(data){
+                layer.msg(data.msg);
+                if(data.status == 1){
+                    setTimeout(function(){
+                        window.location.href = "{:url('Admin/admin')}";
+                    }, 1000);
+                }
+            }
+        })
+    })
+</script>
 {/block}

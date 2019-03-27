@@ -1,0 +1,131 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>角色列表</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="{:url('Index/index')}">主页</a></li>
+                            <li><a href="###">管理员管理</a></li>
+                            <li class="active">角色列表</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <button id="add" type="button" class="btn btn-primary">添加</button>
+                    </div>
+                    <div class="card-body">
+                        <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>排序</th>
+                                    <th>名称</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr id="item{$vo.role_id}">
+                                    <td>{$vo.role_id}</td>
+                                    <td>
+                                        <input id="sort{$vo.role_id}" type="hidden" value="{$vo.sort}" 
+                                            onblur="update_sort({$vo.role_id})" />
+                                        <span id="span_sort{$vo.role_id}" onclick="update_show_sort({$vo.role_id})">{$vo.sort}</span>
+                                    </td>
+                                    <td>{$vo.role_name}</td>
+                                    <td>{$vo.remark}</td>
+                                    <td>
+                                        <button onclick="update({$vo.role_id})" type="button" class="btn btn-outline-primary">修改</button>
+                                        <button onclick="power({$vo.role_id})" type="button" class="btn btn-outline-primary">权限</button>
+                                        <button onclick="delete_item({$vo.role_id})" type="button" class="btn btn-outline-danger">删除</button>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div><!-- .animated -->
+</div>
+{/block}
+
+{block name="custom_js"}
+    <script>
+        //添加
+        $("#add").click(function(){
+            window.location.href = "{:url('Admin/role_add')}";
+        })
+
+        //修改
+        function update(role_id){
+            window.location.href = "/admin/admin/role_update?role_id=" + role_id;
+        }
+
+        //权限
+        function power(role_id){
+            window.location.href = "/admin/admin/role_power_set?role_id=" + role_id;
+        }
+
+        // 删除
+        function delete_item(role_id){
+            $.ajax({
+                url: "{:url('Admin/role_delete_submit')}",
+                type: 'post',
+                data: {id: role_id},
+                success: function(data){
+                    layer.msg(data.msg);
+                    if(data.status == 1){
+                        $("#item"+role_id).remove();
+                    }
+                }
+            })
+        }
+
+        function update_show_sort(id){
+            $("#sort"+id).attr('type', 'number');
+            $("#span_sort"+id).attr('style', 'display:none;');
+        }
+
+        //修改排序
+        function update_sort(id){
+            var sort = $("#sort"+id).val();
+            $.ajax({
+                url: "{:url('Admin/update_role_sort_submit')}",
+                type: "post",
+                data: {sort: sort, id: id},
+                success: function(data){
+                    $("#sort"+id).attr('type', 'hidden');
+                    $("#span_sort"+id).attr('style', '');
+                    $("#span_sort"+id).text(sort);
+                }
+            })
+        }
+    </script>
+{/block}
