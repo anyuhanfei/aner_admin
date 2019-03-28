@@ -13,16 +13,7 @@ use app\admin\controller\Base;
 
 class Cms extends Base{
     public function index(){
-        return $this->redirect('Cms/cms');
-    }
-
-    /**
-     * 文章列表
-     *
-     * @return void
-     */
-    public function cms(){
-
+        return $this->redirect('Cms/article');
     }
 
     /**
@@ -31,7 +22,7 @@ class Cms extends Base{
      * @return void
      */
     public function cms_category(){
-        $list = CmsCategory::order('category_id desc')->paginate(10, false,['query'=>request()->param()]);
+        $list = CmsCategory::order('category_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         $this->assign('list', $list);
         return $this->fetch('Cms/cms_category');
     }
@@ -83,7 +74,7 @@ class Cms extends Base{
      * @return void
      */
     public function tag(){
-        $list = CmsTag::order('tag_id desc')->paginate(10, false,['query'=>request()->param()]);
+        $list = CmsTag::order('tag_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         $this->assign('list', $list);
         return $this->fetch('Cms/cms_tag');
     }
@@ -206,6 +197,7 @@ class Cms extends Base{
             return json_data(2, '', $validate->getError());
         }
         $data['author'] = isset($data['author']) ? $data['author'] : Session::get('admin')->nickname;
+        $data['insert_time'] = date('Y-m-d H:i:s', time());
         $model = new CmsArticle($data);
         $res = $model->allowField(true)->save();
         if($res){
@@ -226,6 +218,13 @@ class Cms extends Base{
         $detail = CmsArticle::get($article_id);
         $category = CmsCategory::order('category_id desc')->select();
         $tag = CmsTag::order('tag_id desc')->select();
+        foreach($tag as &$v){
+            if(strpos($detail->tag_id, $v->tag_id) === false){
+                $v['has_tag'] = 0;
+            }else{
+                $v['has_tag'] = 1;
+            }
+        }
         self::many_assign(['category'=> $category, 'tag'=> $tag, 'detail'=> $detail]);
         return $this->fetch('Cms/article_update');
     }
