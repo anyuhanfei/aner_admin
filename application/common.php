@@ -89,6 +89,28 @@ function file_upload($file, $save_path, $file_validate = array('size'=>156780, '
 }
 
 /**
+ * 删除图片
+ *
+ * @param [type] $oldImg 旧图片路径
+ * @param boolean $is_full 是否是完整路径
+ * @return void
+ */
+function delete_image($oldImg, $is_full = false){
+    if($oldImg != ''){
+        if($is_full == false){
+            $path = ROOT_PATH . 'public' . DS .$oldImg;
+        }else{
+            $path = $oldImg;
+        }
+        if ($path != ROOT_PATH . 'public' . DS) {
+            if(is_file($path) == true) {
+                unlink($path);
+            }
+        }
+    }
+}
+
+/**
  * 二维码生成
  *
  * @param [type] $url
