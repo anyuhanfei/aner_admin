@@ -32,19 +32,4 @@ class Log extends Base{
         return $this->fetch('Log/admin_operation');
     }
 
-    //base.php
-    /**
-     * 通过管理员账号检索，表中只存储了admin_id的情况
-     *
-     * @param [type] $model
-     * @param [type] $account
-     * @return void
-     */
-    public function where_admin_account($model, $account){
-        if($account != ''){
-            $admin = SysAdmin::where('account', $account)->find();
-            $model = $admin ? $model->where('admin_id', $admin->admin_id) : $model->where('admin_id', 0);
-        }
-        return $model;
-    }
 }

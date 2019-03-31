@@ -77,13 +77,19 @@ function create_captcha($number, $type = 'figure'){
  * @param array $file_validate 文件上传验证
  * @return void
  */
-function file_upload($file, $save_path, $file_validate = array('size'=>156780, 'ext'=>'jpg,png,gif')){
+function file_upload($file, $save_path, $file_validate = array('size'=>156780000, 'ext'=>'jpg,png,gif')){
     if($file){
         $info = $file->validate(['size'=>$file_validate['size'],'ext'=>$file_validate['ext']])->move(ROOT_PATH . 'public' . DS . 'uploads'. DS . $save_path);
         if($info){
-            return array('status'=>1, 'file_path'=>'/public/uploads'. DS . $save_path . DS . $info->getSaveName(), 'error'=>'');
+            $res = array('status'=>1, 'file_path'=>'/uploads'. DS . $save_path . DS . $info->getSaveName(), 'error'=>'');
+            unset($info);
+            unset($file);
+            return $res;
         }else{
-            return array('status'=>2, 'file_path'=>'', 'error'=>$file->getError());
+            $res = array('status'=>2, 'file_path'=>'', 'error'=>$file->getError());
+            unset($info);
+            unset($file);
+            return $res;
         }
     }
 }
@@ -98,7 +104,7 @@ function file_upload($file, $save_path, $file_validate = array('size'=>156780, '
 function delete_image($oldImg, $is_full = false){
     if($oldImg != ''){
         if($is_full == false){
-            $path = ROOT_PATH . 'public' . DS .$oldImg;
+            $path = ROOT_PATH . 'public' .$oldImg;
         }else{
             $path = $oldImg;
         }

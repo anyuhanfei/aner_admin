@@ -37,4 +37,14 @@ class Login extends Controller{
         return json_data(1, '', '登录成功！');
         
     }
+
+    /**
+     * 退出登录
+     *
+     * @return void
+     */
+    public function login_out(){
+        Session::delete('admin');
+        return $this->redirect('Login/login');
+    }
 }

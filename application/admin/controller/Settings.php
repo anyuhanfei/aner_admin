@@ -62,8 +62,8 @@ class Settings extends Base{
         $title = Request::instance()->param('title', '');
         $sign = Request::instance()->param('sign', '');
         $settings = new SysSettings;
-        $log = ($title != '') ? $log->where('title', $title) : $log;
-        $log = ($sign != '') ? $log->where('sign', $sign) : $log;
+        $settings = ($title != '') ? $settings->where('title', $title) : $settings;
+        $settings = ($sign != '') ? $settings->where('sign', $sign) : $settings;
         $list = $settings->order('id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         self::many_assign(['list'=> $list, 'title'=> $title, 'sign'=> $sign]);
         return $this->fetch('Settings/settings');
@@ -151,6 +151,25 @@ class Settings extends Base{
             return json_data(2, '', '删除失败！');
         }
     }
+
+    /**
+     * 修改网址设置排序
+     *
+     * @return void
+     */
+    public function update_settings_sort_submit(){
+        $id = Request::instance()->param('id', 0);
+        $sort = Request::instance()->param('sort', 0);
+        $model = SysSettings::get($id);
+        $model->sort = $sort;
+        $res = $model->save();
+        if($res){
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了网站设置' . $id . '的排序,网站设置标题为：' . $model->title . ',排序为:' . $sort);
+            return json_data(1, '', '修改成功！');
+        }else{
+            return json_data(2, '', '修改失败！');
+        }
+    }
     
     /**
      * 广告
@@ -161,8 +180,8 @@ class Settings extends Base{
         $title = Request::instance()->param('title', '');
         $sign = Request::instance()->param('sign', '');
         $ad = new SysAd;
-        $log = ($title != '') ? $log->where('title', $title) : $log;
-        $log = ($sign != '') ? $log->where('sign', $sign) : $log;
+        $ad = ($title != '') ? $ad->where('title', $title) : $ad;
+        $ad = ($sign != '') ? $ad->where('sign', $sign) : $ad;
         $list = $ad->order('id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         self::many_assign(['list'=> $list, 'title'=> $title, 'sign'=> $sign]);
         return $this->fetch('Settings/ad');
@@ -187,10 +206,12 @@ class Settings extends Base{
         $image = Request::instance()->file('image', '');
         if($image){
             $image_res = file_upload($image, 'ad');
-            if($image_res == 2){
+            if($image_res['status'] == 2){
                 return json_data(2, '', $image_res['error']);
             }
             $data['image'] = $image_res['file_path'];
+        }else{
+            unset($data['image']);
         }
         $validate = Loader::validate('SysAd');
         if(!$validate->scene('add')->check($data)){
@@ -202,6 +223,7 @@ class Settings extends Base{
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '添加了广告:' . $data['title']);
             return json_data(1, '', '添加成功！');
         }else{
+            $image ? delete_image($data['image']) : '';
             return json_data(2, '', '添加失败！');
         }
     }
@@ -234,6 +256,8 @@ class Settings extends Base{
             }
             $data['image'] = $image_res['file_path'];
             $old_image = SysAd::where("id", $data['id'])->value('image');
+        }else{
+            unset($data['image']);
         }
         $validate = Loader::validate('SysAd');
         if(!$validate->scene('update')->check($data)){
@@ -243,9 +267,10 @@ class Settings extends Base{
         $res = $model->allowField(true)->save($data, ['id'=> $data['id']]);
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了广告:' . $data['title']);
-            $image ? delete_image($old_image, true) : '';
+            $image ? delete_image($old_image) : '';
             return json_data(1, '', '修改成功！');
         }else{
+            $image ? delete_image($data['image']) : '';
             return json_data(2, '', '修改失败！');
         }
     }
@@ -264,10 +289,29 @@ class Settings extends Base{
         $res = SysAd::destroy($id);
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '删除了广告' . $id . ',广告名称为：' . $model->title);
-            delete_image($model->image, true);
+            delete_image($model->image);
             return json_data(1, '', '删除成功！');
         }else{
             return json_data(2, '', '删除失败！');
+        }
+    }
+
+    /**
+     * 修改网址设置排序
+     *
+     * @return void
+     */
+    public function update_ad_sort_submit(){
+        $id = Request::instance()->param('id', 0);
+        $sort = Request::instance()->param('sort', 0);
+        $model = SysAd::get($id);
+        $model->sort = $sort;
+        $res = $model->save();
+        if($res){
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了广告' . $id . '的排序,广告标题为：' . $model->title . ',排序为:' . $sort);
+            return json_data(1, '', '修改成功！');
+        }else{
+            return json_data(2, '', '修改失败！');
         }
     }
 }

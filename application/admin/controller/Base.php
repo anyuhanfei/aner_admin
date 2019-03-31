@@ -18,20 +18,21 @@ class Base extends Controller{
         }
         $catalog_list = SysCatalogAdmin::order('sort asc')->select();
         $this->assign('catalog_list', $catalog_list);
+        $this->assign('admin', Session::get('admin'));
 
-        // $controller = Request::instance()->controller();
-        // $action = Request::instance()->action();
-        // $current_url = strtolower($controller . '/' . $action . ',');
-        // if($action != 'index'){
-        //     $admin = Session::get('admin');
-        //     if($admin->role_id == 0){
-        //         return $this->redirect('Login/login');
-        //     }
-        //     $role = SysAdminRole::where('role_id', $admin->role_id)->find();
-        //     if(strpos($role->action_ids, $current_url) === false){
-        //         return $this->redirect('index/index');
-        //     }
-        // }
+        $controller = Request::instance()->controller();
+        $action = Request::instance()->action();
+        $current_url = strtolower($controller . '/' . $action . ',');
+        if($action != 'index'){
+            $admin = Session::get('admin');
+            if($admin->role_id == 0){
+                return $this->redirect('Login/login');
+            }
+            $role = SysAdminRole::where('role_id', $admin->role_id)->find();
+            if(strpos($role->action_ids, $current_url) === false){
+                return $this->redirect('index/index');
+            }
+        }
     }
 
     /**
@@ -61,6 +62,21 @@ class Base extends Controller{
             $model->where('insert_time', '<= time', $start_time);
         }elseif($start_time != '' && $end_time != ''){
             $model->where('insert_time', 'between time', [$start_time, $end_time]);
+        }
+        return $model;
+    }
+
+    /**
+     * 通过管理员账号检索，表中只存储了admin_id的情况
+     *
+     * @param [type] $model
+     * @param [type] $account
+     * @return void
+     */
+    public function where_admin_account($model, $account){
+        if($account != ''){
+            $admin = SysAdmin::where('account', $account)->find();
+            $model = $admin ? $model->where('admin_id', $admin->admin_id) : $model->where('admin_id', 0);
         }
         return $model;
     }

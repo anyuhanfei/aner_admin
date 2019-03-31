@@ -8,6 +8,7 @@ use think\Loader;
 use app\admin\model\CmsCategory;
 use app\admin\model\CmsTag;
 use app\admin\model\CmsArticle;
+use app\admin\model\LogAdminOperation;
 
 use app\admin\controller\Base;
 
@@ -62,9 +63,29 @@ class Cms extends Base{
         $res = CmsCategory::update_data(['category_id'=> $category_id], ['category_name'=> $category_name]);
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了id为'. $category_id .'的文章分类名称，新名称为' . $category_name);
-            return json_data(1, '', '添加成功！');
+            return json_data(1, '', '修改成功！');
         }else{
-            return json_data(2, '', '添加失败！');
+            return json_data(2, '', '修改失败！');
+        }
+    }
+
+    /**
+     * 文章分类删除提交
+     *
+     * @return void
+     */
+    public function cms_category_delete_submit(){
+        $id = Request::instance()->param('id', 0);
+        $model = CmsCategory::get($id);
+        if(!$model){
+            return json_data(2, '', '系统错误！');
+        }
+        $res = CmsCategory::destroy($id);
+        if($res){
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '删除了一条文章分类，名称为' . $model->category_name);
+            return json_data(1, '', '删除成功！');
+        }else{
+            return json_data(2, '', '删除失败！');
         }
     }
     
@@ -73,7 +94,7 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function tag(){
+    public function cms_tag(){
         $list = CmsTag::order('tag_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         $this->assign('list', $list);
         return $this->fetch('Cms/cms_tag');
@@ -112,7 +133,7 @@ class Cms extends Base{
             return json_data(2, '', $validate->getError());
         }
         $model = new CmsTag();
-        $res = $model->allowField(true)->save($data, ['id'=> $data['id']]);
+        $res = $model->allowField(true)->save($data, ['tag_id'=> $data['tag_id']]);
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了一条文章标签，名称为' . $data['tag_name']);
             return json_data(1, '', '修改成功！');
@@ -159,8 +180,11 @@ class Cms extends Base{
         $article = ($author != '') ? $article->where('author', $author) : $article;
         $article = ($status != 0) ? $article->where('status', $status) : $article;
         $article = self::where_time($article, $start_time, $end_time);
-        $field = 'article_id,category_id,title,author,keyword,image,status,insert_time';
-        $list = $article->field($field)->order('id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
+        $field = 'article_id,category_id,tag_id,title,author,keyword,image,status,insert_time';
+        $list = $article->field($field)->order('article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
+        foreach($list as &$v){
+            $v['tag_ids'] = $v->tag_id != '' ? CmsTag::where('tag_id', 'in', $v->tag_id)->select() : [];
+        }
         self::many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'author'=> $author, 'status'=> $status, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         return $this->fetch('Cms/article');
     }
@@ -191,6 +215,8 @@ class Cms extends Base{
                 return json_data(2, '', $image_res['error']);
             }
             $data['image'] = $image_res['file_path'];
+        }else{
+            unset($data['image']);
         }
         $validate = Loader::validate('CmsArticle');
         if(!$validate->scene('add')->check($data)){
@@ -204,6 +230,7 @@ class Cms extends Base{
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '添加了一条文章，标题为' . $data['title']);
             return json_data(1, '', '添加成功！');
         }else{
+            $image ? delete_image($data['image']) : '';
             return json_data(2, '', '添加失败！');
         }
     }
@@ -214,15 +241,16 @@ class Cms extends Base{
      * @return void
      */
     public function article_update(){
-        $article_id = Request::instance()->param('article_id', 0);
+        $article_id = Request::instance()->param('id', 0);
         $detail = CmsArticle::get($article_id);
         $category = CmsCategory::order('category_id desc')->select();
         $tag = CmsTag::order('tag_id desc')->select();
         foreach($tag as &$v){
-            if(strpos($detail->tag_id, $v->tag_id) === false){
-                $v['has_tag'] = 0;
-            }else{
-                $v['has_tag'] = 1;
+            $v['has_tag'] = 1;
+            if($v->tag_id != ''){
+                if(strpos($detail->tag_id, $v->tag_id.',') === false){
+                    $v['has_tag'] = 0;
+                }
             }
         }
         self::many_assign(['category'=> $category, 'tag'=> $tag, 'detail'=> $detail]);
@@ -245,8 +273,10 @@ class Cms extends Base{
             }
             $data['image'] = $image_res['file_path'];
             $old_image = CmsArticle::where("article_id", $data['article_id'])->value('image');
+        }else{
+            unset($data['image']);
         }
-        $validate = Loader::validate('SysAd');
+        $validate = Loader::validate('CmsArticle');
         if(!$validate->scene('update')->check($data)){
             return json_data(2, '', $validate->getError());
         }
@@ -254,11 +284,32 @@ class Cms extends Base{
         $res = $model->allowField(true)->save($data, ['article_id'=> $data['article_id']]);
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '修改了文章:' . $data['title']);
-            $image ? delete_image($old_image, true) : ''; //删除旧图片
+            $image ? delete_image($old_image) : ''; //删除旧图片
             return json_data(1, '', '修改成功！');
         }else{
-            $image ? delete_image($data['image'], true) : ''; //删除刚刚上传的图片
+            $image ? delete_image($data['image']) : ''; //删除刚刚上传的图片
             return json_data(2, '', '修改失败！');
+        }
+    }
+
+    /**
+     * 文章删除提交
+     *
+     * @return void
+     */
+    public function article_delete_submit(){
+        $id = Request::instance()->param('id', 0);
+        $model = CmsArticle::get($id);
+        if(!$model){
+            return json_data(2, '', '系统错误！');
+        }
+        $res = CmsArticle::destroy($id);
+        if($res){
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '删除了一条文章，标题为' . $model->title);
+            delete_image($model->image);
+            return json_data(1, '', '删除成功！');
+        }else{
+            return json_data(2, '', '删除失败！');
         }
     }
 }

@@ -110,7 +110,7 @@ class Admin extends Base{
     }
 
     /**
-     * 修改管理员密码
+     * 修改管理员权限
      *
      * @return void
      */

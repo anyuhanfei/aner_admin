@@ -17,8 +17,9 @@ class SysAdmin extends Model{
      * @param [type] $password
      * @return void
      */
-    public static function login_validata($account, $password){
-        $res = self::field('admin_id, account, role_id, nickname')->where('account', $account)->where('password', md5($password))->find();
+    public static function login_validata($account, $password, $password_type = false){
+        $password = $password_type == false ? md5($password) : $password;
+        $res = self::field('admin_id, account, role_id, nickname')->where('account', $account)->where('password', $password)->find();
         return $res ? $res : false;
     }
 }
