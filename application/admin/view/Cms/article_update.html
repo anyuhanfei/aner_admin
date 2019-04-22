@@ -1,5 +1,10 @@
 {extend name="base" /}
 
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/markdown/markdown.css">
+<script type="text/javascript" src="/static/markdown/marked.min.js"></script>
+{/block}
+
 {block name="content"}
 <div class="breadcrumbs">
     <div class="breadcrumbs-inner">
@@ -82,9 +87,32 @@
                             <div class="col-12 col-md-9"><textarea name="intro" id="intro" rows="3" placeholder="intro..." class="form-control">{$detail.keyword}</textarea></div>
                         </div>
                         <div class="row form-group">
+                            <div class="col col-md-9"><label for="content_type" class=" form-control-label">内容样式</label></div>
+                            <div class="col-12 col-md-12">
+                                <select name="content_type" id="content_type" class="form-control">
+                                    <option value="markdown" {if condition="$detail.content_type == 'markdown'"}selected{/if}>markdown</option>
+                                    <option value="html"{if condition="$detail.content_type == 'html'"}selected{/if}>html</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group" id="markdown_write" {if condition="$detail.content_type == 'html'"}style="display: None;"{/if}>
+                            <div class="col col-md-8"><label for="write" class=" form-control-label">内容</label></div>
+                            <div class="col-12 col-md-12">       
+                                <textarea name="textarea-input" id="write" rows="18"class="form-control">{if condition="$detail.content_type == 'markdown'"}{$detail.content}{/if}</textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group" id="markdown_show" {if condition="$detail.content_type == 'html'"}style="display: None;"{/if}>
+                            <div class="col col-md-8"><label for="show" class=" form-control-label">展示</label></div>
+                            <div class="col-12 col-md-12 markdown-body" id="show" style="height:690px; overflow:auto; border: 1px solid #ced4da; border-radius: .25rem;">
+                                
+                            </div>
+                        </div>
+                        <div class="row form-group" id="html" {if condition="$detail.content_type == 'markdown'"}style="display: None;"{/if}>
                             <div class="col col-md-8"><label for="content" class=" form-control-label">内容</label></div>
                             <div class="col-12 col-md-12" id="content">
-
+                                {if condition="$detail.content_type == 'html'"}
+                                    {$detail.content}
+                                {/if}
                             </div>
                         </div>
                         <input type="hidden" id="article_id" value="{$detail.article_id}"/>
@@ -108,7 +136,30 @@
         var E = window.wangEditor
         var editor = new E('#content')
         editor.create()
-        editor.txt.html("{$detail.content}")
+
+        var markdown_write = $("#write").val();
+        console.log(markdown_write)
+        if(markdown_write != ''){
+            $("#show").html(marked(markdown_write));
+        }
+
+        $("#content_type").change(function(){
+            var content_type = $("#content_type").val();
+            if(content_type == 'markdown'){
+                $("#markdown_write").attr('style', '');
+                $("#markdown_show").attr('style', '');
+                $("#html").attr('style', 'display: None;');
+            }
+            if(content_type == 'html'){
+                $("#markdown_write").attr('style', 'display: None;');
+                $("#markdown_show").attr('style', 'display: None;');
+                $("#html").attr('style', '');
+            }
+        })
+
+        $('#write').bind('input propertychange', function() {
+            $("#show").html(marked($("#write").val()));
+        });
 
         $("#show_image").click(function(){
             layer.open({
@@ -136,7 +187,13 @@
             }); 
             fd.append("tag_id", tag_id);
             fd.append("intro", $("#intro").val());
-            fd.append("content", editor.txt.html());
+            var content_type = $("#content_type").val();
+            fd.append("content_type", content_type);
+            if(content_type == 'markdown'){
+                fd.append("content", $("#write").val());
+            }else{
+                fd.append("content", editor.txt.html());
+            }
             fd.append("image", $('#image')[0].files[0]);
             if(title == ''){
                 layer.msg('请填写标题！');

@@ -9,6 +9,7 @@ use app\admin\model\CmsCategory;
 use app\admin\model\CmsTag;
 use app\admin\model\CmsArticle;
 use app\admin\model\LogAdminOperation;
+use app\admin\model\CmsArticleCount;
 
 use app\admin\controller\Base;
 
@@ -180,7 +181,7 @@ class Cms extends Base{
         $article = ($author != '') ? $article->where('author', $author) : $article;
         $article = ($status != 0) ? $article->where('status', $status) : $article;
         $article = self::where_time($article, $start_time, $end_time);
-        $field = 'article_id,category_id,tag_id,title,author,keyword,image,status,insert_time';
+        $field = 'article_id,category_id,tag_id,title,author,keyword,image,status,insert_time,is_stick,is_recommend';
         $list = $article->field($field)->order('article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         foreach($list as &$v){
             $v['tag_ids'] = $v->tag_id != '' ? CmsTag::where('tag_id', 'in', $v->tag_id)->select() : [];
@@ -228,6 +229,7 @@ class Cms extends Base{
         $res = $model->allowField(true)->save();
         if($res){
             LogAdminOperation::create_data(Session::get('admin')->admin_id, '添加了一条文章，标题为' . $data['title']);
+            CmsArticleCount::create_data($model->article_id);
             return json_data(1, '', '添加成功！');
         }else{
             $image ? delete_image($data['image']) : '';
@@ -310,6 +312,62 @@ class Cms extends Base{
             return json_data(1, '', '删除成功！');
         }else{
             return json_data(2, '', '删除失败！');
+        }
+    }
+
+    /**
+     * 推荐设置
+     *
+     * @return void
+     */
+    public function recommend(){
+        $id = Request::instance()->param('id', 0);
+        $status = Request::instance()->param('status', 0);
+        if($status == 1){
+            $status_text = '设为推荐';
+        }else{
+            $status_text = '取消推荐';
+        }
+        $model = new CmsArticle();
+        $res = $model->allowField(true)->save(['is_recommend'=>$status], ['article_id'=> $id]);
+        if($res){
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '文章' . $id . $status_text);
+            return json_data(1, '', $status_text . '成功！');
+        }else{
+            return json_data(2, '', $status_text . '失败！');
+        }
+    }
+
+    /**
+     * 置顶设置
+     *
+     * @return void
+     */
+    public function stick(){
+        $id = Request::instance()->param('id', 0);
+        $status = Request::instance()->param('status', 0);
+        $old_article_id = 0;
+        $old_stick = null;
+        if($status == 1){
+            $status_text = '设为置顶';
+            $old_stick = CmsArticle::field('article_id, is_stick')->where('is_stick', 1)->find();
+        }else{
+            $status_text = '取消置顶';
+            
+        }
+        $model = new CmsArticle();
+        $res = $model->allowField(true)->save(['is_stick'=>$status], ['article_id'=> $id]);
+        if($res){
+            if($old_stick){
+                $old_stick->is_stick = 0;
+                $old_stick->save();
+                LogAdminOperation::create_data(Session::get('admin')->admin_id, '文章' . $old_stick->article_id . '取消置顶');
+                $old_article_id = $old_stick->article_id;
+            }
+            LogAdminOperation::create_data(Session::get('admin')->admin_id, '文章' . $id . $status_text);
+            return json_data(1, $old_article_id, $status_text . '成功！');
+        }else{
+            return json_data(2, '', $status_text . '失败！');
         }
     }
 }

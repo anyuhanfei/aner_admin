@@ -45,6 +45,8 @@
                                     <th>标签</th>
                                     <th>作者</th>
                                     <th>图片</th>
+                                    <th>点击率</th>
+                                    <th>点赞数</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -52,7 +54,15 @@
                                 {volist name="list" id="vo"}
                                 <tr id="item{$vo.article_id}">
                                     <td>{$vo.article_id}</td>
-                                    <td>{$vo.title}</td>
+                                    <td id="title{$vo.article_id}" data-title="{$vo.title}" data-recommend="{$vo.is_recommend}" data-stick="{$vo.is_stick}">
+                                        {if condition="$vo.is_recommend == 1"}
+                                        <i class="fa fa-thumbs-up"></i>
+                                        {/if}
+                                        {if condition="$vo.is_stick == 1"}
+                                        <i class="fa fa-eject"></i>
+                                        {/if}
+                                        {$vo.title}
+                                    </td>
                                     <td>{$vo.category.category_name}</td>
                                     <td>
                                         {volist name="$vo.tag_ids" id="tag_ids"}
@@ -61,7 +71,19 @@
                                     </td>
                                     <td>{$vo.author}</td>
                                     <td onclick="show_image({$vo.article_id})"><img id="image{$vo.article_id}" src="{$vo.image}" width="80px"/></td>
+                                    <td>{$vo.count.click_rate}</td>
+                                    <td>{$vo.count.likenum_int}</td>
                                     <td>
+                                        {if condition="$vo.is_recommend == 0"}
+                                        <button id="recommend{$vo.article_id}" onclick="recommend({$vo.article_id}, 1)" type="button" class="btn btn-outline-primary">推荐</button>
+                                        {else /}
+                                        <button id="recommend{$vo.article_id}" onclick="recommend({$vo.article_id}, 0)" type="button" class="btn btn-secondary">取消推荐</button>
+                                        {/if}
+                                        {if condition="$vo.is_stick == 0"}
+                                        <button id="stick{$vo.article_id}" onclick="stick({$vo.article_id}, 1)" type="button" class="btn btn-outline-primary">置顶</button>
+                                        {else /}
+                                        <button id="stick{$vo.article_id}" onclick="stick({$vo.article_id}, 0)" type="button" class="btn btn-secondary">取消置顶</button>
+                                        {/if}
                                         <button onclick="update({$vo.article_id})" type="button" class="btn btn-outline-primary">修改</button>
                                         <button onclick="delete_item({$vo.article_id})" type="button" class="btn btn-outline-danger">删除</button>
                                     </td>
@@ -91,12 +113,106 @@
             window.location.href = "/admin/cms/article_update?id=" + id;
         }
 
+        // 推荐
+        function recommend(id, status){
+            $.ajax({
+                url: "{:url('Cms/recommend')}",
+                type: 'post',
+                data: {id: id, status: status},
+                success: function(data){
+                    layer.msg(data.msg);
+                    if(data.status == 1){
+                        if(status == 1){
+                            //展示图标
+                            var old_title = $("#title"+id).html();
+                            $("#title"+id).html('<i class="fa fa-thumbs-up"></i>' + old_title);
+                            //修改data数据
+                            $("#title"+id).data('recommend', "1");
+                            //修改按钮
+                            $("#recommend"+id).text("取消推荐");
+                            $("#recommend"+id).attr("onclick", "recommend("+id+", 0)");
+                            $("#recommend"+id).attr("class",'btn btn-secondary');
+                        }else{
+                            //修改data数据，整理标题和图标
+                            $("#recommend"+id).data('recommend', "0");
+                            var data_title = $("#title"+id).data('title');
+                            var data_stick = $("#title"+id).data('stick');
+                            var str = ''
+                            if(data_stick == "1"){
+                                str += '<i class="fa fa-eject"></i>'
+                            }
+                            $("#title"+id).html(str + data_title);
+                            //修改按钮
+                            $("#recommend"+id).text("推荐");
+                            $("#recommend"+id).attr("onclick", "recommend("+id+", 1)");
+                            $("#recommend"+id).attr("class",'btn btn-outline-primary');
+                        }
+                    }
+                }
+            })
+        }
+
+        // 置顶
+        function stick(id, status){
+            $.ajax({
+                url: "{:url('Cms/stick')}",
+                type: 'post',
+                data: {id: id, status: status},
+                success: function(data){
+                    layer.msg(data.msg);
+                    if(data.status == 1){
+                        if(status == 1){
+                            //整理标题和图标信息
+                            var old_title = $("#title"+id).html();
+                            $("#title"+id).html('<i class="fa fa-eject"></i>' + old_title);
+                            $("#title"+id).data('stick', "1");
+                            //修改当前文章的置顶按钮
+                            $("#stick"+id).text("取消置顶");
+                            $("#stick"+id).attr("onclick", "stick("+id+", 0)");
+                            $("#stick"+id).attr("class",'btn btn-secondary');
+                            //修改旧置顶文章(和取消置顶代码相同)
+                            if(data.data != 0){
+                                var old_id = data.data;
+                                //整理标题和图标信息
+                                $("#stick"+old_id).data('stick', "0");
+                                var data_title = $("#title"+old_id).data('title');
+                                var data_recommend = $("#title"+old_id).data('recommend');
+                                var str = ''
+                                if(data_recommend == "1"){
+                                    str += '<i class="fa fa-thumbs-up"></i>'
+                                }
+                                $("#title"+old_id).html(str + data_title);
+                                //修改当前文章的置顶按钮
+                                $("#stick"+old_id).text("置顶");
+                                $("#stick"+old_id).attr("onclick", "stick("+old_id+", 1)");
+                                $("#stick"+old_id).attr("class",'btn btn-outline-primary');
+                            }
+                        }else{
+                            //整理标题和图标信息
+                            $("#stick"+id).data('stick', "0");
+                            var data_title = $("#title"+id).data('title');
+                            var data_recommend = $("#title"+id).data('recommend');
+                            var str = ''
+                            if(data_recommend == "1"){
+                                str += '<i class="fa fa-thumbs-up"></i>'
+                            }
+                            $("#title"+id).html(str + data_title);
+                            //修改当前文章的置顶按钮
+                            $("#stick"+id).text("置顶");
+                            $("#stick"+id).attr("onclick", "stick("+id+", 1)");
+                            $("#stick"+id).attr("class",'btn btn-outline-primary');
+                        }
+                    }
+                }
+            })
+        }
+
         // 删除
         function delete_item(id){
             $.ajax({
                 url: "{:url('Cms/article_delete_submit')}",
                 type: 'post',
-                data: {id: id},
+                data: {id: id, status: status},
                 success: function(data){
                     layer.msg(data.msg);
                     if(data.status == 1){

@@ -1,5 +1,10 @@
 {extend name="base" /}
 
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/markdown/markdown.css">
+<script type="text/javascript" src="/static/markdown/marked.min.js"></script>
+{/block}
+
 {block name="content"}
 <div class="breadcrumbs">
     <div class="breadcrumbs-inner">
@@ -79,11 +84,33 @@
                             <div class="col-12 col-md-9"><textarea name="intro" id="intro" rows="3" placeholder="intro..." class="form-control"></textarea></div>
                         </div>
                         <div class="row form-group">
+                            <div class="col col-md-9"><label for="content_type" class=" form-control-label">内容样式</label></div>
+                            <div class="col-12 col-md-12">
+                                <select name="content_type" id="content_type" class="form-control">
+                                    <option value="markdown">markdown</option>
+                                    <option value="html">html</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group" id="markdown_write">
+                            <div class="col col-md-8"><label for="write" class=" form-control-label">内容</label></div>
+                            <div class="col-12 col-md-12">       
+                                <textarea name="textarea-input" id="write" rows="18"class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group" id="markdown_show">
+                            <div class="col col-md-8"><label for="show" class=" form-control-label">展示</label></div>
+                            <div class="col-12 col-md-12 markdown-body" id="show" style="height:690px; overflow:auto; border: 1px solid #ced4da; border-radius: .25rem;">
+                                
+                            </div>
+                        </div>
+                        <div class="row form-group" id="html" style="display: None;">
                             <div class="col col-md-8"><label for="content" class=" form-control-label">内容</label></div>
                             <div class="col-12 col-md-12" id="content">
 
                             </div>
                         </div>
+
                         <div>
                             <button id="submit" type="button" class="btn btn-lg btn-info btn-block">
                                 <i class="fa fa-arrow-up fa-lg"></i>&nbsp;
@@ -105,6 +132,25 @@
         var editor = new E('#content')
         editor.create()
 
+        $("#content_type").change(function(){
+            var content_type = $("#content_type").val();
+            if(content_type == 'markdown'){
+                $("#markdown_write").attr('style', '');
+                $("#markdown_show").attr('style', '');
+                $("#html").attr('style', 'display: None;');
+            }
+            if(content_type == 'html'){
+                $("#markdown_write").attr('style', 'display: None;');
+                $("#markdown_show").attr('style', 'display: None;');
+                $("#html").attr('style', '');
+                
+            }
+        })
+
+        $('#write').bind('input propertychange', function() {
+            $("#show").html(marked($("#write").val()));
+        });
+
         $("#submit").click(function(){
             var fd = new FormData();
             fd.append("title", $("#title").val());
@@ -117,7 +163,14 @@
             }); 
             fd.append("tag_id", tag_id);
             fd.append("intro", $("#intro").val());
-            fd.append("content", editor.txt.html());
+            var content_type = $("#content_type").val();
+            fd.append("content_type", content_type);
+            if(content_type == 'markdown'){
+                fd.append("content", $("#write").val());
+            }else{
+                fd.append("content", editor.txt.html());
+            }
+            
             fd.append("image", $('#image')[0].files[0]);
             if(title == ''){
                 layer.msg('请填写标题！');
@@ -145,3 +198,13 @@
         })
     </script>
 {/block}
+
+
+
+
+
+
+
+
+
+
