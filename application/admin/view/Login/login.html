@@ -42,19 +42,16 @@
                 <div class="login-form">
                     <form>
                         <div class="form-group">
-                            <label>账号</label>
                             <input id="account" type="text" class="form-control" placeholder="请输入账号">
                         </div>
                         <div class="form-group">
-                            <label>密码</label>
                             <input id="password" type="password" class="form-control" placeholder="请输入密码">
                         </div>
                         <div class="form-group">
-                            <label>验证码</label>
-                            <input id="captcha" type="captcha" class="form-small" placeholder="请输入验证码">
-                            <img src="{:captcha_src()}" alt="captcha" width="200px" style="float:right;" onclick="this.src=this.src" />
+                            <input id="captcha" type="text" class="form-control" style="width:60%; float:left;" placeholder="请输入验证码">
+                            <img src="{:captcha_src()}" alt="captcha" width="140px" style="float:right;" onclick="this.src=this.src" />
                         </div>
-                        <button id="submit" type="button" class="btn btn-success btn-flat m-b-30 m-t-30">登录</button>
+                        <button id="submit" type="button" class="btn btn-success btn-flat m-b-30 m-t-30" style="margin-top:10px;">登录</button>
                     </form>
                 </div>
             </div>
