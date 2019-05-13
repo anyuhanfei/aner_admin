@@ -26,7 +26,7 @@ class Base extends Controller{
         $action = Request::instance()->action();
         $current_url = strtolower($controller . '/' . $action . ',');
         if($action != 'index'){
-            if(isset($admin->role_id) || $admin->role_id == 0){
+            if($admin->role_id == 0){
                 return $this->redirect('Login/login');
             }
             $role = SysAdminRole::where('role_id', $admin->role_id)->find();
