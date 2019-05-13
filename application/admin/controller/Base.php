@@ -12,7 +12,9 @@ class Base extends Controller{
     protected $page_number = 20;
 
     public function _initialize(){
-        if(!Session::has('admin')){
+        //验证是否登录
+        $admin = Session::get('admin');
+        if(!isset($admin) || !isset($admin->role_id)){
             $this->redirect('Login/login');
             return;
         }
@@ -24,8 +26,7 @@ class Base extends Controller{
         $action = Request::instance()->action();
         $current_url = strtolower($controller . '/' . $action . ',');
         if($action != 'index'){
-            $admin = Session::get('admin');
-            if($admin->role_id == 0){
+            if(isset($admin->role_id) || $admin->role_id == 0){
                 return $this->redirect('Login/login');
             }
             $role = SysAdminRole::where('role_id', $admin->role_id)->find();
