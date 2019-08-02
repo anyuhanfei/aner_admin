@@ -2,11 +2,9 @@
 namespace app\admin\controller;
 
 use think\Controller;
-use think\Session;
-use think\Request;
 
 
-class Base extends Control{
+class Control extends Controller{
     public function _initialize(){
 
     }

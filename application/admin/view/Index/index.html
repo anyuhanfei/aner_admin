@@ -1,267 +1,342 @@
 {extend name="base" /}
 
 {block name="content"}
-<!-- Content -->
-<div class="content">
-    <!-- Animated -->
-    <div class="animated fadeIn">
-        <!-- Widgets  -->
-        {include file="index/widgets"}
-        <!-- /Widgets -->
-        <div class="clearfix"></div>
-        <!-- Orders -->
-        <div class="orders">
+    <div class="content">
+        <div class="container-fluid">
+            <h4 class="page-title">Dashboard</h4>
             <div class="row">
-                <div class="col-xl-12">
+                <div class="col-md-3">
+                    <div class="card card-stats card-warning">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-users"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Visitors</p>
+                                        <h4 class="card-title">1,294</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-success">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-bar-chart"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Sales</p>
+                                        <h4 class="card-title">$ 1,345</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-danger">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-newspaper-o"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Subscribers</p>
+                                        <h4 class="card-title">1303</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-primary">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-check-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Order</p>
+                                        <h4 class="card-title">576</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-card-no-pd">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="box-title">文章点击排行</h4>
+                            <p class="fw-bold mt-1">My Balance</p>
+                            <h4><b>$ 3,018</b></h4>
+                            <a href="#" class="btn btn-primary btn-full text-left mt-3 mb-3"><i class="la la-plus"></i> Add Balance</a>
                         </div>
-                        <div class="card-body--">
-                            <div class="table-stats order-table ov-h">
-                                <table class="table ">
+                        <div class="card-footer">
+                            <ul class="nav">
+                                <li class="nav-item"><a class="btn btn-default btn-link" href="#"><i class="la la-history"></i> History</a></li>
+                                <li class="nav-item ml-auto"><a class="btn btn-default btn-link" href="#"><i class="la la-refresh"></i> Refresh</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="progress-card">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Profit</span>
+                                    <span class="text-muted fw-bold"> $3K</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 7px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="78%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-card">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Orders</span>
+                                    <span class="text-muted fw-bold"> 576</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 7px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="65%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-card">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Tasks Complete</span>
+                                    <span class="text-muted fw-bold"> 70%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 7px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="70%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-card">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Open Rate</span>
+                                    <span class="text-muted fw-bold"> 60%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 7px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats">
+                        <div class="card-body">
+                            <p class="fw-bold mt-1">Statistic</p>
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center icon-warning">
+                                        <i class="la la-pie-chart text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Number</p>
+                                        <h4 class="card-title">150GB</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-heart-o text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Followers</p>
+                                        <h4 class="card-title">+45K</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header ">
+                            <h4 class="card-title">Table</h4>
+                            <p class="card-category">Users Table</p>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-head-bg-success table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td colspan="2">Larry the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-tasks">
+                        <div class="card-header ">
+                            <h4 class="card-title">Tasks</h4>
+                            <p class="card-category">To Do List</p>
+                        </div>
+                        <div class="card-body ">
+                            <div class="table-full-width">
+                                <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="serial">#</th>
-                                            <th class="avatar">Image</th>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Click Rate</th>
-                                            <th>Likenum Int</th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input  select-all-checkbox" type="checkbox" data-select="checkbox" data-target=".task-select">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>Task</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {volist name="rank" id="r"}
                                         <tr>
-                                            <td class="serial">{$r->rank}.</td>
-                                            <td class="avatar">
-                                                <div class="round-img">
-                                                    <a href="####"><img id="image{$r->article_id}" class="rounded-circle"
-                                                            src="{$r->article->image}" alt=""
-                                                            onclick="show_image({$r->article_id})"></a>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input task-select" type="checkbox">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
                                                 </div>
                                             </td>
-                                            <td> {$r->article_id} </td>
-                                            <td> <span class="name">{$r->article->title}</span> </td>
-                                            <td> <span class="product">{$r->click_rate}</span> </td>
-                                            <td><span class="count">{$r->likenum_int}</span></td>
+                                            <td>Planning new project structure</td>
+                                            <td class="td-actions text-right">
+                                                <div class="form-button-action">
+                                                    <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                                        <i class="la la-edit"></i>
+                                                    </button>
+                                                    <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                                        <i class="la la-times"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
-                                        {/volist}
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input task-select" type="checkbox">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>Update Fonts</td>
+                                            <td class="td-actions text-right">
+                                                <div class="form-button-action">
+                                                    <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                                        <i class="la la-edit"></i>
+                                                    </button>
+                                                    <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                                        <i class="la la-times"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input task-select" type="checkbox">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>Add new Post
+                                            </td>
+                                            <td class="td-actions text-right">
+                                                <div class="form-button-action">
+                                                    <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                                        <i class="la la-edit"></i>
+                                                    </button>
+                                                    <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                                        <i class="la la-times"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input task-select" type="checkbox">
+                                                        <span class="form-check-sign"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>Finalise the design proposal</td>
+                                            <td class="td-actions text-right">
+                                                <div class="form-button-action">
+                                                    <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                                        <i class="la la-edit"></i>
+                                                    </button>
+                                                    <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                                        <i class="la la-times"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                            </div> <!-- /.table-stats -->
-                        </div>
-                    </div> <!-- /.card -->
-                </div> <!-- /.col-lg-8 -->
-            </div>
-        </div>
-        <!-- /.orders -->
-        <!-- To Do and Live Chat -->
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title box-title">To Do List</h4>
-                        <div class="card-content">
-                            <div class="todo-list">
-                                <div class="tdl-holder">
-                                    <div class="tdl-content">
-                                        <ul>
-                                            <li>
-                                                <label>
-                                                    <input type="checkbox"><i class="check-box"></i><span>Conveniently
-                                                        fabricate interactive technology for ....</span>
-                                                    <a href='#' class="fa fa-times"></a>
-                                                    <a href='#' class="fa fa-pencil"></a>
-                                                    <a href='#' class="fa fa-check"></a>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label>
-                                                    <input type="checkbox"><i class="check-box"></i><span>Creating
-                                                        component page</span>
-                                                    <a href='#' class="fa fa-times"></a>
-                                                    <a href='#' class="fa fa-pencil"></a>
-                                                    <a href='#' class="fa fa-check"></a>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label>
-                                                    <input type="checkbox" checked><i class="check-box"></i><span>Follow
-                                                        back those who follow you</span>
-                                                    <a href='#' class="fa fa-times"></a>
-                                                    <a href='#' class="fa fa-pencil"></a>
-                                                    <a href='#' class="fa fa-check"></a>
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label>
-                                                    <input type="checkbox" checked><i class="check-box"></i><span>Design
-                                                        One page theme</span>
-                                                    <a href='#' class="fa fa-times"></a>
-                                                    <a href='#' class="fa fa-pencil"></a>
-                                                    <a href='#' class="fa fa-check"></a>
-                                                </label>
-                                            </li>
-
-                                            <li>
-                                                <label>
-                                                    <input type="checkbox" checked><i
-                                                        class="check-box"></i><span>Creating component page</span>
-                                                    <a href='#' class="fa fa-times"></a>
-                                                    <a href='#' class="fa fa-pencil"></a>
-                                                    <a href='#' class="fa fa-check"></a>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> <!-- /.todo-list -->
-                        </div>
-                    </div> <!-- /.card-body -->
-                </div><!-- /.card -->
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title box-title">Live Chat</h4>
-                        <div class="card-content">
-                            <div class="messenger-box">
-                                <ul>
-                                    <li>
-                                        <div class="msg-received msg-container">
-                                            <div class="avatar">
-                                                <img src="images/avatar/64-1.jpg" alt="">
-                                                <div class="send-time">11.11 am</div>
-                                            </div>
-                                            <div class="msg-box">
-                                                <div class="inner-box">
-                                                    <div class="name">
-                                                        John Doe
-                                                    </div>
-                                                    <div class="meg">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                        Perspiciatis sunt placeat velit ad reiciendis ipsam
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.msg-received -->
-                                    </li>
-                                    <li>
-                                        <div class="msg-sent msg-container">
-                                            <div class="avatar">
-                                                <img src="images/avatar/64-2.jpg" alt="">
-                                                <div class="send-time">11.11 am</div>
-                                            </div>
-                                            <div class="msg-box">
-                                                <div class="inner-box">
-                                                    <div class="name">
-                                                        John Doe
-                                                    </div>
-                                                    <div class="meg">
-                                                        Hay how are you doing?
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.msg-sent -->
-                                    </li>
-                                </ul>
-                                <div class="send-mgs">
-                                    <div class="yourmsg">
-                                        <input class="form-control" type="text">
-                                    </div>
-                                    <button class="btn msg-send-btn">
-                                        <i class="pe-7s-paper-plane"></i>
-                                    </button>
-                                </div>
-                            </div><!-- /.messenger-box -->
-                        </div>
-                    </div> <!-- /.card-body -->
-                </div><!-- /.card -->
-            </div>
-        </div>
-        <!-- /To Do and Live Chat -->
-        
-        <!-- Modal - Calendar - Add New Event -->
-        <div class="modal fade none-border" id="event-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><strong>Add New Event</strong></h4>
-                    </div>
-                    <div class="modal-body"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
-                            event</button>
-                        <button type="button" class="btn btn-danger delete-event waves-effect waves-light"
-                            data-dismiss="modal">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#event-modal -->
-        <!-- Modal - Calendar - Add Category -->
-        <div class="modal fade none-border" id="add-category">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><strong>Add a category </strong></h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="control-label">Category Name</label>
-                                    <input class="form-control form-white" placeholder="Enter name" type="text"
-                                        name="category-name" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="control-label">Choose Category Color</label>
-                                    <select class="form-control form-white" data-placeholder="Choose a color..."
-                                        name="category-color">
-                                        <option value="success">Success</option>
-                                        <option value="danger">Danger</option>
-                                        <option value="info">Info</option>
-                                        <option value="pink">Pink</option>
-                                        <option value="primary">Primary</option>
-                                        <option value="warning">Warning</option>
-                                    </select>
-                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger waves-effect waves-light save-category"
-                            data-dismiss="modal">Save</button>
+                        </div>
+                        <div class="card-footer ">
+                            <div class="stats">
+                                <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /#add-category -->
     </div>
-    <!-- .animated -->
 </div>
-<!-- /.content -->
-{/block}
-
-{block name="custom_js"}
-<script>
-    //查看大图
-    function show_image(id) {
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: '516px',
-            skin: 'layui-layer-nobg', //没有背景色
-            shadeClose: true,
-            content: "<img src='" + $("#image" + id).attr('src') + "' />"
-        });
-    }
-</script>
 {/block}

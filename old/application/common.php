@@ -71,7 +71,7 @@ function create_captcha($number, $type = 'figure'){
 
 /**
  * 文件上传
- *
+ * 
  * @param file $file 文件资源句柄
  * @param string $save_path 文件保存子文件夹
  * @param array $file_validate 文件上传验证
@@ -133,7 +133,7 @@ function png_erwei($url, $phone)
     $QR = $QRB = $path . $phone . ".png";
     \QRcode::png($url, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
     if(file_exists($path . $phone . ".png")){
-        return "/uploads/qrcode/" . $phone . ".png";
+        return "/public/uploads/qrcode/" . $phone . ".png";
     }else{
         return false;
     }

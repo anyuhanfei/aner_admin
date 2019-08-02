@@ -1,0 +1,103 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ela Admin - HTML5 Admin Template</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <link rel="stylesheet" href="/static/admin/assets/css/normalize.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/pe-icon-7-filled.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/style.css">
+
+    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'> -->
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+
+<body class="bg-dark">
+
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <a href="index.html">
+                        <img class="align-content" src="/static/admin/images/logo.png" alt="">
+                    </a>
+                </div>
+                <div class="login-form">
+                    <form>
+                        <div class="form-group">
+                            <input id="account" type="text" class="form-control" placeholder="请输入账号">
+                        </div>
+                        <div class="form-group">
+                            <input id="password" type="password" class="form-control" placeholder="请输入密码">
+                        </div>
+                        <div class="form-group">
+                            <input id="captcha" type="text" class="form-control" style="width:60%; float:left;" placeholder="请输入验证码">
+                            <img src="{:captcha_src()}" alt="captcha" width="140px" style="float:right;" onclick="this.src=this.src" />
+                        </div>
+                        <button id="submit" type="button" class="btn btn-success btn-flat m-b-30 m-t-30" style="margin-top:10px;">登录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="/static/admin/assets/js/popper.min.js"></script>
+    <script src="/static/admin/assets/js/bootstrap.min.js"></script>
+    <script src="/static/admin/assets/js/jquery.matchHeight.min.js"></script>
+    <script src="/static/layer/layer.js"></script>
+    <script>
+        $(function(){
+            
+        })
+        $("#submit").click(function(){
+            var account = $("#account").val();
+            var password = $("#password").val();
+            var captcha = $("#captcha").val();
+            if(account == ''){
+                layer.msg('请输入账号！');
+                return;
+            }
+            if(password == ''){
+                layer.msg("请输入密码！");
+                return;
+            }
+            if(captcha == ''){
+                layer.msg("请输入验证码！");
+                return;
+            }
+            $.ajax({
+                url: "{:url('Login/login_submit')}",
+                type: "post",
+                data: {account: account, password: password, captcha: captcha},
+                success: function(data){
+                    layer.msg(data.msg);
+                    if(data.status == 1){
+                        setTimeout(function(){
+                            window.location.href = "{:url('Index/index')}";
+                        }, 1000);
+                    }
+                }
+            })
+        })
+    </script>
+    <script src="/static/admin/assets/js/main.js"></script>
+</body>
+
+</html>

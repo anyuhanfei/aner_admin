@@ -1,103 +1,131 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="">
-<!--<![endif]-->
+<html lang="en">
 
 <head>
+    <!-- meta data -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ela Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Ela Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>aner_cms</title>
 
+    {include file="public/favicon"}
 
-
-    <link rel="stylesheet" href="/static/admin/assets/css/normalize.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/themify-icons.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/pe-icon-7-filled.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/flag-icon.min.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/cs-skin-elastic.css">
-    <link rel="stylesheet" href="/static/admin/assets/css/style.css">
-
-    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'> -->
-
-    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <!--style.css-->
+    <link rel="stylesheet" href="/static/admin/login/style.css">
 </head>
 
-<body class="bg-dark">
-
-    <div class="sufee-login d-flex align-content-center flex-wrap">
+<body>
+    <!-- signin end -->
+    <section class="signin popup-in">
         <div class="container">
-            <div class="login-content">
-                <div class="login-logo">
-                    <a href="index.html">
-                        <img class="align-content" src="/static/admin/images/logo.png" alt="">
-                    </a>
-                </div>
-                <div class="login-form">
-                    <form>
-                        <div class="form-group">
-                            <input id="account" type="text" class="form-control" placeholder="请输入账号">
+            <div class="sign-content popup-in-content">
+                <div class="popup-in-txt">
+                    <h2><img src="/static/logo/aner_cms_login_logo.png"/></h2>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-form">
+                                <form action="signin.html">
+                                    <div class="form-group">
+                                        <label for="account">账号</label>
+                                        <input type="email" class="form-control" id="account" placeholder="请输入登录账号">
+                                    </div>
+                                    <!--/.form-group -->
+                                    <div class="form-group">
+                                        <label for="password">密码</label>
+                                        <input type="password" class="form-control" id="password"
+                                            placeholder="请输入登录密码">
+                                    </div>
+                                    <!--/.form-group -->
+                                </form>
+                                <!--/form -->
+                            </div>
+                            <!--/.signin-form -->
                         </div>
-                        <div class="form-group">
-                            <input id="password" type="password" class="form-control" placeholder="请输入密码">
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-password">
+                                <div class="password-circle">
+                                    <!--/.single-password-circle-->
+                                </div>
+                                <!--/.password-circle-->
+                            </div>
+                            <!--/.signin-password -->
                         </div>
-                        <div class="form-group">
-                            <input id="captcha" type="text" class="form-control" style="width:60%; float:left;" placeholder="请输入验证码">
-                            <img src="{:captcha_src()}" alt="captcha" width="140px" style="float:right;" onclick="this.src=this.src" />
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-footer">
+                                <button type="button" id="submit" class="btn signin_btn signin_btn_two" data-toggle="modal" data-target=".signin_modal">
+                                    登录
+                                </button>
+                            </div>
+                            <!--/.signin-footer -->
                         </div>
-                        <button id="submit" type="button" class="btn btn-success btn-flat m-b-30 m-t-30" style="margin-top:10px;">登录</button>
-                    </form>
-                </div>
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+                </div><!-- .popup-in-txt -->
             </div>
+            <!--/.sign-content -->
         </div>
-    </div>
-    <script src="/static/admin/assets/js/vendor/jquery-3.3.1.min.js"></script>
-    <script src="/static/admin/assets/js/popper.min.js"></script>
-    <script src="/static/admin/assets/js/bootstrap.min.js"></script>
-    <script src="/static/admin/assets/js/jquery.matchHeight.min.js"></script>
-    <script src="/static/layer/layer.js"></script>
-    <script>
-        $(function(){
-            
-        })
-        $("#submit").click(function(){
-            var account = $("#account").val();
-            var password = $("#password").val();
-            var captcha = $("#captcha").val();
-            if(account == ''){
-                layer.msg('请输入账号！');
-                return;
-            }
-            if(password == ''){
-                layer.msg("请输入密码！");
-                return;
-            }
-            if(captcha == ''){
-                layer.msg("请输入验证码！");
-                return;
-            }
-            $.ajax({
-                url: "{:url('Login/login_submit')}",
-                type: "post",
-                data: {account: account, password: password, captcha: captcha},
-                success: function(data){
-                    layer.msg(data.msg);
-                    if(data.status == 1){
-                        setTimeout(function(){
-                            window.location.href = "{:url('Index/index')}";
-                        }, 1000);
-                    }
-                }
-            })
-        })
-    </script>
-    <script src="/static/admin/assets/js/main.js"></script>
+        <!--/.container -->
+    </section>
+    <!--/.signin -->
+    <!-- signin end -->
 </body>
+<script>
+document.getElementById("submit").onclick = function(){
+    //获取账号密码
+    var account = document.getElementById("account").value;
+    var password = document.getElementById("password").value;
+    if(account == ''){
+        var msg = '<p class="text-danger" style="font-size: 12px; line-height: 0.0; margin-bottom: 0rem;">登录账号不能为空</p>';
+        document.getElementsByClassName("password-circle")[0].innerHTML = msg;
+        return;
+    }
+    if(password == ''){
+        var msg = '<p class="text-danger" style="font-size: 12px; line-height: 0.0; margin-bottom: 0rem;">登录密码不能为空</p>';
+        document.getElementsByClassName("password-circle")[0].innerHTML = msg;
+        return;
+    }
+    var parameter = "account=" + account + "&password=" + password;
+
+    //发送ajax
+    var xmlhttp;
+	if (window.XMLHttpRequest){
+		xmlhttp=new XMLHttpRequest();
+	}else{
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+            data = JSON.parse(xmlhttp.response);
+            if(data.status == 2){
+                var msg = '<p class="text-danger" style="font-size: 12px; line-height: 0.0; margin-bottom: 0rem;">' + data.msg + '</p>';
+                document.getElementsByClassName("password-circle")[0].innerHTML = msg;
+            }else{
+                setTimeout(function(){
+                    location.href = "{:url('index/index')}";
+                }, 500);
+            }
+		}
+	}
+	xmlhttp.open("POST","{:url('login/login_submit')}",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(parameter);
+}
+
+
+</script>
 
 </html>
