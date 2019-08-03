@@ -19,8 +19,8 @@ class Login extends Control{
         $password = Request::instance()->param('password', '');
         $validate = Loader::validate('login');
         if(!$validate->check(['account'=> $account, 'password'=> $password])){
-            return json_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError(), 'json');
         }
-        return json_data(1, '', '登录成功', 'json');
+        return return_data(1, '', '登录成功', 'json');
     }
 }

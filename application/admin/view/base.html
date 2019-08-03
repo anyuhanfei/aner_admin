@@ -6,7 +6,7 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
         {block name="css"}
             <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
-            <link rel="stylesheet" href="/static/admin/css/ready.css">
+            <link rel="stylesheet" href="/static/admin/css/ready.min.css">
             <link rel="stylesheet" href="/static/admin/css/demo.css">
         {/block}
 
@@ -44,6 +44,33 @@
         <script src="/static/admin/js/ready.min.js"></script>
         <script src="/static/admin/js/demo.js"></script>
         <script src="/static/layer/layer.js"></script>
+
+        <script>
+            /**
+             * 在页面内弹出通知提示框
+             * @method 引导通知
+             * @param string type 类型（primary, info, success, warning, danger）
+             * @param string title 标题
+             * @param string message 内容
+             * @param string placementFrom 出现位置（top, bottom）
+             * @param string placementAlign 出现位置（left, right, center）
+             */
+            function custom_notify(type, title, message, placementFrom = 'top', placementAlign = 'center'){
+                var content = {};
+                content.message = message;
+                content.title = title;
+                content.icon = 'la la-bell';
+
+                $.notify(content,{
+                    type: type,
+                    placement: {
+                        from: placementFrom,
+                        align: placementAlign
+                    },
+                    time: 1000,
+                });
+            }
+        </script>
     {/block}
 
     {block name="custom_js"}{/block}

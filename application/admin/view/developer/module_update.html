@@ -1,0 +1,83 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">模块信息修改</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="title">模块名称*</label>
+                            <input type="text" class="form-control" id="title" value="{$detail.title}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark">备注</label>
+                            <input type="remark" class="form-control" id="remark" value="{$detail.remark}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">选填，不能超过30个字符</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                        </div>
+                        <input type="hidden" title="module_id" id="module_id" value="{$detail.module_id}" />
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '模块修改', '非法操作');
+    setTimeout(() => {
+        location.href = "{:url('developer/module')}";
+    }, 1000);
+}
+
+//取消
+$("#cancel").click(function(){
+    location.href = "{:url('developer/module')}";
+})
+
+//提交
+$("#submit").click(function(){
+    var title = $("#title").val();
+    var remark = $("#remark").val();
+    var sort = $("#sort").val();
+    var module_id = $("#module_id").val();
+    if(title == ''){
+        custom_notify('warning', '模块修改', '请输入模块名称');
+        return;
+    }
+    $.ajax({
+        url: "{:url('developer/module_update_submit')}",
+        type: "post",
+        data: {title: title, remark: remark, sort: sort, module_id: module_id},
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '模块修改', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '模块修改', data.msg);
+            }else{
+                custom_notify('success', '模块修改', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

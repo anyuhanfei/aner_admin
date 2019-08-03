@@ -1,0 +1,135 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">目录管理</div>
+                        <div class="card-sub text-warning">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {if condition="$setup.debug == 1"}
+                        <button class="btn btn-success btn-xs" id="add">添加</button>
+                        {/if}
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="5%"></th>
+                                    <th scope="col" width="10%">#</th>
+                                    <th scope="col" width="7%">id</th>
+                                    <th scope="col" width="30%">方法名称</th>
+                                    <th scope="col" width="10%">图标</th>
+                                    <th scope="col" width="25%">路径</th>
+                                    <th scope="col" width="13%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                {if condition="$vo.path != '' && $vo.top_id == 0"}
+                                    <tr>
+                                        <td></td>
+                                        <td>{$vo.sort}</td>
+                                        <td>{$vo.catalog_id}</td>
+                                        <td>{$vo.title}</td>
+                                        <td><i class="{$vo.icon}"></i></td>
+                                        <td>{$vo.path}</td>
+                                        <td></td>
+                                    </tr>
+                                {else /}
+                                    <tr>
+                                        <td id="td{$vo.catalog_id}" data-status="0" onclick="show({$vo.catalog_id})">
+                                                <i class="la la-caret-right"></i>
+                                        </td>
+                                        <td>{$vo.sort}</td>
+                                        <td>{$vo.catalog_id}</td>
+                                        <td>{$vo.title}</td>
+                                        <td><i class="{$vo.icon}"></i></td>
+                                        <td>{$vo.path}</td>
+                                        <td>
+                                            {if condition="$setup.debug == 1"}
+                                            <button class="btn btn-warning btn-xs" onclick="update({$ac.catalog_id})">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$ac.catalog_id})">删除</button>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    {volist name="list" id="vol"}
+                                    {if condition="$vol.top_id == $vo.catalog_id"}
+                                    <tr>
+                                        <td id="tr{$ac.catalog_id}" class="tr{$vo.top_id}" style="display: none;"></td>
+                                        <td>{$vol.sort}</td>
+                                        <td>{$vol.catalog_id}</td>
+                                        <td>{$vol.title}</td>
+                                        <td><i class="{$vol.icon}"></i></td>
+                                        <td>{$vol.path}</td>
+                                        <td>
+                                            {if condition="$setup.debug == 1"}
+                                            <button class="btn btn-warning btn-xs" onclick="update({$ac.catalog_id})">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$ac.catalog_id})">删除</button>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    {/if}
+                                    {/volist}
+                                {/if}
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script>
+    //添加
+    $("#add").click(function(){
+        location.href = "{:url('developer/catalog_add')}";
+    })
+
+    //展示
+    function show(id){
+        var module = $("#td"+id);
+        if(module.data('status') == '0'){
+            //没展示
+            module.html('<i class="la la-caret-down"></i>');
+            module.data('status', '1');
+            $(".tr" + id).attr('style', '');
+        }else{
+            //需要关闭
+            module.html('<i class="la la-caret-right"></i>');
+            module.data('status', '0');
+            $(".tr" + id).attr('style', 'display: none;');
+        }
+    }
+
+    //修改
+    function update(action_id){
+        location.href = "/admin/developer/action_update?action_id=" + action_id;
+    }
+
+    //删除
+    function item_delete(action_id){
+        $.ajax({
+            url: "{:url('developer/action_delete_submit')}",
+            type: "post",
+            data: {action_id: action_id},
+            success: function(data){
+                if(data.status == 3){
+                    custom_notify('danger', '方法删除', data.msg);
+                }else{
+                    $("#tr" + action_id).html('');
+                    custom_notify('success', '方法删除', data.msg);
+                }
+            }
+        })
+    }
+</script>
+{/block}

@@ -19,7 +19,7 @@
  * @param [type] $msg 提示信息
  * @return void
  */
-function json_data($status, $data, $msg, $type = 'array'){
+function return_data($status, $data, $msg, $type = 'array'){
     if($type == 'array'){
         return array('status'=>$status, 'data'=>$data, 'msg'=>$msg);
     }else{

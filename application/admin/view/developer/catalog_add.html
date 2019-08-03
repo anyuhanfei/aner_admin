@@ -1,0 +1,127 @@
+{extend name="base" /}
+
+{block name="content"}
+<style>
+.la-arrows-v:before{
+    font-size: 40px;
+}
+</style>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">后台目录添加</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="title">目录名称*</label>
+                            <input type="text" class="form-control" id="title">
+                            <small  class="form-text text-muted text-danger">请输入目录名称，不能超过30个字符</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="icon">图标*</label>
+                            <div style="width: 100%; display: flex; justify-content: space-between;">
+                                <input type="text" class="form-control" id="icon" style="width: 90%;">
+                                <i id="icon_show" class="" style="width: 10%;"></i>
+                            </div>
+                            <small  class="form-text text-muted text-danger">请输入图标的class值，图标信息请前往静态资源中查看</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="module_id">绑定模块*</label>
+                            <select class="form-control form-control-sm" id="module_id">
+                                <option value="0">请选择绑定模块</option>
+                                {volist name="module" id="mo"}
+                                <option value="{$mo.module_id}">{$mo.title}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="action_id">绑定方法*</label>
+                            <select class="form-control form-control-sm" id="action_id">
+                                <option value="0">请选择绑定方法</option>
+                                {volist name="action" id="ac"}
+                                <option value="{$ac.action_id}" class="module module{$ac.module_id}" style="display: none;">{$ac.title}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
+                        </div>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//图标展示
+$("#icon").change(function(){
+    $("#icon_show").addClass($("#icon").val());
+})
+
+//方法展示
+$("#module_id").change(function(){
+    $(".module").attr('style', 'display:none;');
+    $(".module" + $("#module_id").val()).attr('style', '');
+})
+
+//取消
+$("#cancel").click(function(){
+    location.href = "{:url('developer/action')}";
+})
+
+//提交
+$("#submit").click(function(){
+    var title = $("#title").val();
+    var module_id = $("#module_id").val();
+    var action_id = $("#action_id").val();
+    var icon = $("#icon").val();
+    var sort = $("#sort").val();
+    if(title == ''){
+        custom_notify('warning', '目录添加', '请输入方法名称');
+        return;
+    }
+    if(module_id == 0){
+        custom_notify('warning', '目录添加', '请选择绑定模块');
+        return;
+    }
+    if(action_id == 0){
+        custom_notify('warning', '目录添加', '请选择绑定方法');
+        return;
+    }
+    if(icon == ''){
+        custom_notify('warning', '目录添加', '请输入图标');
+        return;
+    }
+    $.ajax({
+        url: "{:url('developer/action_add_submit')}",
+        type: "post",
+        data: {title: title, remark: remark, sort: sort, module_id: module_id, path: path},
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '目录添加', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '目录添加', data.msg);
+            }else{
+                $("#title").val('');
+                $("#remark").val('');
+                $("#path").val('');
+                $("#module_id").find("option[value='0']").attr("selected",true);
+                $("#sort").val(parseInt(data.data) + 1);
+                custom_notify('success', '目录添加', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+{/block}
