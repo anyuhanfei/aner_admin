@@ -117,19 +117,24 @@
 
     //删除
     function item_delete(catalog_id){
-        $.ajax({
-            url: "{:url('developer/catalog_delete_submit')}",
-            type: "post",
-            data: {catalog_id: catalog_id},
-            success: function(data){
-                if(data.status == 3){
-                    custom_notify('danger', '方法删除', data.msg);
-                }else{
-                    $("#tr" + catalog_id).html('');
-                    custom_notify('success', '方法删除', data.msg);
+        layer.confirm('是否要删除此条数据', {
+            btn: ['是','否']
+        }, function(){
+            $.ajax({
+                url: "{:url('developer/catalog_delete_submit')}",
+                type: "post",
+                data: {catalog_id: catalog_id},
+                success: function(data){
+                    if(data.status == 3){
+                        custom_notify('danger', '方法删除', data.msg);
+                    }else{
+                        $("#tr" + catalog_id).html('');
+                        custom_notify('success', '方法删除', data.msg);
+                    }
                 }
-            }
-        })
+            })
+            layer.closeAll();
+        });
     }
 </script>
 {/block}
