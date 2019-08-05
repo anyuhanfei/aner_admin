@@ -70,6 +70,26 @@
                     time: 1000,
                 });
             }
+
+            //目录高亮
+            var current_id = "{$current_id}";
+            $("#actl" + current_id).addClass('active');
+            var topid = $("#actl" + current_id).data('topid')
+            $("#act" + topid).addClass('active');
+            $("#span" + topid).attr('class', 'la la-caret-down');
+            $("#span" + topid).attr('data-status', 'true');
+            $("#catalog" + topid).addClass('show');
+
+            function catalogonoff(id){
+                var span_d = $("#span" + id);
+                if(span_d.attr('data-status') == "false"){
+                    span_d.attr('data-status', "true");
+                    span_d.attr('class', 'la la-caret-down');
+                }else{
+                    span_d.attr('data-status', "false");
+                    span_d.attr('class', 'la la-caret-right');
+                }
+            }
         </script>
     {/block}
 

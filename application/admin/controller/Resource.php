@@ -6,7 +6,7 @@ use think\Controller;
 
 class Resource extends Base{
     /**
-     * 列表
+     * 列表资源
      *
      * @return void
      */
@@ -15,7 +15,7 @@ class Resource extends Base{
     }
 
     /**
-     * 表单
+     * 表单资源
      *
      * @return void
      */
@@ -24,7 +24,7 @@ class Resource extends Base{
     }
 
     /**
-     * 图标
+     * 图标资源
      *
      * @return void
      */
@@ -33,7 +33,7 @@ class Resource extends Base{
     }
 
     /**
-     * 按钮
+     * 按钮资源
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class Resource extends Base{
     }
 
     /**
-     * 标题
+     * 标题资源
      *
      * @return void
      */
@@ -50,6 +50,11 @@ class Resource extends Base{
         return $this->fetch();
     }
 
+    /**
+     * 引导提示资源
+     *
+     * @return void
+     */
     public function notify(){
         return $this->fetch();
     }

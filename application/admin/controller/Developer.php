@@ -165,13 +165,18 @@ class Developer extends Base{
             'sort'=> $sort
         ]);
         if($res){
-            $max_sort = SysModule::order('sort desc')->value('sort');
+            $max_sort = SysModuleAction::order('sort desc')->value('sort');
             return return_data(1, $max_sort, '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
     }
 
+    /**
+     * 方法信息修改表单
+     *
+     * @return void
+     */
     public function action_update(){
         $action_id = Request::instance()->param('action_id', 0);
         $action = SysModuleAction::get($action_id);
@@ -231,19 +236,133 @@ class Developer extends Base{
         }
     }
 
+    /**
+     * 后台目录
+     *
+     * @return void
+     */
     public function catalog(){
         $list = SysCatalog::order('sort asc')->select();
         $this->assign('list', $list);
         return $this->fetch();
     }
 
+    /**
+     * 后台目录添加表单
+     *
+     * @return void
+     */
     public function catalog_add(){
         $module = SysModule::order('sort asc')->select();
         $action = SysModuleAction::order('sort asc')->select();
         $max_sort = SysCatalog::order('sort desc')->value('sort');
+        $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
         $this->assign('module', $module);
         $this->assign('action', $action);
         $this->assign('max_sort', $max_sort);
+        $this->assign('catalog', $catalog);
         return $this->fetch();
+    }
+
+    /**
+     * 后台目录添加提交
+     *
+     * @return void
+     */
+    public function catalog_add_submit(){
+        $title = Request::instance()->param('title', '');
+        $icon = Request::instance()->param('icon', '');
+        $action_id = Request::instance()->param('action_id', 0);
+        $module_id = Request::instance()->param('module_id', 0);
+        $top_id = Request::instance()->param('top_id', 0);
+        $sort = Request::instance()->param('sort', 0);
+        $validate = Loader::validate('catalog');
+        if(!$validate->scene('add')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id])){
+            return return_data(2, '', $validate->getError());
+        }
+        $action_path = SysModuleAction::where('action_id', $action_id)->value('path');
+        $path = $action_path ? $action_path : '';
+        $res = SysCatalog::create([
+            'title'=> $title,
+            'icon'=> $icon,
+            'top_id'=> $top_id,
+            'action_id'=> $action_id,
+            'module_id'=> $module_id,
+            'path'=> $path,
+            'sort'=> $sort,
+        ]);
+        if($res){
+            $max_sort = SysCatalog::order('sort desc')->value('sort');
+            return return_data(1, $max_sort, '添加成功');
+        }else{
+            return return_data(3, '', '添加失败,请联系管理员');
+        }
+    }
+
+    /**
+     * 后台目录修改表单
+     *
+     * @return void
+     */
+    public function catalog_update(){
+        $catalog_id = Request::instance()->param('catalog_id', 0);
+        $detail = SysCatalog::where('catalog_id', $catalog_id)->find();
+        $module = SysModule::order('sort asc')->select();
+        $action = SysModuleAction::order('sort asc')->select();
+        $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
+        $this->assign('module', $module);
+        $this->assign('detail', $detail);
+        $this->assign('action', $action);
+        $this->assign('catalog', $catalog);
+        return $this->fetch();
+    }
+
+    /**
+     * 后台目录修改提交
+     *
+     * @return void
+     */
+    public function catalog_update_submit(){
+        $title = Request::instance()->param('title', '');
+        $icon = Request::instance()->param('icon', '');
+        $action_id = Request::instance()->param('action_id', 0);
+        $module_id = Request::instance()->param('module_id', 0);
+        $catalog_id = Request::instance()->param('catalog_id', 0);
+        $top_id = Request::instance()->param('top_id', 0);
+        $sort = Request::instance()->param('sort', 0);
+        $validate = Loader::validate('catalog');
+        if(!$validate->scene('update')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id, 'catalog_id'=> $catalog_id])){
+            return return_data(2, '', $validate->getError());
+        }
+        $action_path = SysModuleAction::where('action_id', $action_id)->value('path');
+        $catalog = SysCatalog::get($catalog_id);
+        $catalog->title = $title;
+        $catalog->icon = $icon;
+        $catalog->action_id = $action_id;
+        $catalog->module_id = $module_id;
+        $catalog->top_id = $top_id;
+        $catalog->sort = $sort;
+        $catalog->path = $action_path ? $action_path : '';
+        $res = $catalog->save();
+        if($res){
+            return return_data(1, '', '修改成功');
+        }else{
+            return return_data(3, '', '修改失败，请联系管理员');
+        }
+    }
+
+    /**
+     * 后台目录删除提交
+     *
+     * @return void
+     */
+    public function catalog_delete_submit(){
+        $catalog_id = Request::instance()->param('catalog_id', '');
+        $res = SysCatalog::where('catalog_id', $catalog_id)->delete();
+        if($res){
+            return return_data(1, '', '删除成功');
+        }else{
+            return return_data(3, '', '删除失败,请联系管理员');
+        }
     }
 }
