@@ -1,0 +1,89 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">管理员列表</div>
+                        <div class="card-sub text-warning">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success btn-xs" id="add">添加</button>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="15%">#</th>
+                                    <th scope="col" width="15%">管理员昵称</th>
+                                    <th scope="col" width="15%">管理员账号</th>
+                                    <th scope="col" width="15%">管理员角色</th>
+                                    <th scope="col" width="40%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr id="tr{$vo.admin_id}">
+                                    <td>{$vo.admin_id}</td>
+                                    <td>{$vo.account}</td>
+                                    <td>{$vo.nickname}</td>
+                                    <td>{$vo.role.role_name}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.admin_id})">修改</button>
+                                        <button class="btn btn-warning btn-xs" onclick="power({$vo.admin_id})">权限</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.admin_id})">删除</button>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script>
+    //添加
+    $("#add").click(function(){
+        location.href = "{:url('adm/role_add')}";
+    })
+
+    //修改
+    function update(role_id){
+        location.href = "/admin/adm/role_update?role_id=" + role_id;
+    }
+
+    function power(role_id){
+        location.href = "/admin/adm/role_power?role_id=" + role_id;
+    }
+
+    //删除
+    function item_delete(role_id){
+        layer.confirm('是否要删除此条数据', {
+            btn: ['是','否']
+        }, function(){
+            $.ajax({
+                url: "{:url('adm/role_delete_submit')}",
+                type: "post",
+                data: {role_id: role_id},
+                success: function(data){
+                    if(data.status == 3){
+                        custom_notify('danger', '模块删除', data.msg);
+                    }else{
+                        $("#tr" + role_id).html('');
+                        custom_notify('success', '模块删除', data.msg);
+                    }
+                }
+            })
+            layer.closeAll();
+        });
+    }
+</script>
+{/block}

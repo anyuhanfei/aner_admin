@@ -9,6 +9,7 @@ use think\Loader;
 use app\admin\model\AdmRole;
 use app\admin\model\SysModule;
 use app\admin\model\SysModuleAction;
+use app\admin\model\AdmAdmin;
 
 
 class Adm extends Base{
@@ -18,7 +19,7 @@ class Adm extends Base{
      * @return void
      */
     public function role(){
-        $list = Admrole::order('role_id desc')->select();
+        $list = Admrole::order('sort asc')->select();
         $this->assign('list', $list);
         return $this->fetch();
     }
@@ -157,5 +158,15 @@ class Adm extends Base{
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
         }
+    }
+
+    public function admin(){
+        $list = AdmAdmin::order('admin_id desc')->select();
+        $this->assign('list', $list);
+        return $this->fetch();
+    }
+
+    public function admin_add(){
+        return $this->fetch();
     }
 }

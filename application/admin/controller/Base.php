@@ -27,5 +27,15 @@ class Base extends Control{
             Cookie::set('current_id', $current->catalog_id);
         }
         $this->assign('current_id', Cookie::get('current_id'));
+        //权限控制
+        // if($action != 'index'){
+        //     if($admin->role_id == 0){
+        //         return $this->redirect('Login/login');
+        //     }
+        //     $role = SysAdminRole::where('role_id', $admin->role_id)->find();
+        //     if(strpos($role->action_ids, $current_url) === false){
+        //         return $this->redirect('index/index');
+        //     }
+        // }
     }
 }
