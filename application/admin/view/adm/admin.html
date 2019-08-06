@@ -50,19 +50,6 @@
 
 {block name="custom_js"}
 <div id="admin_role" class="card-body" style="display: None;">
-    <div class="form-group" id="value_type_value" style="display: None;">
-        <label for="value">值*</label>
-        <input type="text" class="form-control value" id="value_value" {if condition="$detail.type == 'value'"}value="{$detail.value}"{/if}>
-        <small class="form-text text-muted text-danger"></small>
-    </div>
-    <div class="form-group" id="value_type_onoff" {if condition="$detail.type == 'value'"}style="display: None;"{/if}>
-        <label for="value">值*</label><br/>
-        <input class="value" type="checkbox" id="value_onoff" data-toggle="toggle" data-onstyle="danger" data-style="btn-round" {if condition="$detail.type == 'onoff'"}{if condition="$detail.value == 'on'"}checked{/if}{/if}>
-    </div>
-
-
-
-
     <div class="form-group">
         <label for="role_id">选择角色*</label>
         <select class="form-control form-control-sm" id="role_id">
