@@ -160,13 +160,129 @@ class Adm extends Base{
         }
     }
 
+    /**
+     * 管理员列表
+     *
+     * @return void
+     */
     public function admin(){
         $list = AdmAdmin::order('admin_id desc')->select();
         $this->assign('list', $list);
+        $role = AdmRole::order('sort asc')->select();
+        $this->assign('role', $role);
         return $this->fetch();
     }
 
+    /**
+     * 管理员信息添加表单
+     *
+     * @return void
+     */
     public function admin_add(){
         return $this->fetch();
+    }
+
+    /**
+     * 管理员信息添加提交
+     *
+     * @return void
+     */
+    public function admin_add_submit(){
+        $account = Request::instance()->param('account', '');
+        $nickname = Request::instance()->param('nickname', '');
+        $password = Request::instance()->param('password', '');
+        $password_confirm = Request::instance()->param('password_confirm', '');
+        $validate = Loader::validate('admin');
+        if(!$validate->scene('add')->check(['account'=> $account, 'nickname'=> $nickname, 'password'=> $password, 'password_confirm'=> $password_confirm])){
+            return return_data(2, '', $validate->getError());
+        }
+        $res = AdmAdmin::create([
+            'account'=> $account,
+            'nickname'=> $nickname,
+            'password'=> md5($password)
+        ]);
+        if($res){
+            return return_data(1, '', '添加成功');
+        }else{
+            return return_data(3, '', '添加失败,请联系管理员');
+        }
+    }
+
+    /**
+     * 管理员信息修改表单
+     *
+     * @return void
+     */
+    public function admin_update(){
+        $admin_id = Request::instance()->param('admin_id', 0);
+        $admin = AdmAdmin::get($admin_id);
+        $this->assign('detail', $admin);
+        return $this->fetch();
+    }
+
+    /**
+     * 管理员信息修改提交
+     *
+     * @return void
+     */
+    public function admin_update_submit(){
+        $admin_id = Request::instance()->param('admin_id', 0);
+        $account = Request::instance()->param('account', '');
+        $nickname = Request::instance()->param('nickname', '');
+        $password = Request::instance()->param('password', '');
+        $validate = Loader::validate('admin');
+        if(!$validate->scene('update')->check(['admin_id'=> $admin_id, 'account'=> $account, 'nickname'=> $nickname])){
+            return return_data(2, '', $validate->getError());
+        }
+        $admin = AdmAdmin::get($admin_id);
+        $admin->account = $account;
+        $admin->nickname = $nickname;
+        $admin->password = $password == '' ? $admin->password : md5($password);
+        $res = $admin->save();
+        if($res){
+            return return_data(1, '', '修改成功');
+        }else{
+            return return_data(2, '', '未修改任何信息或修改失败，请检查原因');
+        }
+    }
+
+    /**
+     * 管理员信息删除提交
+     *
+     * @return void
+     */
+    public function admin_delete_submit(){
+        $admin_id = Request::instance()->param('admin_id', '');
+        $res = AdmAdmin::where('admin_id', $admin_id)->delete();
+        if($res){
+            return return_data(1, '', '删除成功');
+        }else{
+            return return_data(3, '', '删除失败,请联系管理员');
+        }
+    }
+
+    /**
+     * 分配管理员角色
+     *
+     * @return void
+     */
+    public function admin_allot(){
+        $admin_id = Request::instance()->param('admin_id', '');
+        $role_id = Request::instance()->param('role_id', '');
+        $admin = AdmAdmin::get($admin_id);
+        $role = AdmRole::get($role_id);
+        if(!$admin && !$role){
+            return return_data(2, '', '非法操作');
+        }
+        if($role->role_id == $admin->role_id){
+            return return_data(2, '', '已经是此角色了');
+        }
+        $admin->role_id = $role_id;
+        $res = $admin->save();
+        if($res){
+            return return_data(1, array('admin_id'=> $admin_id, 'role_name'=> $admin->role->role_name), '分配角色成功');
+        }else{
+            return return_data(3, '', '分配角色失败,请联系管理员');
+        }
     }
 }
