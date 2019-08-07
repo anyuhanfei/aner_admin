@@ -67,13 +67,15 @@
                                     {/if}
                                     {/volist}
                                 {/volist}
-                                <tr id="tr{$ca.category_id}">
-                                    <td></td>
+                                <tr id="tr0">
+                                    <td id="td0" data-status="0" onclick="show(0)">
+                                        <i class="la la-caret-right"></i>
+                                    </td>
                                     <td><b>未分组</b></td>
                                 </tr>
                                 {volist name="list" id="li"}
                                 {if condition="$li.category_id == 0"}
-                                <tr id="tr{$l.set_id}">
+                                <tr id="tr{$li.set_id}" class="tr0" style="display: none;">
                                     <td></td>
                                     <td>{$li.sort}</td>
                                     <td>{$li.set_id}</td>

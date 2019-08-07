@@ -38,7 +38,12 @@
                                         <td>{$vo.title}</td>
                                         <td><i class="{$vo.icon}" style="font-size:18px;"></i></td>
                                         <td>{$vo.path}</td>
-                                        <td></td>
+                                        <td>
+                                            {if condition="$setup.debug == 1"}
+                                            <button class="btn btn-warning btn-xs" onclick="update({$vo.catalog_id})">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.catalog_id})">删除</button>
+                                            {/if}
+                                        </td>
                                     </tr>
                                 {elseif condition="$vo.path == '' && $vo.top_id == 0"}
                                     <tr>

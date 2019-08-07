@@ -1,0 +1,131 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">广告信息修改</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="title">广告标题*</label>
+                            <input type="text" class="form-control" id="title" value="{$detail.title}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        {if condition="$setup.debug == 1"}
+                        <div class="form-group">
+                            <label for="adv_id">所属广告位*</label>
+                            <select class="form-control form-control-sm" id="adv_id">
+                                <option value="0">请选择所属广告位</option>
+                                {volist name="adv" id="advvo"}
+                                <option value="{$advvo.adv_id}" {if condition="$advvo.adv_id == $detail.adv_id"}selected{/if}>{$advvo.adv_name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        {/if}
+                        {if condition="$setup.debug == 1 || $detail.value != ''"}
+                        <div class="form-group">
+                            <label for="value">值*</label>
+                            <input type="text" class="form-control" id="value" value="{$detail.value}">
+                        </div>
+                        {/if}
+                        {if condition="$setup.debug == 1 || $detail.image != ''"}
+                        <div class="form-group">
+                            <label for="image">图片</label>
+                            <input type="file" class="form-control-file" id="image">
+                            {if condition="$detail.image != ''"}
+                            <img id="image{$detail.ad_id}" src="{$detail.image}" width="80px" height="80px" onclick="show_image({$detail.ad_id})"/>
+                            {/if}
+                        </div>
+                        {/if}
+                        {if condition="$setup.debug == 1 || $detail.content != ''"}
+                        <div class="form-group">
+                            <label for="editor">内容</label>
+                            <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="editor">
+                                {$detail.content}
+                            </textarea>
+                        </div>
+                        {/if}
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                        </div>
+                        <input type="hidden" name="ad_id" id="ad_id" value="{$detail.ad_id}"/>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script src="/static/ckeditor/ckeditor.js"></script>
+<script>
+$(function(){
+ClassicEditor
+    .create(document.querySelector('#editor'), {
+        ckfinder: {
+            uploadUrl: "{:url('ad/ad_img')}"
+        }
+    })
+    .then(editor => {
+        window.editor = editor;
+    })
+    .catch(error => {
+
+    });
+})
+
+
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '广告信息修改', '非法操作');
+    setTimeout(() => {
+        location.href = "{:url('ad/ad')}";
+    }, 1000);
+}
+
+//取消
+$("#cancel").click(function(){
+    location.href = "{:url('ad/ad')}";
+})
+
+//提交
+$("#submit").click(function(){
+    var fd = new FormData();
+    fd.append('title', $("#title").val());
+    fd.append('adv_id', $("#adv_id").val());
+    fd.append('value', $("#value").val());
+    fd.append('content', editor.getData());
+    fd.append('sort', $("#sort").val());
+    fd.append('ad_id', $("#ad_id").val());
+    fd.append("image", $('#image')[0].files[0]);
+    $.ajax({
+        url: "{:url('ad/ad_ad_update_submit')}",
+        type: "post",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '广告信息修改', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '广告信息修改', data.msg);
+            }else{
+                custom_notify('success', '广告信息修改', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

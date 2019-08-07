@@ -1,0 +1,87 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">广告位信息修改</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="adv_name">广告位名称*</label>
+                            <input type="text" class="form-control" id="adv_name" value="{$detail.adv_name}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sign">标签*</label>
+                            <input type="text" class="form-control" id="sign" value="{$detail.sign}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                        </div>
+                        <input type="hidden" name="adv_id" id="adv_id" value="{$detail.adv_id}"/>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '广告信息修改', '非法操作');
+    setTimeout(() => {
+        location.href = "{:url('ad/ad')}";
+    }, 1000);
+}
+
+//取消
+$("#cancel").click(function(){
+    location.href = "{:url('ad/ad')}";
+})
+
+//提交
+$("#submit").click(function(){
+    var adv_name = $("#adv_name").val();
+    var sign = $("#sign").val();
+    var sort = $("#sort").val();
+    var adv_id = $("#adv_id").val();
+    if(adv_name == ''){
+        custom_notify('warning', '广告位信息修改', '请输入广告位名称');
+        return;
+    }
+    if(sign == ''){
+        custom_notify('warning', '广告位信息修改', '请输入广告位标签');
+        return;
+    }
+    $.ajax({
+        url: "{:url('ad/ad_adv_update_submit')}",
+        type: "post",
+        data: {adv_name: adv_name, sign: sign, sort: sort, adv_id: adv_id},
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '广告位信息修改', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '广告位信息修改', data.msg);
+            }else{
+                custom_notify('success', '广告位信息修改', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

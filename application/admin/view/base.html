@@ -90,6 +90,19 @@
                     span_d.attr('class', 'la la-caret-right');
                 }
             }
+
+            //查看大图
+            function show_image(id){
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '516px',
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    content: "<img src='"+ $("#image"+id).attr('src') +"' />"
+                });
+            }
         </script>
     {/block}
 

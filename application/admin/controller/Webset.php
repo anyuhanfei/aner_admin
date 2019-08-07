@@ -44,7 +44,7 @@ class Webset extends Base{
     }
 
     /**
-     * 系统设置
+     * 网站设置-列表
      *
      * @return void
      */
