@@ -1,0 +1,83 @@
+<?php
+namespace app\admin\controller;
+
+use think\Controller;
+use think\Session;
+use think\Request;
+use think\Loader;
+
+use app\admin\model\AdmAdmin;
+
+
+class Me extends Base{
+    /**
+     * 个人资料
+     *
+     * @return void
+     */
+    public function detail(){
+        $admin_id = Session::get('admin_id');
+        $admin = AdmAdmin::get($admin_id);
+        $this->assign('detail', $admin);
+        return $this->fetch();
+    }
+
+    /**
+     * 个人资料修改提交
+     *
+     * @return void
+     */
+    public function detail_submit(){
+        $nickname = Request::instance()->param('nickname', '');
+        $phone = Request::instance()->param('phone', '');
+        $email = Request::instance()->param('email', '');
+        $qq = Request::instance()->param('qq', '');
+        $wx = Request::instance()->param('wx', '');
+        $admin_id = Session::get('admin_id');
+        $admin = AdmAdmin::get($admin_id);
+        $admin->nickname = $nickname != '' ? $nickname : $admin->nickname;
+        $admin->phone = $phone != '' ? $phone : $admin->phone;
+        $admin->email = $email != '' ? $email : $admin->email;
+        $admin->qq = $qq != '' ? $qq : $admin->qq;
+        $admin->wx = $wx != '' ? $wx : $admin->wx;
+        $res = $admin->save();
+        if($res){
+            return return_data(1, '', '个人资料修改成功');
+        }else{
+            return return_data(2, '', '个人资料修改失败或没有要修改的资料');
+        }
+    }
+
+    /**
+     * 修改密码
+     *
+     * @return void
+     */
+    public function update_password(){
+        return $this->fetch();
+    }
+
+    /**
+     * 修改密码提交
+     *
+     * @return void
+     */
+    public function update_password_submit(){
+        $old_password = Request::instance()->param('old_password', '');
+        $password = Request::instance()->param('password', '');
+        $password_confirm = Request::instance()->param('password_confirm', '');
+        $validate = Loader::validate('update_password');
+        if(!$validate->check(['old_password'=> $old_password, 'password'=> $password, 'password_confirm'=> $password_confirm])){
+            return return_data(2, '', $validate->getError());
+        }
+        $admin_id = Session::get('admin_id');
+        $admin = AdmAdmin::get($admin_id);
+        $admin->password = md5($password . $admin->password_salt);
+        $res = $admin->save();
+        if($res){
+            return return_data(1, '', '密码修改成功');
+        }else{
+            return return_data(2, '', '密码修改失败，请查明错误原因');
+        }
+    }
+}
