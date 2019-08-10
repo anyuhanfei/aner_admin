@@ -7,6 +7,7 @@ use app\admin\model\LogAdminOperation;
 
 
 class Control extends Controller{
+    protected $version = '2.0.0';
     //调试模式，true开false关
     protected $debug = false;
     //管理员异常登录的最大次数
