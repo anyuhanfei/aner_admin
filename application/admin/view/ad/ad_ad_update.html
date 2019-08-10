@@ -15,7 +15,7 @@
                             <input type="text" class="form-control" id="title" value="{$detail.title}">
                             <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
                         </div>
-                        {if condition="$setup.debug == 1"}
+                        {if condition="$debug== true"}
                         <div class="form-group">
                             <label for="adv_id">所属广告位*</label>
                             <select class="form-control form-control-sm" id="adv_id">
@@ -26,13 +26,13 @@
                             </select>
                         </div>
                         {/if}
-                        {if condition="$setup.debug == 1 || $detail.value != ''"}
+                        {if condition="$debug== true || $detail.value != ''"}
                         <div class="form-group">
                             <label for="value">值*</label>
                             <input type="text" class="form-control" id="value" value="{$detail.value}">
                         </div>
                         {/if}
-                        {if condition="$setup.debug == 1 || $detail.image != ''"}
+                        {if condition="$debug== true || $detail.image != ''"}
                         <div class="form-group">
                             <label for="image">图片</label>
                             <input type="file" class="form-control-file" id="image">
@@ -41,7 +41,7 @@
                             {/if}
                         </div>
                         {/if}
-                        {if condition="$setup.debug == 1 || $detail.content != ''"}
+                        {if condition="$debug== true || $detail.content != ''"}
                         <div class="form-group">
                             <label for="editor">内容</label>
                             <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="editor">

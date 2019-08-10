@@ -9,6 +9,7 @@ use think\Cookie;
 
 use app\admin\model\SysAd;
 use app\admin\model\SysAdv;
+use app\admin\model\LogAdminOperation;
 
 
 class Ad extends Base{
@@ -65,6 +66,7 @@ class Ad extends Base{
         ]);
         if($res){
             $max_sort = SysAdv::order('sort desc')->value('sort');
+            LogAdminOperation::create_data('广告位信息添加：'.$adv_name, 'operation');
             return return_data(1, $max_sort, '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
@@ -103,11 +105,13 @@ class Ad extends Base{
             return return_data(2, '', $validate->getError());
         }
         $adv = SysAdv::get($adv_id);
+        $old_adv_name = $adv->adv_name;
         $adv->adv_name = $adv_name;
         $adv->sign = $sign;
         $adv->sort = $sort;
         $res = $adv->save();
         if($res){
+            LogAdminOperation::create_data('广告位信息修改：'.$old_adv_name.'->'.$adv_name, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(2, '', '修改失败，请联系管理员');
@@ -121,8 +125,10 @@ class Ad extends Base{
      */
     public function ad_adv_delete_submit(){
         $adv_id = Request::instance()->param('adv_id', '');
+        $adv = SysAdv::where('adv_id', $adv_id)->find();
         $res = SysAdv::where('adv_id', $adv_id)->delete();
         if($res){
+            LogAdminOperation::create_data('广告位信息删除：'.$adv->adv_name, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -174,6 +180,7 @@ class Ad extends Base{
         ]);
         if($res){
             self::remove_ad_content_image($content);
+            LogAdminOperation::create_data('广告信息添加：'.$title, 'operation');
             return return_data(1, '', '添加成功');
         }else{
             delete_image($path);
@@ -223,6 +230,7 @@ class Ad extends Base{
             $path = $image_res['file_path'];
         }
         $ad = SysAd::get($ad_id);
+        $old_ad_title = $ad->title;
         $ad->title = $title;
         $ad->adv_id = $adv_id;
         $ad->value = $value;
@@ -232,6 +240,7 @@ class Ad extends Base{
         $res = $ad->save();
         if($res){
             self::remove_ad_content_image($content);
+            LogAdminOperation::create_data('广告信息修改：'.$old_ad_title.'->'.$title, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             delete_image($path);
@@ -251,6 +260,7 @@ class Ad extends Base{
         if($res){
             delete_image($ad->image);
             self::remove_ad_content_image($ad->content, 'delete');
+            LogAdminOperation::create_data('广告信息删除：'.$ad->title, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');

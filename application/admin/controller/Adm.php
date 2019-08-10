@@ -10,6 +10,7 @@ use app\admin\model\AdmRole;
 use app\admin\model\SysModule;
 use app\admin\model\SysModuleAction;
 use app\admin\model\AdmAdmin;
+use app\admin\model\LogAdminOperation;
 
 
 class Adm extends Base{
@@ -55,6 +56,7 @@ class Adm extends Base{
         ]);
         if($res){
             $max_sort = Admrole::order('sort desc')->value('sort');
+            LogAdminOperation::create_data('角色信息添加：'.$role_name, 'operation');
             return return_data(1, $max_sort, '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
@@ -93,11 +95,13 @@ class Adm extends Base{
             return return_data(2, '', $validate->getError());
         }
         $role = Admrole::get($role_id);
+        $old_role_name = $role->role_name;
         $role->role_name = $role_name;
         $role->remark = $remark;
         $role->sort = $sort;
         $res = $role->save();
         if($res){
+            LogAdminOperation::create_data('角色信息修改：'.$old_role_name.'->'.$role_name, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
@@ -111,8 +115,10 @@ class Adm extends Base{
      */
     public function role_delete_submit(){
         $role_id = Request::instance()->param('role_id', '');
+        $role = Admrole::where('role_id', $role_id)->find();
         $res = Admrole::where('role_id', $role_id)->delete();
         if($res){
+            LogAdminOperation::create_data('角色信息删除：'.$role->role_name, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -154,6 +160,7 @@ class Adm extends Base{
         $role->power = $action_ids;
         $res = $role->save();
         if($res){
+            LogAdminOperation::create_data('角色信息权限设置：'.$role->role_name, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
@@ -202,6 +209,7 @@ class Adm extends Base{
             'password'=> md5($password)
         ]);
         if($res){
+            LogAdminOperation::create_data('管理员信息添加：'.$account, 'operation');
             return return_data(1, '', '添加成功');
         }else{
             return return_data(3, '', '添加失败,请联系管理员');
@@ -235,11 +243,13 @@ class Adm extends Base{
             return return_data(2, '', $validate->getError());
         }
         $admin = AdmAdmin::get($admin_id);
+        $old_admin_account = $admin->account;
         $admin->account = $account;
         $admin->nickname = $nickname;
         $admin->password = $password == '' ? $admin->password : md5($password);
         $res = $admin->save();
         if($res){
+            LogAdminOperation::create_data('管理员信息修改：'.$old_admin_account.'->'.$account, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(2, '', '未修改任何信息或修改失败，请检查原因');
@@ -253,8 +263,10 @@ class Adm extends Base{
      */
     public function admin_delete_submit(){
         $admin_id = Request::instance()->param('admin_id', '');
+        $admin = AdmAdmin::where('admin_id', $admin_id)->find();
         $res = AdmAdmin::where('admin_id', $admin_id)->delete();
         if($res){
+            LogAdminOperation::create_data('管理员信息删除：'.$admin->account, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -280,6 +292,7 @@ class Adm extends Base{
         $admin->role_id = $role_id;
         $res = $admin->save();
         if($res){
+            LogAdminOperation::create_data('分配角色给管理员：'.$admin->account.'->'.$role->role_name, 'operation');
             return return_data(1, array('admin_id'=> $admin_id, 'role_name'=> $admin->role->role_name), '分配角色成功');
         }else{
             return return_data(3, '', '分配角色失败,请联系管理员');

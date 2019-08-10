@@ -147,3 +147,45 @@ function png_erwei($url, $phone)
 function order_sn(){
     return date('ymdhis') . str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
 }
+
+/**
+ * 获取用户IP
+ *
+ * @return string
+ */
+function get_ip()
+{
+    $ip = 'xxxx';
+    if(!empty($_SERVER['HTTP_CLIENT_IP']))
+    {
+        return is_ip($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $ip;
+    }
+    elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+    {
+        return is_ip($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $ip;
+    }
+    else
+    {
+        return is_ip($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : $ip;
+    }
+}
+
+
+/**
+ * 判断是否是IP地址
+ *
+ * @param $str
+ * @return bool|int
+ */
+function is_ip($str)
+{
+    $ip = explode('.', $str);
+    for($i=0; $i<count($ip); $i++)
+    {
+        if($ip[$i]>255)
+        {
+            return false;
+        }
+    }
+    return preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $str);
+}

@@ -1,0 +1,90 @@
+{extend name="base" /}
+
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/dcalendar.picker/dcalendar.picker.css">
+{/block}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">管理员登录日志</div>
+                        <div class="card-sub text-warning">
+                            管理员在后台管理系统中的登录记录，登录时的ip，登录时间段进行检索查询。
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline" role="form" action="" method="post">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ip" placeholder="ip">
+                            </div>
+                            <div class="form-group">
+                                <input id='mydatepicker1' type="text" class="form-control" name="start_time" placeholder="起始时间" value="">
+                            </div>
+                            <div class="form-group">
+                                <input id='mydatepicker2' type="text" class="form-control" name="end_time" placeholder="结束时间" value="">
+                            </div>
+                            <button type="submit" class="btn btn-default">搜索</button>&nbsp&nbsp
+                            <button type="button" class="btn btn-default" id="from_close">清空</button>
+                        </form>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="8%">#</th>
+                                    <th scope="col" width="15%">ip</th>
+                                    <th scope="col">记录</th>
+                                    <th scope="col" width="15%">操作时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr>
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.ip}</td>
+                                    <td>{$vo.content}</td>
+                                    <td>{$vo.insert_time}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script type="text/javascript" src="/static/dcalendar.picker/dcalendar.picker.js"></script>
+<script type="text/javascript">
+    $('#mydatepicker1').dcalendarpicker({
+        format:'yyyy-mm-dd'
+    });
+    $('#mydatepicker2').dcalendarpicker({
+        format:'yyyy-mm-dd'
+    });
+
+    setTimeout(function(){
+        var start_time = "{$start_time}";
+        var end_time = "{$end_time}";
+        if(start_time != ''){
+            $("#mydatepicker1").val(start_time);
+        }
+        if(end_time != ''){
+            $("#mydatepicker2").val(end_time);
+        }
+    }, 200);
+
+    $("#from_close").click(function(){
+        $("#ip").val('');
+        $("#mydatepicker1").val('');
+        $("#mydatepicker2").val('');
+    })
+</script>
+</script>
+{/block}

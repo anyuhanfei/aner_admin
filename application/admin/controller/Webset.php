@@ -9,6 +9,7 @@ use think\Loader;
 use app\admin\model\SysBasic;
 use app\admin\model\SysSet;
 use app\admin\model\SysSetCategory;
+use app\admin\model\LogAdminOperation;
 
 
 class Webset extends Base{
@@ -37,6 +38,7 @@ class Webset extends Base{
         $model = new SysBasic();
         $res = $model->allowField(true)->save($_POST, ['id'=> 1]);
         if($res){
+            LogAdminOperation::create_data('基本信息修改', 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
@@ -85,6 +87,7 @@ class Webset extends Base{
         ]);
         if($res){
             $max_sort = SysSetCategory::order('sort desc')->value('sort');
+            LogAdminOperation::create_data('网站设置分类信息添加：'.$category_name, 'operation');
             return return_data(1, $max_sort, '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
@@ -122,10 +125,12 @@ class Webset extends Base{
             return return_data(2, '', $validate->getError());
         }
         $category = SysSetCategory::get($category_id);
+        $old_category_name = $category->category_name;
         $category->category_name = $category_name;
         $category->sort = $sort;
         $res = $category->save();
         if($res){
+            LogAdminOperation::create_data('网站设置分类信息修改：'.$old_category_name.'->'.$category_name, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
@@ -139,8 +144,10 @@ class Webset extends Base{
      */
     public function set_category_delete_submit(){
         $category_id = Request::instance()->param('category_id', '');
+        $category = SysSetCategory::where('category_id', $category_id)->find();
         $res = SysSetCategory::where('category_id', $category_id)->delete();
         if($res){
+            LogAdminOperation::create_data('网站设置分类信息删除：'.$category->category_name, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -186,6 +193,7 @@ class Webset extends Base{
         ]);
         if($res){
             $max_sort = SysSet::order('sort desc')->value('sort');
+            LogAdminOperation::create_data('网站设置信息添加：'.$title, 'operation');
             return return_data(1, $max_sort, '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
@@ -229,6 +237,7 @@ class Webset extends Base{
             return return_data(2, '', $validate->getError());
         }
         $set = SysSet::get($set_id);
+        $old_set_title = $set->title;
         $set->title = $title;
         $set->sign = $sign;
         $set->type = $type;
@@ -237,6 +246,7 @@ class Webset extends Base{
         $set->category_id = $category_id;
         $res = $set->save();
         if($res){
+            LogAdminOperation::create_data('网站设置信息修改：'.$old_set_title.'->'.$title, 'operation');
             return return_data(1, '', '修改成功');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
@@ -250,8 +260,10 @@ class Webset extends Base{
      */
     public function set_set_delete_submit(){
         $set_id = Request::instance()->param('set_id', '');
+        $set = SysSet::where('set_id', $set_id)->find();
         $res = SysSet::where('set_id', $set_id)->delete();
         if($res){
+            LogAdminOperation::create_data('网站设置信息删除：'.$set->title, 'operation');
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -273,6 +285,7 @@ class Webset extends Base{
         $set->value = $value;
         $res = $set->save();
         if($res){
+            LogAdminOperation::create_data('网站设置信息值修改：'.$set->title, 'operation');
             return return_data(1, '', '设置成功');
         }else{
             return return_data(3, '', '设置失败,请联系管理员');

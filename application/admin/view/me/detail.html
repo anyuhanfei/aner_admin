@@ -11,6 +11,15 @@
                     </div>
                     <div class="card-body" style="padding: 15px 200px 10px;">
                         <div class="form-group">
+                            <label for="via">头像</label>
+                            <div style="width: 100%; display: flex; justify-content: space-between;">
+                                <input type="file" class="form-control-file" id="via" style="width: 80%; display: none;">
+                                {if condition="$detail.via != ''"}
+                                <img src="{$detail.via}" style="width: 20%;"/>
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="nickname">昵称</label>
                             <input type="text" class="form-control" id="nickname" value="{$detail.nickname}" readonly>
                             <small  class="form-text text-muted text-danger"></small>
@@ -59,6 +68,7 @@
 $("#be_submit").click(function(){
     $("#be_submit").attr('style', 'display: none;');
     $("#submit").attr('style', "display: flex; justify-content: center;");
+    $("#via").attr('style', "width: 80%;");
     $("#nickname").removeAttr('readonly');
     $("#phone").removeAttr('readonly');
     $("#email").removeAttr('readonly');
@@ -68,29 +78,29 @@ $("#be_submit").click(function(){
 
 //提交
 $("#submit").click(function(){
-    var nickname = $("#nickname").val();
-    var phone = $("#phone").val();
-    var email = $("#email").val();
-    var qq = $("#qq").val();
-    var wx = $("#wx").val();
+    fd = new FormData();
+    fd.append("via", $('#via')[0].files[0]);
+    fd.append("nickname", $("#nickname").val());
+    fd.append("phone", $("#phone").val());
+    fd.append("email", $("#email").val());
+    fd.append("qq", $("#qq").val());
+    fd.append("wx", $("#wx").val());
     $.ajax({
         url: "{:url('me/detail_submit')}",
         type: "post",
-        data: {nickname: nickname, phone: phone, email: email, qq: qq, wx: wx},
+        processData: false,
+        contentType: false,
+        data: fd,
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '个人资料修改', data.msg);
             }else if(data.status == 2){
                 custom_notify('warning', '个人资料修改', data.msg);
             }else{
-                $("#be_submit").attr('style', 'display: flex; justify-content: center;');
-                $("#submit").attr('style', "display: none;");
-                $("#nickname").attr('readonly', 'readonly');
-                $("#phone").attr('readonly', 'readonly');
-                $("#email").attr('readonly', 'readonly');
-                $("#qq").attr('readonly', 'readonly');
-                $("#wx").attr('readonly', 'readonly');
                 custom_notify('success', '个人资料修改', data.msg);
+                setTimeout(() => {
+                    location.href = "{:url('me/detail')}";
+                }, 1500);
             }
         }
     })

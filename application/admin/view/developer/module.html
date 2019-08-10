@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {if condition="$setup.debug == 1"}
+                        {if condition="$debug== true"}
                         <button class="btn btn-success btn-xs" id="add">添加</button>
                         {/if}
                         <table class="table mt-3">
@@ -34,7 +34,7 @@
                                     <td>{$vo.title}</td>
                                     <td>{$vo.remark}</td>
                                     <td>
-                                        {if condition="$setup.debug == 1"}
+                                        {if condition="$debug== true"}
                                         <button class="btn btn-warning btn-xs" onclick="update({$vo.module_id})">修改</button>
                                         <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.module_id})">删除</button>
                                         {/if}

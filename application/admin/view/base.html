@@ -8,6 +8,14 @@
             <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
             <link rel="stylesheet" href="/static/admin/css/ready.min.css">
             <link rel="stylesheet" href="/static/admin/css/demo.css">
+
+            <style>
+                /*分页样式*/
+                .pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+                .pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+                .pagination .active{background-color: #46A3FF;color: #fff;}
+                .pagination .disabled{color:#aaa;}
+            </style>
         {/block}
 
         {block name="custom_css"}{/block}
@@ -46,6 +54,13 @@
         <script src="/static/layer/layer.js"></script>
 
         <script>
+            //头部搜索
+            $("#header_search").change(function(){
+                var search = $("#header_search").val();
+                var url = "https://www.google.com/search?safe=active&source=hp&q="+ search +"&oq=" + search;
+                window.open(url, '_blank').location;
+            })
+
             /**
              * 在页面内弹出通知提示框
              * @method 引导通知
@@ -80,6 +95,7 @@
             $("#span" + topid).attr('data-status', 'true');
             $("#catalog" + topid).addClass('show');
 
+            //目录开关
             function catalogonoff(id){
                 var span_d = $("#span" + id);
                 if(span_d.attr('data-status') == "false"){

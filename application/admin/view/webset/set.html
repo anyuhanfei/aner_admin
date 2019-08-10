@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {if condition="$setup.debug == 1"}
+                        {if condition="$debug== true"}
                         <button class="btn btn-success btn-xs" id="add_category">添加分类</button>
                         <button class="btn btn-success btn-xs" id="add_set">添加设置</button>
                         {/if}
@@ -41,7 +41,7 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        {if condition="$setup.debug == 1"}
+                                        {if condition="$debug== true"}
                                         <button class="btn btn-warning btn-xs" onclick="category_update({$ca.category_id})">修改</button>
                                         <button class="btn btn-danger btn-xs" onclick="category_item_delete({$ca.category_id})">删除</button>
                                         {/if}
@@ -58,7 +58,7 @@
                                         <td>{$l.value}</td>
                                         <td>
                                             <button class="btn btn-warning btn-xs" onclick="set_value({$l.set_id}, '{$l.type}', '{$l.value}')">设置</button>
-                                            {if condition="$setup.debug == 1"}
+                                            {if condition="$debug== true"}
                                             <button class="btn btn-warning btn-xs" onclick="set_update({$l.set_id})">修改</button>
                                             <button class="btn btn-danger btn-xs" onclick="set_item_delete({$l.set_id})">删除</button>
                                             {/if}
@@ -84,7 +84,7 @@
                                     <td>{$li.value}</td>
                                     <td>
                                         <button class="btn btn-warning btn-xs" onclick="set_value({$li.set_id}, '{$li.type}', '{$li.value}')">设置</button>
-                                        {if condition="$setup.debug == 1"}
+                                        {if condition="$debug== true"}
                                         <button class="btn btn-warning btn-xs" onclick="set_update({$li.set_id})">修改</button>
                                         <button class="btn btn-danger btn-xs" onclick="set_item_delete({$li.set_id})">删除</button>
                                         {/if}

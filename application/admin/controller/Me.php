@@ -7,6 +7,7 @@ use think\Request;
 use think\Loader;
 
 use app\admin\model\AdmAdmin;
+use app\admin\model\LogAdminOperation;
 
 
 class Me extends Base{
@@ -33,17 +34,28 @@ class Me extends Base{
         $email = Request::instance()->param('email', '');
         $qq = Request::instance()->param('qq', '');
         $wx = Request::instance()->param('wx', '');
+        $via_img = Request::instance()->file('via');
+        $via = '';
+        if($via_img){
+            $image_res = file_upload($via_img, 'admin_via');
+            $via = $image_res['file_path'];
+        }
         $admin_id = Session::get('admin_id');
         $admin = AdmAdmin::get($admin_id);
+        $old_admin_via = $admin->via;
         $admin->nickname = $nickname != '' ? $nickname : $admin->nickname;
         $admin->phone = $phone != '' ? $phone : $admin->phone;
         $admin->email = $email != '' ? $email : $admin->email;
         $admin->qq = $qq != '' ? $qq : $admin->qq;
         $admin->wx = $wx != '' ? $wx : $admin->wx;
+        $admin->via = $via != '' ? $via : $admin->via;
         $res = $admin->save();
         if($res){
+            delete_image($old_admin_via);
+            LogAdminOperation::create_data('修改个人资料', 'operation');
             return return_data(1, '', '个人资料修改成功');
         }else{
+            delete_image($via);
             return return_data(2, '', '个人资料修改失败或没有要修改的资料');
         }
     }
@@ -75,6 +87,7 @@ class Me extends Base{
         $admin->password = md5($password . $admin->password_salt);
         $res = $admin->save();
         if($res){
+            LogAdminOperation::create_data('修改个人登录密码', 'operation');
             return return_data(1, '', '密码修改成功');
         }else{
             return return_data(2, '', '密码修改失败，请查明错误原因');

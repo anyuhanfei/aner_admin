@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {if condition="$setup.debug == 1"}
+                        {if condition="$debug== true"}
                         <button class="btn btn-success btn-xs" id="add_adv">添加广告位</button>
                         <button class="btn btn-success btn-xs" id="add_ad">添加广告</button>
                         {/if}
@@ -43,7 +43,7 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        {if condition="$setup.debug == 1"}
+                                        {if condition="$debug== true"}
                                         <button class="btn btn-warning btn-xs" onclick="adv_update({$advvo.adv_id})">修改</button>
                                         <button class="btn btn-danger btn-xs" onclick="adv_item_delete({$advvo.adv_id})">删除</button>
                                         {/if}
@@ -65,7 +65,7 @@
                                         <td>
                                             <button class="btn btn-warning btn-xs" onclick="show_content({$advo.ad_id})">查看</button>
                                             <button class="btn btn-warning btn-xs" onclick="ad_update({$advo.ad_id})">修改</button>
-                                            {if condition="$setup.debug == 1"}
+                                            {if condition="$debug== true"}
                                             <button class="btn btn-danger btn-xs" onclick="ad_item_delete({$advo.ad_id})">删除</button>
                                             {/if}
                                         </td>
