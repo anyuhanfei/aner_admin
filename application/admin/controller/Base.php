@@ -14,6 +14,8 @@ use app\admin\model\SysModuleAction;
 
 class Base extends Control{
     public function _initialize(){
+        //引用父类初始化方法
+        parent::_initialize();
         //系统设置
         $this->assign('debug', $this->debug);
         //后台目录
@@ -36,21 +38,21 @@ class Base extends Control{
         }
         $this->assign('admin', $admin);
         //权限控制
-        if($action != 'index'){
-            if($admin->role_id == 0){
-                return $this->redirect('login/login');
-            }
-            $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
-            if(!$current_url_id){
-                return $this->redirect('index/index');
-            }
-            $role = AdmRole::where('role_id', $admin->role_id)->find();
-            if(!$role){
-                return $this->redirect('login/login');
-            }
-            if(strpos($role->power, (string)$current_url_id) === false){
-                return $this->redirect('index/index');
-            }
-        }
+        // if($action != 'index'){
+        //     if($admin->role_id == 0){
+        //         return $this->redirect('login/login');
+        //     }
+        //     $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
+        //     if(!$current_url_id){
+        //         return $this->redirect('index/index');
+        //     }
+        //     $role = AdmRole::where('role_id', $admin->role_id)->find();
+        //     if(!$role){
+        //         return $this->redirect('login/login');
+        //     }
+        //     if(strpos($role->power, (string)$current_url_id) === false){
+        //         return $this->redirect('index/index');
+        //     }
+        // }
     }
 }

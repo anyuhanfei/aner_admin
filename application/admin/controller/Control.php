@@ -17,6 +17,12 @@ class Control extends Controller{
     //列表分页每页数据量
     protected $page_number = 20;
 
+    /*cms*/
+    //标签图片上传开关
+    protected $cms_tag_image_onoff = 'on';
+    //分类图片上传开关
+    protected $cms_category_image_onoff = 'on';
+
     public function _initialize(){
 
     }

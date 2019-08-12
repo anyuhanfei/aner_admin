@@ -1,0 +1,73 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">分类信息添加</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="category_name">分类名称*</label>
+                            <input type="text" class="form-control" id="category_name" placeholder="请输入分类名称">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        <div class="form-group" {if condition="$cms_category_image_onoff == 'off'"}style="display:none;"{/if}>
+                            <label for="category_image">图片</label>
+                            <input type="file" class="form-control-file" id="category_image">
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
+                        </div>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//取消
+$("#cancel").click(function(){
+    location.href = "{:url('cms/category')}";
+})
+
+//提交
+$("#submit").click(function(){
+    var fd = new FormData();
+    fd.append('category_name', $("#category_name").val());
+    fd.append('sort', $("#sort").val());
+    fd.append("category_image", $('#category_image')[0].files[0]);
+    $.ajax({
+        url: "{:url('cms/category_add_submit')}",
+        type: "post",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '分类信息添加', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '分类信息添加', data.msg);
+            }else{
+                $("#category_name").val('');
+                $("#category_image").val('');
+                $("#sort").val(parseInt(data.data) + 1);
+                custom_notify('success', '分类信息添加', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}
