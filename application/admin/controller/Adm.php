@@ -203,10 +203,12 @@ class Adm extends Base{
         if(!$validate->scene('add')->check(['account'=> $account, 'nickname'=> $nickname, 'password'=> $password, 'password_confirm'=> $password_confirm])){
             return return_data(2, '', $validate->getError());
         }
+        $password_salt = create_captcha(8, 'lowercase+uppercase+figure');
         $res = AdmAdmin::create([
             'account'=> $account,
             'nickname'=> $nickname,
-            'password'=> md5($password)
+            'password'=> md5($password . $password_salt),
+            'password_salt'=> $password_salt
         ]);
         if($res){
             LogAdminOperation::create_data('管理员信息添加：'.$account, 'operation');
