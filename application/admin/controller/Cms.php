@@ -269,4 +269,8 @@ class Cms extends Base{
             return return_data(3, '', '删除失败,请联系管理员');
         }
     }
+
+    public function article(){
+        
+    }
 }
