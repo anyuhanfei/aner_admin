@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80016
 File Encoding         : 65001
 
-Date: 2019-08-10 13:55:58
+Date: 2019-08-16 11:40:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `adm_admin` (
   `qq` varchar(15) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'QQ',
   `wx` varchar(40) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '微信',
   PRIMARY KEY (`admin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of adm_admin
@@ -91,6 +91,40 @@ INSERT INTO `adm_role` VALUES ('1', '超级管理员', '2', '', ',27,1,3,4,5,6,7
 INSERT INTO `adm_role` VALUES ('4', '开发者', '1', '', ',27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20,21,22,23,24,25,26,');
 
 -- ----------------------------
+-- Table structure for `cms_category`
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_category`;
+CREATE TABLE `cms_category` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章分类id',
+  `category_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `category_image` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类图片',
+  `sort` tinyint(5) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of cms_category
+-- ----------------------------
+INSERT INTO `cms_category` VALUES ('1', '测试', '/uploads\\category\\20190812\\c69c74aa3a478b4e1b39ee297235c93f.jpg', '1');
+
+-- ----------------------------
+-- Table structure for `cms_tag`
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_tag`;
+CREATE TABLE `cms_tag` (
+  `tag_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签id',
+  `tag_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签名称',
+  `tag_image` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签图片（可选）',
+  `sort` tinyint(5) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`tag_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of cms_tag
+-- ----------------------------
+INSERT INTO `cms_tag` VALUES ('1', '测试2', '/uploads\\tag\\20190812\\ba6fe7c410b4772bd11206c57c088b3f.jpg', '1');
+
+-- ----------------------------
 -- Table structure for `log_admin_operation`
 -- ----------------------------
 DROP TABLE IF EXISTS `log_admin_operation`;
@@ -102,11 +136,36 @@ CREATE TABLE `log_admin_operation` (
   `content` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '内容',
   `insert_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of log_admin_operation
 -- ----------------------------
+INSERT INTO `log_admin_operation` VALUES ('24', '0', 'login', '127.0.0.1', '登录成功，账号：root', '2019-08-10 16:12:04');
+INSERT INTO `log_admin_operation` VALUES ('25', '0', 'login', '127.0.0.1', '登录成功，账号：root', '2019-08-12 10:46:52');
+INSERT INTO `log_admin_operation` VALUES ('26', '1', 'operation', '127.0.0.1', '管理员信息添加：user', '2019-08-12 10:47:11');
+INSERT INTO `log_admin_operation` VALUES ('27', '1', 'operation', '127.0.0.1', '分配角色给管理员：user->超级管理员', '2019-08-12 10:47:24');
+INSERT INTO `log_admin_operation` VALUES ('28', '0', 'login', '127.0.0.1', '登录成功，账号：user', '2019-08-12 10:47:30');
+INSERT INTO `log_admin_operation` VALUES ('29', '0', 'login', '127.0.0.1', '登录成功，账号：root', '2019-08-12 10:52:17');
+INSERT INTO `log_admin_operation` VALUES ('30', '1', 'operation', '127.0.0.1', '管理员信息删除：user', '2019-08-12 10:52:26');
+INSERT INTO `log_admin_operation` VALUES ('31', '1', 'operation', '127.0.0.1', '文章标签信息删除：c而是', '2019-08-12 16:15:06');
+INSERT INTO `log_admin_operation` VALUES ('32', '1', 'operation', '127.0.0.1', '文章分类信息删除：测试1', '2019-08-12 16:25:50');
+INSERT INTO `log_admin_operation` VALUES ('33', '1', 'operation', '127.0.0.1', '模块信息添加：文章管理', '2019-08-12 16:29:40');
+INSERT INTO `log_admin_operation` VALUES ('34', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签管理-列表', '2019-08-12 16:29:59');
+INSERT INTO `log_admin_operation` VALUES ('35', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签信息添加表单', '2019-08-12 16:30:12');
+INSERT INTO `log_admin_operation` VALUES ('36', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签信息添加提交', '2019-08-12 16:30:20');
+INSERT INTO `log_admin_operation` VALUES ('37', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签信息修改表单', '2019-08-12 16:30:29');
+INSERT INTO `log_admin_operation` VALUES ('38', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签信息修改提交', '2019-08-12 16:30:37');
+INSERT INTO `log_admin_operation` VALUES ('39', '1', 'operation', '127.0.0.1', '方法信息添加：文章标签信息删除提交', '2019-08-12 16:30:46');
+INSERT INTO `log_admin_operation` VALUES ('40', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类管理-列表', '2019-08-12 16:30:57');
+INSERT INTO `log_admin_operation` VALUES ('41', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类信息添加表单', '2019-08-12 16:31:04');
+INSERT INTO `log_admin_operation` VALUES ('42', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类信息添加提交', '2019-08-12 16:31:11');
+INSERT INTO `log_admin_operation` VALUES ('43', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类信息修改表单', '2019-08-12 16:31:18');
+INSERT INTO `log_admin_operation` VALUES ('44', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类信息修改提交', '2019-08-12 16:31:26');
+INSERT INTO `log_admin_operation` VALUES ('45', '1', 'operation', '127.0.0.1', '方法信息添加：文章分类信息删除提交', '2019-08-12 16:31:35');
+INSERT INTO `log_admin_operation` VALUES ('46', '1', 'operation', '127.0.0.1', '后台目录添加：文章管理', '2019-08-12 16:33:27');
+INSERT INTO `log_admin_operation` VALUES ('47', '1', 'operation', '127.0.0.1', '后台目录添加：文章标签', '2019-08-12 16:34:35');
+INSERT INTO `log_admin_operation` VALUES ('48', '1', 'operation', '127.0.0.1', '后台目录添加：文章分类', '2019-08-12 16:35:02');
 
 -- ----------------------------
 -- Table structure for `sys_ad`
@@ -176,7 +235,7 @@ CREATE TABLE `sys_catalog` (
   `top_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级目录',
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`catalog_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_catalog
@@ -206,6 +265,9 @@ INSERT INTO `sys_catalog` VALUES ('22', '修改密码', ' la la-edit', '11', '71
 INSERT INTO `sys_catalog` VALUES ('23', '日志管理', 'la la-calendar', '0', '0', '', '0', '90');
 INSERT INTO `sys_catalog` VALUES ('24', '管理员操作日志', 'la la-cutlery', '12', '73', 'log/admin_operation_log', '23', '91');
 INSERT INTO `sys_catalog` VALUES ('25', '管理员登录日志', 'la la-map-signs', '12', '74', 'log/admin_login_log', '23', '92');
+INSERT INTO `sys_catalog` VALUES ('26', '文章管理', 'la la-server', '0', '0', '', '0', '80');
+INSERT INTO `sys_catalog` VALUES ('27', '文章标签', 'la la-paste', '13', '75', 'cms/tag', '26', '81');
+INSERT INTO `sys_catalog` VALUES ('28', '文章分类', ' la la-puzzle-piece', '13', '81', 'cms/category', '26', '82');
 
 -- ----------------------------
 -- Table structure for `sys_module`
@@ -217,7 +279,7 @@ CREATE TABLE `sys_module` (
   `sort` tinyint(4) DEFAULT NULL COMMENT '排序',
   `remark` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_module
@@ -230,6 +292,7 @@ INSERT INTO `sys_module` VALUES ('9', '系统设置', '20', '');
 INSERT INTO `sys_module` VALUES ('10', '广告模块', '30', '');
 INSERT INTO `sys_module` VALUES ('11', '个人中心', '40', '');
 INSERT INTO `sys_module` VALUES ('12', '日志管理', '90', '');
+INSERT INTO `sys_module` VALUES ('13', '文章管理', '80', '');
 
 -- ----------------------------
 -- Table structure for `sys_module_action`
@@ -243,7 +306,7 @@ CREATE TABLE `sys_module_action` (
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   `remark` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`action_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_module_action
@@ -320,6 +383,18 @@ INSERT INTO `sys_module_action` VALUES ('71', '11', '修改密码', 'me/update_p
 INSERT INTO `sys_module_action` VALUES ('72', '11', '修改密码提交', 'me/update_password_submit', '70', '');
 INSERT INTO `sys_module_action` VALUES ('73', '12', '管理员操作日志列表', 'log/admin_operation_log', '71', '');
 INSERT INTO `sys_module_action` VALUES ('74', '12', '管理员登录日志', 'log/admin_login_log', '72', '');
+INSERT INTO `sys_module_action` VALUES ('75', '13', '文章标签管理-列表', 'cms/tag', '73', '');
+INSERT INTO `sys_module_action` VALUES ('76', '13', '文章标签信息添加表单', 'cms/tag_add', '74', '');
+INSERT INTO `sys_module_action` VALUES ('77', '13', '文章标签信息添加提交', 'cms/tag_add_submit', '75', '');
+INSERT INTO `sys_module_action` VALUES ('78', '13', '文章标签信息修改表单', 'cms/tag_update', '76', '');
+INSERT INTO `sys_module_action` VALUES ('79', '13', '文章标签信息修改提交', 'cms/tag_update_submit', '77', '');
+INSERT INTO `sys_module_action` VALUES ('80', '13', '文章标签信息删除提交', 'cms/tag_delete_submit', '78', '');
+INSERT INTO `sys_module_action` VALUES ('81', '13', '文章分类管理-列表', 'cms/category', '79', '');
+INSERT INTO `sys_module_action` VALUES ('82', '13', '文章分类信息添加表单', 'cms/category_add', '80', '');
+INSERT INTO `sys_module_action` VALUES ('83', '13', '文章分类信息添加提交', 'cms/category_add_submit', '81', '');
+INSERT INTO `sys_module_action` VALUES ('84', '13', '文章分类信息修改表单', 'cms/category_update', '82', '');
+INSERT INTO `sys_module_action` VALUES ('85', '13', '文章分类信息修改提交', 'cms/category_update_submit', '83', '');
+INSERT INTO `sys_module_action` VALUES ('86', '13', '文章分类信息删除提交', 'cms/category_delete_submit', '84', '');
 
 -- ----------------------------
 -- Table structure for `sys_set`
