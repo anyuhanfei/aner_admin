@@ -56,12 +56,12 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "{:url('cms/category_add')}";
+        location.href = "/adm/cms/category/add";
     })
 
     //修改
     function update(category_id){
-        location.href = "/admin/cms/category_update?category_id=" + category_id;
+        location.href = "/adm/cms/category/update/" + category_id;
     }
     //删除
     function item_delete(category_id){
@@ -69,9 +69,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('cms/category_delete_submit')}",
-                type: "post",
-                data: {category_id: category_id},
+                url: "/adm/cms/category/delete/submit/" + category_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '文章分类删除', data.msg);

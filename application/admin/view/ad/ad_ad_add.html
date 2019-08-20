@@ -59,7 +59,7 @@
 ClassicEditor
     .create(document.querySelector('#editor'), {
         ckfinder: {
-            uploadUrl: "{:url('ad/ad_img')}"
+            uploadUrl: "/adm/ad/img"
         }
     })
     .then(editor => {
@@ -71,7 +71,7 @@ ClassicEditor
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('ad/ad')}";
+    location.href = "/adm/ad";
 })
 
 //提交
@@ -84,7 +84,7 @@ $("#submit").click(function(){
     fd.append('sort', $("#sort").val());
     fd.append("image", $('#image')[0].files[0]);
     $.ajax({
-        url: "{:url('ad/ad_ad_add_submit')}",
+        url: "/adm/ad/add/submit",
         type: "post",
         processData: false,
         contentType: false,

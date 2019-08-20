@@ -43,13 +43,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '角色修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('adm/role')}";
+        location.href = "/adm/role";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('adm/role')}";
+    location.href = "/adm/role";
 })
 
 //提交
@@ -63,9 +63,9 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('adm/role_update_submit')}",
+        url: "/adm/role/update/submit/" + role_id,
         type: "post",
-        data: {role_name: role_name, remark: remark, sort: sort, role_id: role_id},
+        data: {role_name: role_name, remark: remark, sort: sort},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '角色修改', data.msg);

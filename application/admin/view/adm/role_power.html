@@ -47,7 +47,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('adm/role')}";
+    location.href = "/adm/role";
 })
 
 //提交
@@ -58,9 +58,9 @@ $("#submit").click(function(){
     });
     var role_id = $("#role_id").val();
     $.ajax({
-        url: "{:url('adm/role_power_submit')}",
+        url: "/adm/role/power/submit/" + role_id,
         type: "post",
-        data: {action_ids: action_ids, role_id: role_id},
+        data: {action_ids: action_ids},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '角色权限设置', data.msg);

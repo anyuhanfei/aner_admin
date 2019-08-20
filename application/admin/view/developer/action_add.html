@@ -30,6 +30,11 @@
                             <small class="form-text text-muted text-danger">请输入方法路径，模块名和方法名，例如：方法信息添加表单--developer/action_add</small>
                         </div>
                         <div class="form-group">
+                            <label for="route">方法路由*</label>
+                            <input type="text" class="form-control" id="route">
+                            <small class="form-text text-muted text-danger">请输入方法路由，请输入完整路径（即可访问路径），例如：方法信息添加表单--/adm/action/add</small>
+                        </div>
+                        <div class="form-group">
                             <label for="remark">备注</label>
                             <input type="remark" class="form-control" id="remark">
                             <small class="form-text text-muted text-danger">请输入备注，选填，不能超过30个字符</small>
@@ -53,7 +58,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/action')}";
+    location.href = "/adm/action";
 })
 
 //提交
@@ -61,6 +66,7 @@ $("#submit").click(function(){
     var title = $("#title").val();
     var module_id = $("#module_id").val();
     var path = $("#path").val();
+    var route = $("#route").val();
     var remark = $("#remark").val();
     var sort = $("#sort").val();
     if(title == ''){
@@ -75,10 +81,14 @@ $("#submit").click(function(){
         custom_notify('warning', '方法添加', '请输入方法路径');
         return;
     }
+    if(route == ''){
+        custom_notify('warning', '方法添加', '请输入方法路由');
+        return;
+    }
     $.ajax({
-        url: "{:url('developer/action_add_submit')}",
+        url: "/adm/action/add/submit",
         type: "post",
-        data: {title: title, remark: remark, sort: sort, module_id: module_id, path: path},
+        data: {title: title, remark: remark, sort: sort, module_id: module_id, path: path, route: route},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '方法添加', data.msg);
@@ -88,6 +98,7 @@ $("#submit").click(function(){
                 $("#title").val('');
                 $("#remark").val('');
                 $("#path").val('');
+                $("#route").val('');
                 $("#module_id").find("option[value='0']").attr("selected",true);
                 $("#sort").val(parseInt(data.data) + 1);
                 custom_notify('success', '方法添加', data.msg);

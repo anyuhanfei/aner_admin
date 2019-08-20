@@ -30,6 +30,11 @@
                             <small class="form-text text-muted text-danger">请输入方法路径，模块名和方法名，例如：方法信息添加表单--developer/action_add</small>
                         </div>
                         <div class="form-group">
+                            <label for="route">方法路由*</label>
+                            <input type="text" class="form-control" id="route" value="{$detail.route}">
+                            <small class="form-text text-muted text-danger">请输入方法路由，请输入完整路径（即可访问路径），例如：方法信息添加表单--/adm/action/add</small>
+                        </div>
+                        <div class="form-group">
                             <label for="remark">备注</label>
                             <input type="remark" class="form-control" id="remark" value="{$detail.remark}">
                             <small class="form-text text-muted text-danger">请输入备注，选填，不能超过30个字符</small>
@@ -57,13 +62,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '方法修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('developer/action')}";
+        location.href = "/adm/action";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/action')}";
+    location.href = "/adm/action";
 })
 
 //提交
@@ -72,6 +77,7 @@ $("#submit").click(function(){
     var module_id = $("#module_id").val();
     var action_id = $("#action_id").val();
     var path = $("#path").val();
+    var route = $("#route").val();
     var remark = $("#remark").val();
     var sort = $("#sort").val();
     if(title == ''){
@@ -86,10 +92,14 @@ $("#submit").click(function(){
         custom_notify('warning', '方法修改', '请输入方法路径');
         return;
     }
+    if(route == ''){
+        custom_notify('warning', '方法修改', '请输入方法路由');
+        return;
+    }
     $.ajax({
-        url: "{:url('developer/action_update_submit')}",
+        url: "/adm/action/update/submit/" + action_id,
         type: "post",
-        data: {title: title, remark: remark, sort: sort, module_id: module_id, action_id: action_id, path: path},
+        data: {title: title, remark: remark, sort: sort, module_id: module_id, path: path, route: route},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '方法修改', data.msg);

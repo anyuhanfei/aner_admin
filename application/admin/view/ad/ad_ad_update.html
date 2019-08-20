@@ -72,7 +72,7 @@ $(function(){
 ClassicEditor
     .create(document.querySelector('#editor'), {
         ckfinder: {
-            uploadUrl: "{:url('ad/ad_img')}"
+            uploadUrl: "/adm/ad/img"
         }
     })
     .then(editor => {
@@ -89,27 +89,27 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '广告信息修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('ad/ad')}";
+        location.href = "/adm/ad";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('ad/ad')}";
+    location.href = "/adm/ad";
 })
 
 //提交
 $("#submit").click(function(){
+    var ad_id = $("#ad_id").val();
     var fd = new FormData();
     fd.append('title', $("#title").val());
     fd.append('adv_id', $("#adv_id").val());
     fd.append('value', $("#value").val());
     fd.append('content', editor.getData());
     fd.append('sort', $("#sort").val());
-    fd.append('ad_id', $("#ad_id").val());
     fd.append("image", $('#image')[0].files[0]);
     $.ajax({
-        url: "{:url('ad/ad_ad_update_submit')}",
+        url: "/adm/ad/update/submit/" + ad_id,
         type: "post",
         processData: false,
         contentType: false,

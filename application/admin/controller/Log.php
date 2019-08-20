@@ -54,7 +54,7 @@ class Log extends Base{
      * @param string $value
      * @return void
      */
-    public function where_admin($model, $key, $value){
+    protected function where_admin($model, $key, $value){
         if($account != ''){
             $admin = AdmAdmin::where($key, $value)->find();
             $model = $admin ? $model->where('admin_id', $admin->admin_id) : $model->where('admin_id', 0);

@@ -92,7 +92,8 @@ class Catalog extends Validate{
         if(!$catalog){
             return "非法操作";
         }
-        if($catalog->title == $data['title'] && $catalog->icon == $data['icon'] && $catalog->action_id == $data['action_id'] && $catalog->module_id == $data['module_id'] && $catalog->top_id == $data['top_id'] && $catalog->catalog_id == $data['catalog_id'] && $catalog->sort == $data['sort']){
+        $action_path = SysModuleAction::where('action_id', $catalog->action_id)->value('route');
+        if($catalog->title == $data['title'] && $catalog->icon == $data['icon'] && $catalog->action_id == $data['action_id'] && $catalog->module_id == $data['module_id'] && $catalog->top_id == $data['top_id'] && $catalog->catalog_id == $data['catalog_id'] && $catalog->sort == $data['sort'] && $action_path == $catalog->path){
             return "没有要修改的信息";
         }
         return true;

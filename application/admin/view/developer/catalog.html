@@ -96,7 +96,7 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "{:url('developer/catalog_add')}";
+        location.href = "/adm/catalog/add";
     })
 
     //展示
@@ -117,7 +117,7 @@
 
     //修改
     function update(catalog_id){
-        location.href = "/admin/developer/catalog_update?catalog_id=" + catalog_id;
+        location.href = "/adm/catalog/update/" + catalog_id;
     }
 
     //删除
@@ -126,7 +126,7 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('developer/catalog_delete_submit')}",
+                url: "/adm/catalog/delete/submit" + catalog_id,
                 type: "post",
                 data: {catalog_id: catalog_id},
                 success: function(data){

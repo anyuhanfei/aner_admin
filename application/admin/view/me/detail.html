@@ -86,7 +86,7 @@ $("#submit").click(function(){
     fd.append("qq", $("#qq").val());
     fd.append("wx", $("#wx").val());
     $.ajax({
-        url: "{:url('me/detail_submit')}",
+        url: "adm/me/detail/submit",
         type: "post",
         processData: false,
         contentType: false,

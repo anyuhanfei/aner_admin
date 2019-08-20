@@ -52,16 +52,16 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "{:url('adm/role_add')}";
+        location.href = "/adm/role/add";
     })
 
     //修改
     function update(role_id){
-        location.href = "/admin/adm/role_update?role_id=" + role_id;
+        location.href = "/adm/role/update/" + role_id;
     }
 
     function power(role_id){
-        location.href = "/admin/adm/role_power?role_id=" + role_id;
+        location.href = "/adm/role/power/" + role_id;
     }
 
     //删除
@@ -70,9 +70,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('adm/role_delete_submit')}",
-                type: "post",
-                data: {role_id: role_id},
+                url: "/adm/role/delete/submit/" + role_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '模块删除', data.msg);

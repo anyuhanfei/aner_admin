@@ -67,9 +67,8 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function module_update(){
-        $module_id = Request::instance()->param('module_id', 0);
-        $module = SysModule::get($module_id);
+    public function module_update($id){
+        $module = SysModule::get($id);
         $has_data = "true";
         if(!$module){
             $has_data = "false";
@@ -84,16 +83,15 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function module_update_submit(){
-        $module_id = Request::instance()->param('module_id', '');
+    public function module_update_submit($id){
         $title = Request::instance()->param('title', '');
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $validate = Loader::validate('module');
-        if(!$validate->scene('update')->check(['module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['module_id'=> $id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
-        $module = SysModule::get($module_id);
+        $module = SysModule::get($id);
         $old_module_title = $module->title;
         $module->title = $title;
         $module->remark = $remark;
@@ -112,10 +110,9 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function module_delete_submit(){
-        $module_id = Request::instance()->param('module_id', '');
-        $module = SysModule::where('module_id', $module_id)->find();
-        $res = SysModule::where('module_id', $module_id)->delete();
+    public function module_delete_submit($id){
+        $module = SysModule::where('module_id', $id)->find();
+        $res = SysModule::where('module_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('模块信息删除：'.$module->title, 'operation');
             return return_data(1, '', '删除成功');
@@ -158,15 +155,17 @@ class Developer extends Base{
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $path = Request::instance()->param('path', '');
+        $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = Loader::validate('action');
-        if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'module_id'=> $module_id, 'sort'=> $sort])){
+        if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'route'=> $route, 'module_id'=> $module_id, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
         $res = SysModuleAction::create([
             'title'=> $title,
             'module_id'=> $module_id,
             'path'=> $path,
+            'route'=> $route,
             'remark'=> $remark,
             'sort'=> $sort
         ]);
@@ -184,9 +183,8 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function action_update(){
-        $action_id = Request::instance()->param('action_id', 0);
-        $action = SysModuleAction::get($action_id);
+    public function action_update($id){
+        $action = SysModuleAction::get($id);
         $has_data = "true";
         if(!$action){
             $has_data = "false";
@@ -203,21 +201,22 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function action_update_submit(){
-        $action_id = Request::instance()->param('action_id', 0);
+    public function action_update_submit($id){
         $title = Request::instance()->param('title', '');
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $path = Request::instance()->param('path', '');
+        $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = Loader::validate('action');
-        if(!$validate->scene('update')->check(['action_id'=> $action_id, 'path'=> $path, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['action_id'=> $id, 'path'=> $path, 'route'=> $route, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
-        $module = SysModuleAction::get($action_id);
-        $old_module_title = $module->tile;
+        $module = SysModuleAction::get($id);
+        $old_module_title = $module->title;
         $module->title = $title;
         $module->path = $path;
+        $module->route = $route;
         $module->module_id = $module_id;
         $module->remark = $remark;
         $module->sort = $sort;
@@ -235,10 +234,9 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function action_delete_submit(){
-        $action_id = Request::instance()->param('action_id', '');
-        $action = SysModuleAction::where('action_id', $action_id)->find();
-        $res = SysModuleAction::where('action_id', $action_id)->delete();
+    public function action_delete_submit($id){
+        $action = SysModuleAction::where('action_id', $id)->find();
+        $res = SysModuleAction::where('action_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('方法信息删除：'.$action->title, 'operation');
             return return_data(1, '', '删除成功');
@@ -265,7 +263,7 @@ class Developer extends Base{
      */
     public function catalog_add(){
         $module = SysModule::order('sort asc')->select();
-        $action = SysModuleAction::order('sort asc')->select();
+        $action = SysModuleAction::where('route', '<>', '')->order('sort asc')->select();
         $max_sort = SysCatalog::order('sort desc')->value('sort');
         $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
         $this->assign('module', $module);
@@ -291,15 +289,15 @@ class Developer extends Base{
         if(!$validate->scene('add')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id])){
             return return_data(2, '', $validate->getError());
         }
-        $action_path = SysModuleAction::where('action_id', $action_id)->value('path');
-        $path = $action_path ? $action_path : '';
+        $action_path = SysModuleAction::field('path, route')->where('action_id', $action_id)->find();
         $res = SysCatalog::create([
             'title'=> $title,
             'icon'=> $icon,
             'top_id'=> $top_id,
             'action_id'=> $action_id,
             'module_id'=> $module_id,
-            'path'=> $path,
+            'path'=> $action_path->path ? $action_path->path : '',
+            'route'=> $action_path->route ? $action_path->route : '',
             'sort'=> $sort,
         ]);
         if($res){
@@ -316,11 +314,10 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function catalog_update(){
-        $catalog_id = Request::instance()->param('catalog_id', 0);
-        $detail = SysCatalog::where('catalog_id', $catalog_id)->find();
+    public function catalog_update($id){
+        $detail = SysCatalog::where('catalog_id', $id)->find();
         $module = SysModule::order('sort asc')->select();
-        $action = SysModuleAction::order('sort asc')->select();
+        $action = SysModuleAction::where('route', '<>', '')->order('sort asc')->select();
         $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
         $this->assign('module', $module);
         $this->assign('detail', $detail);
@@ -334,20 +331,19 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function catalog_update_submit(){
+    public function catalog_update_submit($id){
         $title = Request::instance()->param('title', '');
         $icon = Request::instance()->param('icon', '');
         $action_id = Request::instance()->param('action_id', 0);
         $module_id = Request::instance()->param('module_id', 0);
-        $catalog_id = Request::instance()->param('catalog_id', 0);
         $top_id = Request::instance()->param('top_id', 0);
         $sort = Request::instance()->param('sort', 0);
         $validate = Loader::validate('catalog');
-        if(!$validate->scene('update')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id, 'catalog_id'=> $catalog_id])){
+        if(!$validate->scene('update')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id, 'catalog_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
-        $action_path = SysModuleAction::where('action_id', $action_id)->value('path');
-        $catalog = SysCatalog::get($catalog_id);
+        $action_path = SysModuleAction::field('path, route')->where('action_id', $action_id)->find();
+        $catalog = SysCatalog::get($id);
         $old_catalog_title = $catalog->title;
         $catalog->title = $title;
         $catalog->icon = $icon;
@@ -355,7 +351,8 @@ class Developer extends Base{
         $catalog->module_id = $module_id;
         $catalog->top_id = $top_id;
         $catalog->sort = $sort;
-        $catalog->path = $action_path ? $action_path : '';
+        $catalog->path = $action_path->path;
+        $catalog->route = $action_path->route;
         $res = $catalog->save();
         if($res){
             LogAdminOperation::create_data('后台目录修改：'.$old_catalog_title.'->'.$title, 'operation');
@@ -370,10 +367,9 @@ class Developer extends Base{
      *
      * @return void
      */
-    public function catalog_delete_submit(){
-        $catalog_id = Request::instance()->param('catalog_id', '');
-        $catalog = SysCatalog::where('catalog_id', $catalog_id)->find();
-        $res = SysCatalog::where('catalog_id', $catalog_id)->delete();
+    public function catalog_delete_submit($id){
+        $catalog = SysCatalog::where('catalog_id', $id)->find();
+        $res = SysCatalog::where('catalog_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('后台目录删除：'.$catalog->title, 'operation');
             return return_data(1, '', '删除成功');

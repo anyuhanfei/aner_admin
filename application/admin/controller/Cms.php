@@ -76,9 +76,8 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function tag_update(){
-        $tag_id = Request::instance()->param('tag_id', 0);
-        $tag = CmsTag::get($tag_id);
+    public function tag_update($id){
+        $tag = CmsTag::get($id);
         $has_data = "true";
         if(!$tag){
             $has_data = "false";
@@ -93,13 +92,12 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function tag_update_submit(){
-        $tag_id = Request::instance()->param('tag_id', 0);
+    public function tag_update_submit($id){
         $tag_name = Request::instance()->param('tag_name', '');
         $sort = Request::instance()->param('sort', '');
         $tag_image = Request::instance()->file('tag_image');
         $validate = Loader::validate('tag');
-        if(!$validate->scene('update')->check(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_id'=> $tag_id])){
+        if(!$validate->scene('update')->check(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
         $path = '';
@@ -109,7 +107,7 @@ class Cms extends Base{
                 $path = $image_res['file_path'];
             }
         }
-        $tag = CmsTag::get($tag_id);
+        $tag = CmsTag::get($id);
         $old_path = $tag->tag_image;
         $old_tag_name = $tag->tag_name;
         $tag->tag_name = $tag_name;
@@ -131,10 +129,9 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function tag_delete_submit(){
-        $tag_id = Request::instance()->param('tag_id', '');
-        $tag = CmsTag::get($tag_id);
-        $res = CmsTag::where('tag_id', $tag_id)->delete();
+    public function tag_delete_submit($id){
+        $tag = CmsTag::get($id);
+        $res = CmsTag::where('tag_id', $id)->delete();
         if($res){
             delete_image($tag->tag_image);
             LogAdminOperation::create_data('文章标签信息删除：'.$tag->tag_name, 'operation');
@@ -202,9 +199,8 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function category_update(){
-        $category_id = Request::instance()->param('category_id', 0);
-        $category = CmsCategory::get($category_id);
+    public function category_update($id){
+        $category = CmsCategory::get($id);
         $has_data = "true";
         if(!$category){
             $has_data = "false";
@@ -219,13 +215,12 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function category_update_submit(){
-        $category_id = Request::instance()->param('category_id', 0);
+    public function category_update_submit($id){
         $category_name = Request::instance()->param('category_name', '');
         $sort = Request::instance()->param('sort', '');
         $category_image = Request::instance()->file('category_image');
         $validate = Loader::validate('category');
-        if(!$validate->scene('update')->check(['category_name'=> $category_name, 'sort'=> $sort, 'category_id'=> $category_id])){
+        if(!$validate->scene('update')->check(['category_name'=> $category_name, 'sort'=> $sort, 'category_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
         $path = '';
@@ -235,7 +230,7 @@ class Cms extends Base{
                 $path = $image_res['file_path'];
             }
         }
-        $category = CmsCategory::get($category_id);
+        $category = CmsCategory::get($id);
         $old_path = $category->category_image;
         $old_category_name = $category->category_name;
         $category->category_name = $category_name;
@@ -257,10 +252,9 @@ class Cms extends Base{
      *
      * @return void
      */
-    public function category_delete_submit(){
-        $category_id = Request::instance()->param('category_id', '');
-        $category = CmsCategory::get($category_id);
-        $res = CmsCategory::where('category_id', $category_id)->delete();
+    public function category_delete_submit($id){
+        $category = CmsCategory::get($id);
+        $res = CmsCategory::where('category_id', $id)->delete();
         if($res){
             delete_image($category->category_image);
             LogAdminOperation::create_data('文章分类信息删除：'.$category->category_name, 'operation');
@@ -271,6 +265,6 @@ class Cms extends Base{
     }
 
     public function article(){
-        
+
     }
 }

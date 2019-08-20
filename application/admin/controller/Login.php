@@ -59,7 +59,7 @@ class Login extends Control{
      * @param string $type
      * @return void
      */
-    public function update_admin_login($ip, $type = 'error'){
+    protected function update_admin_login($ip, $type = 'error'){
         $log_login = AdmAdminLogin::where('ip', $ip)->find();
         if($type == 'error'){
             if($log_login){
@@ -94,7 +94,7 @@ class Login extends Control{
      * @param [type] $ip
      * @return void
      */
-    public function freeze_ip($ip){
+    protected function freeze_ip($ip){
         AdmFreezeIp::create([
             'ip'=> $ip,
             'freeze_start_time'=> date("Y-m-d H:i:s", time()),

@@ -126,12 +126,12 @@
 <script>
     //添加分类
     $("#add_category").click(function(){
-        location.href = "{:url('webset/set_category_add')}";
+        location.href = "/adm/set/category/add";
     })
 
     //添加设置
     $("#add_set").click(function(){
-        location.href = "{:url('webset/set_set_add')}";
+        location.href = "/adm/set/add";
     })
 
     //展示
@@ -152,12 +152,12 @@
 
     //修改分类
     function category_update(category_id){
-        location.href = "/admin/webset/set_category_update?category_id=" + category_id;
+        location.href = "/adm/set/category/update/" + category_id;
     }
 
     //修改设置
     function set_update(set_id){
-        location.href = "/admin/webset/set_set_update?set_id=" + set_id;
+        location.href = "/adm/set/update/" + set_id;
     }
 
     //删除分类
@@ -166,9 +166,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('webset/set_category_delete_submit')}",
-                type: "post",
-                data: {category_id: category_id},
+                url: "/adm/set/category/delete/submit/" + category_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '网站设置分类删除', data.msg);
@@ -187,9 +186,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('webset/set_set_delete_submit')}",
-                type: "post",
-                data: {set_id: set_id},
+                url: "/adm/set/delete/submit/" + set_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '网站设置信息删除', data.msg);
@@ -248,9 +246,9 @@
             }
         }
         $.ajax({
-            url: "{:url('webset/set_set_value_submit')}",
+            url: "/adm/set/value/submit/" + set_id,
             type: "post",
-            data: {set_id: set_id, value: value},
+            data: {value: value},
             success: function(data){
                 if(data.status == 3){
                     custom_notify('danger', '网站设置修改', data.msg);

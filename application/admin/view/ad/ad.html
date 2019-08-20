@@ -57,13 +57,19 @@
                                         <td>{$advo.sort}</td>
                                         <td>{$advo.ad_id}</td>
                                         <td>{$advo.title}</td>
-                                        <td><img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image({$advo.ad_id})"/></td>
+                                        <td>
+                                            {if condition="$advo.image != ''"}
+                                            <img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image({$advo.ad_id})"/>
+                                            {/if}
+                                        </td>
                                         <td>{$advo.value}</td>
                                         <td style="display: none;" id="content{$advo.ad_id}">
                                             {$advo.content}
                                         </td>
                                         <td>
-                                            <button class="btn btn-warning btn-xs" onclick="show_content({$advo.ad_id})">查看</button>
+                                            {if condition="$advo.content != ''"}
+                                            <button class="btn btn-warning btn-xs" onclick="show_content({$advo.ad_id})">正文</button>
+                                            {/if}
                                             <button class="btn btn-warning btn-xs" onclick="ad_update({$advo.ad_id})">修改</button>
                                             {if condition="$debug== true"}
                                             <button class="btn btn-danger btn-xs" onclick="ad_item_delete({$advo.ad_id})">删除</button>
@@ -87,7 +93,7 @@
 <div class="col-md-12" id="div_show_content" style="display: none;">
     <div class="card">
         <div class="card-body" id="show_content">
-            
+
         </div>
     </div>
 </div>
@@ -109,12 +115,12 @@
     }
     //添加分类
     $("#add_adv").click(function(){
-        location.href = "{:url('ad/ad_adv_add')}";
+        location.href = "/adm/adv/add";
     })
 
     //添加设置
     $("#add_ad").click(function(){
-        location.href = "{:url('ad/ad_ad_add')}";
+        location.href = "/adm/ad/add";
     })
 
     //展示
@@ -135,12 +141,12 @@
 
     //修改分类
     function adv_update(adv_id){
-        location.href = "/admin/ad/ad_adv_update?adv_id=" + adv_id;
+        location.href = "/adm/adv/update/" + adv_id;
     }
 
     //修改设置
     function ad_update(ad_id){
-        location.href = "/admin/ad/ad_ad_update?ad_id=" + ad_id;
+        location.href = "/adm/ad/update/" + ad_id;
     }
 
     //删除分类
@@ -149,9 +155,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('ad/ad_adv_delete_submit')}",
-                type: "post",
-                data: {adv_id: adv_id},
+                url: "adm/adv/delete/submit/" + adv_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '广告位信息删除', data.msg);
@@ -171,9 +176,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('ad/ad_ad_delete_submit')}",
-                type: "post",
-                data: {ad_id: ad_id},
+                url: "adm/ad/delete/submit/" + ad_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '广告信息删除', data.msg);

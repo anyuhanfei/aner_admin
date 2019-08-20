@@ -45,24 +45,24 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '分类信息修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('cms/category')}";
+        location.href = "/adm/cms/category";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('cms/category')}";
+    location.href = "/adm/cms/category";
 })
 
 //提交
 $("#submit").click(function(){
+    var category_id = $("#category_id").val();
     var fd = new FormData();
-    fd.append('category_id', $("#category_id").val());
     fd.append('category_name', $("#category_name").val());
     fd.append('sort', $("#sort").val());
     fd.append("category_image", $('#category_image')[0].files[0]);
     $.ajax({
-        url: "{:url('cms/category_update_submit')}",
+        url: "/adm/cms/category/update/submit/" + category_id,
         type: "post",
         processData: false,
         contentType: false,

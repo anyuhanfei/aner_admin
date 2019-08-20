@@ -55,7 +55,7 @@ $("#submit").click(function(){
     var copyright = $("#copyright").val();
     var aq = $("#aq").val();
     $.ajax({
-        url: "{:url('webset/basic_submit')}",
+        url: "/adm/basic/submit",
         type: "post",
         data: {title: title, keyword: keyword, description: description, copyright: copyright, aq: aq},
         success: function(data){

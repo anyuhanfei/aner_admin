@@ -68,9 +68,8 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function role_update(){
-        $role_id = Request::instance()->param('role_id', 0);
-        $role = Admrole::get($role_id);
+    public function role_update($id){
+        $role = Admrole::get($id);
         $has_data = "true";
         if(!$role){
             $has_data = "false";
@@ -85,16 +84,15 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function role_update_submit(){
-        $role_id = Request::instance()->param('role_id', '');
+    public function role_update_submit($id){
         $role_name = Request::instance()->param('role_name', '');
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $validate = Loader::validate('role');
-        if(!$validate->scene('update')->check(['role_id'=> $role_id, 'role_name'=> $role_name, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['role_id'=> $id, 'role_name'=> $role_name, 'remark'=> $remark, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
-        $role = Admrole::get($role_id);
+        $role = Admrole::get($id);
         $old_role_name = $role->role_name;
         $role->role_name = $role_name;
         $role->remark = $remark;
@@ -113,10 +111,9 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function role_delete_submit(){
-        $role_id = Request::instance()->param('role_id', '');
-        $role = Admrole::where('role_id', $role_id)->find();
-        $res = Admrole::where('role_id', $role_id)->delete();
+    public function role_delete_submit($id){
+        $role = Admrole::where('role_id', $id)->find();
+        $res = Admrole::where('role_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('角色信息删除：'.$role->role_name, 'operation');
             return return_data(1, '', '删除成功');
@@ -130,9 +127,8 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function role_power(){
-        $role_id = Request::instance()->param('role_id', '');
-        $role = Admrole::get($role_id);
+    public function role_power($id){
+        $role = Admrole::get($id);
         $module = SysModule::order('sort asc')->select();
         $action = SysModuleAction::order('sort asc')->select();
         foreach($action as &$v){
@@ -153,10 +149,9 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function role_power_submit(){
+    public function role_power_submit($id){
         $action_ids = Request::instance()->param('action_ids', '');
-        $role_id = Request::instance()->param('role_id', 0);
-        $role = AdmRole::get($role_id);
+        $role = AdmRole::get($id);
         $role->power = $action_ids;
         $res = $role->save();
         if($res){
@@ -223,9 +218,13 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function admin_update(){
-        $admin_id = Request::instance()->param('admin_id', 0);
-        $admin = AdmAdmin::get($admin_id);
+    public function admin_update($id){
+        $admin = AdmAdmin::get($id);
+        $has_data = "true";
+        if(!$admin){
+            $has_data = "false";
+        }
+        $this->assign('has_data', $has_data);
         $this->assign('detail', $admin);
         return $this->fetch();
     }
@@ -235,16 +234,15 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function admin_update_submit(){
-        $admin_id = Request::instance()->param('admin_id', 0);
+    public function admin_update_submit($id){
         $account = Request::instance()->param('account', '');
         $nickname = Request::instance()->param('nickname', '');
         $password = Request::instance()->param('password', '');
         $validate = Loader::validate('admin');
-        if(!$validate->scene('update')->check(['admin_id'=> $admin_id, 'account'=> $account, 'nickname'=> $nickname])){
+        if(!$validate->scene('update')->check(['admin_id'=> $id, 'account'=> $account, 'nickname'=> $nickname])){
             return return_data(2, '', $validate->getError());
         }
-        $admin = AdmAdmin::get($admin_id);
+        $admin = AdmAdmin::get($id);
         $old_admin_account = $admin->account;
         $admin->account = $account;
         $admin->nickname = $nickname;
@@ -263,10 +261,9 @@ class Adm extends Base{
      *
      * @return void
      */
-    public function admin_delete_submit(){
-        $admin_id = Request::instance()->param('admin_id', '');
-        $admin = AdmAdmin::where('admin_id', $admin_id)->find();
-        $res = AdmAdmin::where('admin_id', $admin_id)->delete();
+    public function admin_delete_submit($id){
+        $admin = AdmAdmin::where('admin_id', $id)->find();
+        $res = AdmAdmin::where('admin_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('管理员信息删除：'.$admin->account, 'operation');
             return return_data(1, '', '删除成功');

@@ -69,7 +69,7 @@
     <script>
         //取消
         $("#cancel").click(function () {
-            location.href = "{:url('webset/set')}";
+            location.href = "/adm/set";
         })
 
         $(".type").click(function(){
@@ -108,7 +108,7 @@
                 return;
             }
             $.ajax({
-                url: "{:url('webset/set_set_add_submit')}",
+                url: "/adm/set/add/submit",
                 type: "post",
                 data: {
                     title: title,

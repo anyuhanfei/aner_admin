@@ -39,7 +39,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/module')}";
+    location.href = "/adm/module";
 })
 
 //提交
@@ -52,7 +52,7 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('developer/module_add_submit')}",
+        url: "/adm/module/add/submit",
         type: "post",
         data: {title: title, remark: remark, sort: sort},
         success: function(data){

@@ -5,7 +5,7 @@
             {volist name="adm_catalog" id="act"}
                 {if condition="$act.top_id == 0 && $act.path != ''"}
                 <li class="nav-item" id="actl{$act.catalog_id}">
-                    <a href="{:url($act.path)}">
+                    <a href="{$act.route}">
                         <i class="{$act.icon}"></i>
                         <p>{$act.title}</p>
                     </a>
@@ -23,7 +23,7 @@
                         {volist name="adm_catalog" id="actl"}
                         {if condition="$actl.top_id == $act.catalog_id"}
                         <li class="nav-item" id="actl{$actl.catalog_id}" data-topid="{$act.catalog_id}">
-                            <a href="{:url($actl.path)}" style="padding-left: 40px;">
+                            <a href="{$actl.route}" style="padding-left: 40px;">
                                 <i class="{$actl.icon}"></i>
                                 <p>{$actl.title}</p>
                             </a>

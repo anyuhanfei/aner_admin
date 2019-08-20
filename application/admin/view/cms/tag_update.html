@@ -45,24 +45,24 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '分类信息修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('cms/tag')}";
+        location.href = "/adm/cms/tag";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('cms/tag')}";
+    location.href = "/adm/cms/tag";
 })
 
 //提交
 $("#submit").click(function(){
+    var tag_id = $("#tag_id").val();
     var fd = new FormData();
-    fd.append('tag_id', $("#tag_id").val());
     fd.append('tag_name', $("#tag_name").val());
     fd.append('sort', $("#sort").val());
     fd.append("tag_image", $('#tag_image')[0].files[0]);
     $.ajax({
-        url: "{:url('cms/tag_update_submit')}",
+        url: "/adm/cms/tag/update/submit/" + tag_id,
         type: "post",
         processData: false,
         contentType: false,

@@ -56,12 +56,12 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "{:url('cms/tag_add')}";
+        location.href = "/adm/cms/tag/add";
     })
 
     //修改
     function update(tag_id){
-        location.href = "/admin/cms/tag_update?tag_id=" + tag_id;
+        location.href = "/adm/cms/tag/update/" + tag_id;
     }
     //删除
     function item_delete(tag_id){
@@ -69,9 +69,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "{:url('cms/tag_delete_submit')}",
-                type: "post",
-                data: {tag_id: tag_id},
+                url: "/adm/cms/tag/delete/submit/" + tag_id,
+                type: "get",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '文章标签删除', data.msg);

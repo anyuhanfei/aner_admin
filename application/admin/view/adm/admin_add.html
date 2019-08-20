@@ -45,7 +45,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('adm/admin')}";
+    location.href = "/adm/admin";
 })
 
 //提交
@@ -71,7 +71,7 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('adm/admin_add_submit')}",
+        url: "/adm/admin/add/submit",
         type: "post",
         data: {account: account, nickname: nickname, password: password, password_confirm: password_confirm},
         success: function(data){

@@ -74,12 +74,12 @@
         if(has_data == "false"){
             custom_notify('danger', '模块修改', '非法操作');
             setTimeout(() => {
-                location.href = "{:url('webset/set')}";
+                location.href = "/adm/set";
             }, 1000);
         }
         //取消
         $("#cancel").click(function () {
-            location.href = "{:url('webset/set')}";
+            location.href = "/adm/set";
         })
 
         $(".type").click(function(){
@@ -119,7 +119,7 @@
                 return;
             }
             $.ajax({
-                url: "{:url('webset/set_set_update_submit')}",
+                url: "/adm/set/update/submit/" + set_id,
                 type: "post",
                 data: {
                     title: title,
@@ -127,8 +127,7 @@
                     sign: sign,
                     type: type,
                     value: value,
-                    sort: sort,
-                    set_id: set_id
+                    sort: sort
                 },
                 success: function (data) {
                     if (data.status == 3) {

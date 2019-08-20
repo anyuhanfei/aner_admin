@@ -88,7 +88,7 @@ $("#module_id").change(function(){
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/catalog')}";
+    location.href = "/adm/catalog";
 })
 
 //提交
@@ -109,7 +109,7 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('developer/catalog_add_submit')}",
+        url: "/adm/catalog/add/submit",
         type: "post",
         data: {title: title, icon: icon, sort: sort, module_id: module_id, action_id: action_id, top_id: top_id},
         success: function(data){

@@ -38,7 +38,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('cms/tag')}";
+    location.href = "/adm/cms/tag";
 })
 
 //提交
@@ -48,7 +48,7 @@ $("#submit").click(function(){
     fd.append('sort', $("#sort").val());
     fd.append("tag_image", $('#tag_image')[0].files[0]);
     $.ajax({
-        url: "{:url('cms/tag_add_submit')}",
+        url: "/adm/cms/tag/add/submit",
         type: "post",
         processData: false,
         contentType: false,

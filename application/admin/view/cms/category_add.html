@@ -38,7 +38,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('cms/category')}";
+    location.href = "/adm/cms/category";
 })
 
 //提交
@@ -48,7 +48,7 @@ $("#submit").click(function(){
     fd.append('sort', $("#sort").val());
     fd.append("category_image", $('#category_image')[0].files[0]);
     $.ajax({
-        url: "{:url('cms/category_add_submit')}",
+        url: "/adm/cms/category/add/submit",
         type: "post",
         processData: false,
         contentType: false,

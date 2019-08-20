@@ -38,13 +38,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '模块修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('webset/set')}";
+        location.href = "/adm/set";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('webset/set')}";
+    location.href = "/adm/set";
 })
 
 //提交
@@ -57,9 +57,9 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('webset/set_category_update_submit')}",
+        url: "/adm/set/category/update/submit/" + category_id,
         type: "post",
-        data: {category_name: category_name, sort: sort, category_id: category_id},
+        data: {category_name: category_name, sort: sort},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '网站设置分类修改', data.msg);

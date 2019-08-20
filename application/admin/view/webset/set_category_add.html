@@ -34,7 +34,7 @@
 <script>
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('webset/set')}";
+    location.href = "/adm/set";
 })
 
 //提交
@@ -46,7 +46,7 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('webset/set_category_add_submit')}",
+        url: "/adm/set/category/add/submit",
         type: "post",
         data: {category_name: category_name, sort: sort},
         success: function(data){

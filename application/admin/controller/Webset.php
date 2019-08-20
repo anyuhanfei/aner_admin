@@ -99,9 +99,8 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_category_update(){
-        $category_id = Request::instance()->param('category_id', 0);
-        $category = SysSetCategory::get($category_id);
+    public function set_category_update($id){
+        $category = SysSetCategory::get($id);
         $has_data = "true";
         if(!$category){
             $has_data = "false";
@@ -116,15 +115,14 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_category_update_submit(){
+    public function set_category_update_submit($id){
         $category_name = Request::instance()->param('category_name', '');
         $sort = Request::instance()->param('sort', 0);
-        $category_id = Request::instance()->param('category_id', 0);
         $validate = Loader::validate('set_category');
-        if(!$validate->scene('update')->check(['category_id'=> $category_id, 'category_name'=> $category_name, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['category_id'=> $id, 'category_name'=> $category_name, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
-        $category = SysSetCategory::get($category_id);
+        $category = SysSetCategory::get($id);
         $old_category_name = $category->category_name;
         $category->category_name = $category_name;
         $category->sort = $sort;
@@ -142,10 +140,9 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_category_delete_submit(){
-        $category_id = Request::instance()->param('category_id', '');
-        $category = SysSetCategory::where('category_id', $category_id)->find();
-        $res = SysSetCategory::where('category_id', $category_id)->delete();
+    public function set_category_delete_submit($id){
+        $category = SysSetCategory::where('category_id', $id)->find();
+        $res = SysSetCategory::where('category_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('网站设置分类信息删除：'.$category->category_name, 'operation');
             return return_data(1, '', '删除成功');
@@ -205,9 +202,8 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_set_update(){
-        $set_id = Request::instance()->param('set_id', 0);
-        $detail = SysSet::get($set_id);
+    public function set_set_update($id){
+        $detail = SysSet::get($id);
         $has_data = "true";
         if(!$detail){
             $has_data = "false";
@@ -224,19 +220,18 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_set_update_submit(){
+    public function set_set_update_submit($id){
         $title = Request::instance()->param('title', '');
         $sign = Request::instance()->param('sign', '');
         $type = Request::instance()->param('type', '');
         $value = Request::instance()->param('value', '');
-        $set_id = Request::instance()->param('set_id', '');
         $sort = Request::instance()->param('sort', 0);
         $category_id = Request::instance()->param('category_id', 0);
         $validate = Loader::validate('set');
-        if(!$validate->scene('update')->check(['title'=> $title, 'category_id'=> $category_id, 'sign'=> $sign, 'sort'=> $sort, 'type'=> $type, 'value'=> $value, 'set_id'=> $set_id])){
+        if(!$validate->scene('update')->check(['title'=> $title, 'category_id'=> $category_id, 'sign'=> $sign, 'sort'=> $sort, 'type'=> $type, 'value'=> $value, 'set_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
-        $set = SysSet::get($set_id);
+        $set = SysSet::get($id);
         $old_set_title = $set->title;
         $set->title = $title;
         $set->sign = $sign;
@@ -258,10 +253,9 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_set_delete_submit(){
-        $set_id = Request::instance()->param('set_id', '');
-        $set = SysSet::where('set_id', $set_id)->find();
-        $res = SysSet::where('set_id', $set_id)->delete();
+    public function set_set_delete_submit($id){
+        $set = SysSet::where('set_id', $id)->find();
+        $res = SysSet::where('set_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('网站设置信息删除：'.$set->title, 'operation');
             return return_data(1, '', '删除成功');
@@ -275,8 +269,7 @@ class Webset extends Base{
      *
      * @return void
      */
-    public function set_set_value_submit(){
-        $set_id = Request::instance()->param('set_id', '');
+    public function set_set_value_submit($id){
         $value = Request::instance()->param('value', '');
         $set = SysSet::get($set_id);
         if(!$set){

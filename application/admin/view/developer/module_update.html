@@ -43,13 +43,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '模块修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('developer/module')}";
+        location.href = "/adm/module";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/module')}";
+    location.href = "/adm/module";
 })
 
 //提交
@@ -63,9 +63,9 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('developer/module_update_submit')}",
+        url: "/adm/module/update/submit/" + module_id,
         type: "post",
-        data: {title: title, remark: remark, sort: sort, module_id: module_id},
+        data: {title: title, remark: remark, sort: sort},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '模块修改', data.msg);

@@ -89,7 +89,7 @@ $("#module_id").change(function(){
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('developer/catalog')}";
+    location.href = "/adm/catalog";
 })
 
 //提交
@@ -111,9 +111,9 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('developer/catalog_update_submit')}",
+        url: "/adm/catalog/update/submit/" + catalog_id,
         type: "post",
-        data: {title: title, icon: icon, sort: sort, module_id: module_id, action_id: action_id, catalog_id: catalog_id, top_id: top_id},
+        data: {title: title, icon: icon, sort: sort, module_id: module_id, action_id: action_id, top_id: top_id},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '目录修改', data.msg);

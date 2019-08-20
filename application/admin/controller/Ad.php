@@ -78,9 +78,8 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_adv_update(){
-        $adv_id = Request::instance()->param('adv_id', 0);
-        $adv = SysAdv::get($adv_id);
+    public function ad_adv_update($id){
+        $adv = SysAdv::get($id);
         $has_data = "true";
         if(!$adv){
             $has_data = "false";
@@ -95,16 +94,15 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_adv_update_submit(){
+    public function ad_adv_update_submit($id){
         $adv_name = Request::instance()->param('adv_name', '');
         $sign = Request::instance()->param('sign', '');
         $sort = Request::instance()->param('sort', 0);
-        $adv_id = Request::instance()->param('adv_id', 0);
         $validate = Loader::validate('adv');
-        if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort, 'adv_id'=> $adv_id])){
+        if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort, 'adv_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
-        $adv = SysAdv::get($adv_id);
+        $adv = SysAdv::get($id);
         $old_adv_name = $adv->adv_name;
         $adv->adv_name = $adv_name;
         $adv->sign = $sign;
@@ -123,10 +121,9 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_adv_delete_submit(){
-        $adv_id = Request::instance()->param('adv_id', '');
-        $adv = SysAdv::where('adv_id', $adv_id)->find();
-        $res = SysAdv::where('adv_id', $adv_id)->delete();
+    public function ad_adv_delete_submit($id){
+        $adv = SysAdv::where('adv_id', $id)->find();
+        $res = SysAdv::where('adv_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('广告位信息删除：'.$adv->adv_name, 'operation');
             return return_data(1, '', '删除成功');
@@ -193,9 +190,8 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_ad_update(){
-        $ad_id = Request::instance()->param('ad_id', 0);
-        $ad = SysAd::get($ad_id);
+    public function ad_ad_update($id){
+        $ad = SysAd::get($id);
         $adv = SysAdv::order('sort asc')->select();
         $has_data = "true";
         if(!$ad){
@@ -212,16 +208,15 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_ad_update_submit(){
+    public function ad_ad_update_submit($id){
         $title = Request::instance()->param('title', '');
         $adv_id = Request::instance()->param('adv_id', '');
         $value = Request::instance()->param('value', '');
         $content = Request::instance()->param('content', '');
         $sort = Request::instance()->param('sort', '');
-        $ad_id = Request::instance()->param('ad_id', '');
         $image = Request::instance()->file('image');
         $validate = Loader::validate('ad');
-        if(!$validate->scene('update')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort, 'ad_id'=> $ad_id])){
+        if(!$validate->scene('update')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort, 'ad_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
         $path = '';
@@ -229,7 +224,7 @@ class Ad extends Base{
             $image_res = file_upload($image, 'ad');
             $path = $image_res['file_path'];
         }
-        $ad = SysAd::get($ad_id);
+        $ad = SysAd::get($id);
         $old_ad_title = $ad->title;
         $ad->title = $title;
         $ad->adv_id = $adv_id;
@@ -253,10 +248,9 @@ class Ad extends Base{
      *
      * @return void
      */
-    public function ad_ad_delete_submit(){
-        $ad_id = Request::instance()->param('ad_id', '');
-        $ad = SysAd::get($ad_id);
-        $res = SysAd::where('ad_id', $ad_id)->delete();
+    public function ad_ad_delete_submit($id){
+        $ad = SysAd::get($id);
+        $res = SysAd::where('ad_id', $id)->delete();
         if($res){
             delete_image($ad->image);
             self::remove_ad_content_image($ad->content, 'delete');

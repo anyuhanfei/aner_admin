@@ -43,13 +43,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '广告信息修改', '非法操作');
     setTimeout(() => {
-        location.href = "{:url('ad/ad')}";
+        location.href = "/adm/ad";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "{:url('ad/ad')}";
+    location.href = "/adm/ad";
 })
 
 //提交
@@ -67,9 +67,9 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "{:url('ad/ad_adv_update_submit')}",
+        url: "/adm/adv/update/submit/"+adv_id,
         type: "post",
-        data: {adv_name: adv_name, sign: sign, sort: sort, adv_id: adv_id},
+        data: {adv_name: adv_name, sign: sign, sort: sort},
         success: function(data){
             if(data.status == 3){
                 custom_notify('danger', '广告位信息修改', data.msg);
