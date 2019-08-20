@@ -1,0 +1,89 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">文章管理</div>
+                        <div class="card-sub text-warning">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success btn-xs" id="add">添加</button>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="15%">#</th>
+                                    <th scope="col" width="15%">id</th>
+                                    <th scope="col" width="15%">图片</th>
+                                    <th scope="col" width="30%">标题</th>
+                                    <th scope="col" width="15%">分类</th>
+                                    <th scope="col" width="15%">作者</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr id="tr{$vo.article_id}">
+                                    <td>{$vo.sort}</td>
+                                    <td>{$vo.article_id}</td>
+                                    <td>
+                                        <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image({$vo.article_id})"/>
+                                    </td>
+                                    <td>{$vo.title}</td>
+                                    <td>{$vo.category.category_name}</td>
+                                    <td>{$vo.author}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.article_id})">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.article_id})">删除</button>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+
+<script>
+    //添加
+    $("#add").click(function(){
+        location.href = "/adm/cms/article/add";
+    })
+
+    //修改
+    function update(article_id){
+        location.href = "/adm/cms/article/update/" + article_id;
+    }
+    //删除
+    function item_delete(tagarticle_id_id){
+        layer.confirm('是否要删除此条数据', {
+            btn: ['是','否']
+        }, function(){
+            $.ajax({
+                url: "/adm/cms/article/delete/submit/" + article_id,
+                type: "get",
+                success: function(data){
+                    if(data.status == 3){
+                        custom_notify('danger', '文章标签删除', data.msg);
+                    }else{
+                        $("#tr" + tag_id).html('');
+                        custom_notify('success', '文章标签删除', data.msg);
+                    }
+                }
+            })
+            layer.closeAll();
+        });
+    }
+</script>
+{/block}

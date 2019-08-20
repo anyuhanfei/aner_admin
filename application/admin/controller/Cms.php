@@ -9,6 +9,9 @@ use think\Loader;
 use app\admin\model\CmsTag;
 use app\admin\model\CmsCategory;
 use app\admin\model\LogAdminOperation;
+use app\admin\model\CmsArticle;
+use app\admin\model\CmsArticleData;
+use app\admin\model\CmsArticleComment;
 
 
 class Cms extends Base{
@@ -265,6 +268,22 @@ class Cms extends Base{
     }
 
     public function article(){
+        $list = CmsArticle::order('sort asc, article_id desc')->select();
+        $this->assign('list', $list);
+        return $this->fetch();
+    }
 
+    public function article_add(){
+        $max_sort = CmsArticle::order('sort desc')->value('sort');
+        $this->assign('max_sort', $max_sort);
+        $category = CmsCategory::field('category_id, category_name, sort')->order('sort asc')->select();
+        $tag = CmsTag::field('tag_id, tag_name, sort')->order('sort asc')->select();
+        $this->assign('category', $category);
+        $this->assign('tag', $tag);
+        return $this->fetch();
+    }
+
+    public function article_add_submit(){
+        
     }
 }

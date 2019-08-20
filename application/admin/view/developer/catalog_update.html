@@ -76,6 +76,15 @@
 
 {block name="custom_js"}
 <script>
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '方法修改', '非法操作');
+    setTimeout(() => {
+        location.href = "/adm/action";
+    }, 1000);
+}
+
 //图标展示
 $("#icon").change(function(){
     $("#icon_show").addClass($("#icon").val());

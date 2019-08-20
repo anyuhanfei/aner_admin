@@ -319,6 +319,11 @@ class Developer extends Base{
         $module = SysModule::order('sort asc')->select();
         $action = SysModuleAction::where('route', '<>', '')->order('sort asc')->select();
         $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
+        $has_data = "true";
+        if(!$detail){
+            $has_data = "false";
+        }
+        $this->assign('has_data', $has_data);
         $this->assign('module', $module);
         $this->assign('detail', $detail);
         $this->assign('action', $action);

@@ -109,3 +109,5 @@ Route::post('adm/cms/category/add/submit', 'admin/cms/category_add_submit');
 Route::get('adm/cms/category/update/:id', 'admin/cms/category_update');
 Route::post('adm/cms/category/update/submit/:id', 'admin/cms/category_update_submit');
 Route::get('adm/cms/category/delete/submit/:id', 'admin/cms/category_delete_submit');
+Route::get('adm/cms/article', 'admin/cms/article');
+Route::get('adm/cms/article/add', 'admin/cms/article_add');
