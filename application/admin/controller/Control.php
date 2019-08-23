@@ -25,11 +25,9 @@ class Control extends Controller{
     //文章字段控制
     protected $cms_article = [
         'tag_ids'=> 'on',  //文章标签
-        'category_id'=> 'on',  //文章分类
-        'title'=> 'on',  //文章标题
         'author'=> 'on',  //作者
         'intro'=> 'on',  //简介
-        'keywork'=> 'on',  //关键字
+        'keyword'=> 'on',  //关键字
         'image'=> 'on',  //图片
         'content_type'=> 'on',  //内容类型
     ];

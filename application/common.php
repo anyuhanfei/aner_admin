@@ -79,9 +79,11 @@ function create_captcha($number, $type = 'figure'){
  */
 function file_upload($file, $save_path, $file_validate = array('size'=>156780000, 'ext'=>'jpg,png,gif')){
     if($file){
-        $info = $file->validate(['size'=>$file_validate['size'],'ext'=>$file_validate['ext']])->move(ROOT_PATH . 'public' . DS . 'uploads'. DS . $save_path);
+        $full_path = ROOT_PATH . 'public' . DS . 'uploads'. DS . $save_path;
+        $info = $file->validate(['size'=>$file_validate['size'],'ext'=>$file_validate['ext']])->move($full_path);
         if($info){
             $res = array('status'=>1, 'file_path'=>'/uploads'. DS . $save_path . DS . $info->getSaveName(), 'error'=>'');
+            chmod($full_path, 0666);
             unset($info);
             unset($file);
             return $res;

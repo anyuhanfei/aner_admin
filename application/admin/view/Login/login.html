@@ -115,12 +115,12 @@ document.getElementById("submit").onclick = function(){
                 document.getElementsByClassName("password-circle")[0].innerHTML = msg;
             }else{
                 setTimeout(function(){
-                    location.href = "/adm/index";
+                    location.href = "/adm";
                 }, 500);
             }
 		}
 	}
-	xmlhttp.open("POST","/adm/login_submit",true);
+	xmlhttp.open("POST","/adm/login/submit",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send(parameter);
 }

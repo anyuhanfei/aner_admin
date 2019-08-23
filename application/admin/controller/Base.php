@@ -13,6 +13,7 @@ use app\admin\model\SysModuleAction;
 
 
 class Base extends Control{
+    protected $admin = null;
     public function _initialize(){
         //引用父类初始化方法
         parent::_initialize();
@@ -32,27 +33,27 @@ class Base extends Control{
         $this->assign('current_id', Cookie::get('current_id'));
         //管理员
         $admin_id = Session::get('admin_id');
-        $admin = AdmAdmin::get($admin_id);
-        if(!$admin){
-            return $this->redirect('login/login');
+        $this->admin = AdmAdmin::get($admin_id);
+        if(!$this->admin){
+            return $this->redirect('/adm/login');
         }
-        $this->assign('admin', $admin);
+        $this->assign('admin', $this->admin);
         //权限控制
-        // if($action != 'index'){
-        //     if($admin->role_id == 0){
-        //         return $this->redirect('login/login');
-        //     }
-        //     $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
-        //     if(!$current_url_id){
-        //         return $this->redirect('index/index');
-        //     }
-        //     $role = AdmRole::where('role_id', $admin->role_id)->find();
-        //     if(!$role){
-        //         return $this->redirect('login/login');
-        //     }
-        //     if(strpos($role->power, (string)$current_url_id) === false){
-        //         return $this->redirect('index/index');
-        //     }
-        // }
+        if($action != 'index'){
+            if($this->admin->role_id == 0){
+                return $this->redirect('/adm/login');
+            }
+            $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
+            if(!$current_url_id){
+                return $this->redirect('/adm');
+            }
+            $role = AdmRole::where('role_id', $this->admin->role_id)->find();
+            if(!$role){
+                return $this->redirect('/adm/login');
+            }
+            if(strpos($role->power, (string)$current_url_id) === false){
+                return $this->redirect('/adm');
+            }
+        }
     }
 }

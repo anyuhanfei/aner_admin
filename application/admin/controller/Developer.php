@@ -158,7 +158,7 @@ class Developer extends Base{
         $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = Loader::validate('action');
-        if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'route'=> $route, 'module_id'=> $module_id, 'sort'=> $sort])){
+        if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'module_id'=> $module_id, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
         $res = SysModuleAction::create([
@@ -209,7 +209,7 @@ class Developer extends Base{
         $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = Loader::validate('action');
-        if(!$validate->scene('update')->check(['action_id'=> $id, 'path'=> $path, 'route'=> $route, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['action_id'=> $id, 'path'=> $path, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
         $module = SysModuleAction::get($id);

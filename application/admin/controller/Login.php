@@ -49,7 +49,7 @@ class Login extends Control{
 
     public function login_out(){
         Session::delete('admin_id');
-        return $this->redirect('login/login');
+        return $this->redirect('/adm/login');
     }
 
     /**

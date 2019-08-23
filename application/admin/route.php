@@ -5,7 +5,7 @@ use think\Route;
  * admin
  */
 // 首页模块
-Route::get('adm/index', 'admin/index/index');
+Route::get('adm', 'admin/index/index');
 
 // 登录模块
 Route::get('adm/login', 'admin/login/login');
@@ -111,3 +111,9 @@ Route::post('adm/cms/category/update/submit/:id', 'admin/cms/category_update_sub
 Route::get('adm/cms/category/delete/submit/:id', 'admin/cms/category_delete_submit');
 Route::get('adm/cms/article', 'admin/cms/article');
 Route::get('adm/cms/article/add', 'admin/cms/article_add');
+Route::post('adm/cms/article/add/submit', 'admin/cms/article_add_submit');
+Route::post('adm/cms/img', 'admin/cms/article_img');
+Route::get('adm/cms/article/update/:id', 'admin/cms/article_update');
+Route::post('adm/cms/article/update/submit/:id', 'admin/cms/article_update_submit');
+Route::post('adm/cms/article/delete/submit/:id', 'admin/cms/article_delete_submit');
+Route::get('adm/cms/article/content/:id', 'admin/cms/article_content');

@@ -11,7 +11,6 @@ class Action extends Validate{
     protected $rule = [
         'title'=> 'require|checkTitle',
         'path'=> 'require',
-        'route'=> 'require',
         'module_id'=> 'checkModuleId',
         'action_id'=> 'require',
         'remark'=> 'checkData',
@@ -21,7 +20,6 @@ class Action extends Validate{
     protected $message = [
         'title.require'=> '请填写方法名称',
         'path.require'=> '请填写方法路径',
-        'route.require'=> '请填写方法路由',
         'action_id.require'=> '非法操作'
     ];
 
@@ -29,14 +27,12 @@ class Action extends Validate{
         'add'=> [
             'title'=> 'require|checkTitle',
             'path'=> 'require',
-            'route'=> 'require',
             'module_id'=> 'checkModuleId',
             'sort'=> 'checkSort'
         ],
         'update'=> [
             'title'=> 'require',
             'path'=> 'require',
-            'route'=> 'require',
             'module_id'=> 'checkModuleId',
             'action_id'=> 'require',
             'remark'=> 'checkData',

@@ -1,5 +1,10 @@
 {extend name="base" /}
 
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/markdown/markdown.css">
+<script type="text/javascript" src="/static/markdown/marked.min.js"></script>
+{/block}
+
 {block name="content"}
 <div class="content">
     <div class="container-fluid">
@@ -17,12 +22,19 @@
                         <table class="table mt-3">
                             <thead>
                                 <tr>
-                                    <th scope="col" width="15%">#</th>
-                                    <th scope="col" width="15%">id</th>
-                                    <th scope="col" width="15%">图片</th>
-                                    <th scope="col" width="30%">标题</th>
-                                    <th scope="col" width="15%">分类</th>
-                                    <th scope="col" width="15%">作者</th>
+                                    <th scope="col" width="7%">#</th>
+                                    <th scope="col" width="7%">id</th>
+                                    {if condition="$cms_article['image'] == 'on'"}
+                                    <th scope="col" width="7%">图片</th>
+                                    {/if}
+                                    <th scope="col" width="25%">标题</th>
+                                    <th scope="col" width="13%">分类</th>
+                                    {if condition="$cms_article['tag_ids'] == 'on'"}
+                                    <th scope="col" width="18%">标签</th>
+                                    {/if}
+                                    {if condition="$cms_article['author'] == 'on'"}
+                                    <th scope="col" width="10%">作者</th>
+                                    {/if}
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -31,13 +43,21 @@
                                 <tr id="tr{$vo.article_id}">
                                     <td>{$vo.sort}</td>
                                     <td>{$vo.article_id}</td>
+                                    {if condition="$cms_article['image'] == 'on'"}
                                     <td>
                                         <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image({$vo.article_id})"/>
                                     </td>
+                                    {/if}
                                     <td>{$vo.title}</td>
                                     <td>{$vo.category.category_name}</td>
+                                    {if condition="$cms_article['tag_ids'] == 'on'"}
+                                    <td>{$vo.tag_ids}</td>
+                                    {/if}
+                                    {if condition="$cms_article['author'] == 'on'"}
                                     <td>{$vo.author}</td>
+                                    {/if}
                                     <td>
+                                        <button class="btn btn-warning btn-xs" onclick="look({$vo.article_id})">查看</button>
                                         <button class="btn btn-warning btn-xs" onclick="update({$vo.article_id})">修改</button>
                                         <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.article_id})">删除</button>
                                     </td>
@@ -54,30 +74,60 @@
 {/block}
 
 {block name="custom_js"}
-
+<div class="content" id="c">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="form-control markdown-body" name="content" id="content_show"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     //添加
     $("#add").click(function(){
         location.href = "/adm/cms/article/add";
     })
 
+    function look(article_id){
+        $.ajax({
+            url: "/adm/cms/article/content/" + article_id,
+            type: "get",
+            success: function(data){
+                if(data.data['content_type'] == 'html'){
+                    $("#content_show").html(data.data['content']);
+                }else{
+                    $("#content_show").html(marked(data.data['content']));
+                }
+                layer.open({
+                    type: 1,
+                    area: '600px',
+                    shade: false,
+                    title: false,
+                    content: $('#c')
+                });
+            }
+        })
+    }
+
     //修改
     function update(article_id){
         location.href = "/adm/cms/article/update/" + article_id;
     }
     //删除
-    function item_delete(tagarticle_id_id){
+    function item_delete(article_id){
         layer.confirm('是否要删除此条数据', {
             btn: ['是','否']
         }, function(){
             $.ajax({
                 url: "/adm/cms/article/delete/submit/" + article_id,
-                type: "get",
+                type: "post",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '文章标签删除', data.msg);
                     }else{
-                        $("#tr" + tag_id).html('');
+                        $("#tr" + article_id).html('');
                         custom_notify('success', '文章标签删除', data.msg);
                     }
                 }
