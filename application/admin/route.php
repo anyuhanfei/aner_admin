@@ -82,7 +82,7 @@ Route::get('adm/resource/notify', 'admin/resource/notify');
 
 //网站设置
 Route::get('adm/basic', 'admin/webset/basic');
-Route::post('adm/basic/submit', 'admin/webset/basice');
+Route::post('adm/basic/submit', 'admin/webset/basic_submit');
 Route::get('adm/set', 'admin/webset/set');
 Route::get('adm/set/category/add', 'admin/webset/set_category_add');
 Route::post('adm/set/category/add/submit', 'admin/webset/set_category_add_submit');

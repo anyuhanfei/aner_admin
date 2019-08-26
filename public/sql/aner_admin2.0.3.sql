@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80016
 File Encoding         : 65001
 
-Date: 2019-08-23 16:58:11
+Date: 2019-08-26 14:43:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,23 +21,23 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `adm_admin`;
 CREATE TABLE `adm_admin` (
   `admin_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员id',
-  `account` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员账号',
-  `password` char(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员密码',
-  `password_salt` char(8) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员密码相关-加盐',
-  `via` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '管理员头像',
-  `nickname` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员昵称',
+  `account` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员账号',
+  `password` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员密码',
+  `password_salt` char(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员密码相关-加盐',
+  `via` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '管理员头像',
+  `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '管理员昵称',
   `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '管理员角色',
-  `phone` varchar(11) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
-  `email` varchar(40) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
-  `qq` varchar(15) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'QQ',
-  `wx` varchar(40) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '微信',
+  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
+  `email` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
+  `qq` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'QQ',
+  `wx` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '微信',
   PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of adm_admin
 -- ----------------------------
-INSERT INTO `adm_admin` VALUES ('1', 'root', '42960a50f11334ea5bcba697e67bc7b0', 'BJPrExO9', '/uploads\\admin_via\\20190810\\e36a9f788d9a4a0739b62fd8a53c9b3f.jpg', '暗语寒飞', '4', '13939390001', '1223050252@qq.com', '1223050254', 'anyuhanfeifff');
+INSERT INTO `adm_admin` VALUES ('1', 'root', '42960a50f11334ea5bcba697e67bc7b0', 'BJPrExO9', '/uploads\\admin_via\\20190810\\e36a9f788d9a4a0739b62fd8a53c9b3f.jpg', '暗语寒飞', '4', '13939390001', '1223050252@qq.com', '1223050251', 'anyuhanfeifff');
 
 -- ----------------------------
 -- Table structure for `adm_admin_login`
@@ -45,7 +45,7 @@ INSERT INTO `adm_admin` VALUES ('1', 'root', '42960a50f11334ea5bcba697e67bc7b0',
 DROP TABLE IF EXISTS `adm_admin_login`;
 CREATE TABLE `adm_admin_login` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员异常登录统计',
-  `ip` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '登录ip',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '登录ip',
   `error_number` tinyint(5) NOT NULL DEFAULT '0' COMMENT '异常次数',
   `insert_time` datetime DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`)
@@ -61,7 +61,7 @@ CREATE TABLE `adm_admin_login` (
 DROP TABLE IF EXISTS `adm_freeze_ip`;
 CREATE TABLE `adm_freeze_ip` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '冻结ip表id',
-  `ip` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'ip',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'ip',
   `freeze_start_time` datetime DEFAULT NULL COMMENT '冻结开始时间',
   `freeze_end_time` datetime DEFAULT NULL COMMENT '冻结结束时间',
   PRIMARY KEY (`id`)
@@ -79,15 +79,15 @@ CREATE TABLE `adm_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色id',
   `role_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '角色名称',
   `sort` tinyint(4) NOT NULL DEFAULT '0' COMMENT '排序',
-  `remark` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `power` text COLLATE utf8mb4_general_ci COMMENT '管理权限',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `power` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '管理权限',
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of adm_role
 -- ----------------------------
-INSERT INTO `adm_role` VALUES ('1', '超级管理员', '2', '', ',27,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20,21,22,23,24,25,26,');
+INSERT INTO `adm_role` VALUES ('1', '超级管理员', '2', '', ',27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,75,76,77,78,79,80,81,82,83,84,85,86,88,89,90,91,92,93,94,95,73,74,');
 INSERT INTO `adm_role` VALUES ('4', '开发者', '1', '', ',27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,75,76,77,78,79,80,81,82,83,84,85,86,88,89,90,91,92,93,94,95,73,74,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20,21,22,23,24,25,26,');
 
 -- ----------------------------
@@ -96,16 +96,16 @@ INSERT INTO `adm_role` VALUES ('4', '开发者', '1', '', ',27,28,29,30,31,32,33
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article` (
   `article_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id',
-  `tag_ids` varchar(200) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章标签',
+  `tag_ids` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章标签',
   `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '文章分类',
-  `title` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章标题',
-  `author` varchar(30) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章作者',
-  `intro` varchar(200) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章简介',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章标题',
+  `author` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章作者',
+  `intro` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章简介',
   `keyword` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章关键字',
-  `image` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图片',
+  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图片',
   `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
-  `content_type` varchar(10) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'html' COMMENT '内容类型html或markdown',
-  `content` text COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
+  `content_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'html' COMMENT '内容类型html或markdown',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
   PRIMARY KEY (`article_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -122,9 +122,9 @@ CREATE TABLE `cms_article_comment` (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论id',
   `article_id` int(11) NOT NULL DEFAULT '0' COMMENT '文章id',
   `from_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '发送者id',
-  `from_user_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '发送者标识',
+  `from_user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '发送者标识',
   `to_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '接收者id',
-  `to_user_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '接收者标识',
+  `to_user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '接收者标识',
   `top_id` int(11) NOT NULL DEFAULT '0' COMMENT '一级评论id',
   `content` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '评论内容',
   PRIMARY KEY (`comment_id`)
@@ -159,8 +159,8 @@ CREATE TABLE `cms_article_data` (
 DROP TABLE IF EXISTS `cms_category`;
 CREATE TABLE `cms_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章分类id',
-  `category_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
-  `category_image` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类图片',
+  `category_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `category_image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类图片',
   `sort` tinyint(5) NOT NULL COMMENT '排序',
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -176,8 +176,8 @@ INSERT INTO `cms_category` VALUES ('1', '测试', '/uploads\\category\\20190812\
 DROP TABLE IF EXISTS `cms_tag`;
 CREATE TABLE `cms_tag` (
   `tag_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签id',
-  `tag_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签名称',
-  `tag_image` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签图片（可选）',
+  `tag_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签名称',
+  `tag_image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签图片（可选）',
   `sort` tinyint(5) NOT NULL COMMENT '排序',
   PRIMARY KEY (`tag_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -195,11 +195,11 @@ CREATE TABLE `log_admin_operation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员操作日志',
   `admin_id` int(11) NOT NULL DEFAULT '0' COMMENT '管理员id',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类型，operation操作，login登录',
-  `ip` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'ip',
-  `content` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '内容',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'ip',
+  `content` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '内容',
   `insert_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of log_admin_operation
@@ -367,6 +367,16 @@ INSERT INTO `log_admin_operation` VALUES ('183', '1', 'operation', '127.0.0.1', 
 INSERT INTO `log_admin_operation` VALUES ('184', '1', 'operation', '127.0.0.1', '方法信息修改：文章信息内容获取->文章信息内容获取', '2019-08-23 16:05:00');
 INSERT INTO `log_admin_operation` VALUES ('185', '1', 'operation', '127.0.0.1', '方法信息修改：文章信息上传图片提交->文章信息上传图片提交', '2019-08-23 16:05:16');
 INSERT INTO `log_admin_operation` VALUES ('186', '1', 'operation', '127.0.0.1', '角色信息权限设置：开发者', '2019-08-23 16:06:42');
+INSERT INTO `log_admin_operation` VALUES ('187', '1', 'operation', '127.0.0.1', '角色信息权限设置：超级管理员', '2019-08-23 17:38:42');
+INSERT INTO `log_admin_operation` VALUES ('188', '1', 'operation', '127.0.0.1', '分配角色给管理员：root->超级管理员', '2019-08-23 17:38:55');
+INSERT INTO `log_admin_operation` VALUES ('189', '1', 'operation', '127.0.0.1', '分配角色给管理员：root->开发者', '2019-08-23 17:54:14');
+INSERT INTO `log_admin_operation` VALUES ('190', '1', 'operation', '127.0.0.1', '方法信息修改：首页->首页', '2019-08-23 17:54:57');
+INSERT INTO `log_admin_operation` VALUES ('191', '1', 'operation', '127.0.0.1', '后台目录修改：首页->首页', '2019-08-23 17:55:17');
+INSERT INTO `log_admin_operation` VALUES ('192', '1', 'operation', '127.0.0.1', '后台目录修改：首页->首页', '2019-08-23 17:55:26');
+INSERT INTO `log_admin_operation` VALUES ('193', '0', 'login', '127.0.0.1', '登录成功，账号：root', '2019-08-26 14:27:42');
+INSERT INTO `log_admin_operation` VALUES ('194', '1', 'operation', '127.0.0.1', '修改个人资料', '2019-08-26 14:37:57');
+INSERT INTO `log_admin_operation` VALUES ('195', '1', 'operation', '127.0.0.1', '基本信息修改', '2019-08-26 14:39:55');
+INSERT INTO `log_admin_operation` VALUES ('196', '1', 'operation', '127.0.0.1', '基本信息修改', '2019-08-26 14:40:05');
 
 -- ----------------------------
 -- Table structure for `sys_ad`
@@ -375,10 +385,10 @@ DROP TABLE IF EXISTS `sys_ad`;
 CREATE TABLE `sys_ad` (
   `ad_id` int(3) NOT NULL AUTO_INCREMENT COMMENT '广告id',
   `adv_id` int(3) NOT NULL DEFAULT '0' COMMENT '广告位id',
-  `title` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
-  `image` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图片',
-  `value` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
-  `content` text COLLATE utf8mb4_general_ci COMMENT '内容',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
+  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图片',
+  `value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '内容',
   `sort` int(3) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`ad_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -394,7 +404,7 @@ INSERT INTO `sys_ad` VALUES ('11', '6', '123', '', '444', '<p>sdfsf</p>', '1');
 DROP TABLE IF EXISTS `sys_adv`;
 CREATE TABLE `sys_adv` (
   `adv_id` int(3) NOT NULL AUTO_INCREMENT COMMENT '广告位id',
-  `adv_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '广告位名称',
+  `adv_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '广告位名称',
   `sign` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '广告位标签',
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`adv_id`)
@@ -411,11 +421,11 @@ INSERT INTO `sys_adv` VALUES ('6', '1233', 'rrre', '1');
 DROP TABLE IF EXISTS `sys_basic`;
 CREATE TABLE `sys_basic` (
   `id` tinyint(11) NOT NULL COMMENT 'id',
-  `title` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
-  `keyword` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
-  `description` varchar(200) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '简介',
-  `copyright` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '版权',
-  `aq` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备案号',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `keyword` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '简介',
+  `copyright` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '版权',
+  `aq` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备案号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -430,8 +440,8 @@ INSERT INTO `sys_basic` VALUES ('1', 'aner_admin后台管理系统', 'aner_admin
 DROP TABLE IF EXISTS `sys_catalog`;
 CREATE TABLE `sys_catalog` (
   `catalog_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '后台目录id',
-  `title` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
-  `icon` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
+  `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
+  `icon` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
   `module_id` int(11) DEFAULT NULL COMMENT '模块id',
   `action_id` int(11) DEFAULT NULL COMMENT '方法id',
   `path` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路径',
@@ -455,7 +465,7 @@ INSERT INTO `sys_catalog` VALUES ('8', '图标资源', 'la la-file-pdf-o', '4', 
 INSERT INTO `sys_catalog` VALUES ('9', '按钮资源', 'la la-file-audio-o', '4', '24', 'resource/button', '/adm/resource/button', '5', '114');
 INSERT INTO `sys_catalog` VALUES ('10', '标题资源', 'la la-file-text', '4', '25', 'resource/text', '/adm/resource/text', '5', '115');
 INSERT INTO `sys_catalog` VALUES ('11', '引导提示资源', 'la la-file-code-o', '4', '26', 'resource/notify', '/adm/resource/notify', '5', '116');
-INSERT INTO `sys_catalog` VALUES ('12', '首页', 'la la-dashboard', '5', '27', 'index/index', '/adm/index', '0', '1');
+INSERT INTO `sys_catalog` VALUES ('12', '首页', 'la la-dashboard', '5', '27', 'index/index', '/adm', '0', '1');
 INSERT INTO `sys_catalog` VALUES ('13', '管理设置', 'la la-slideshare', '0', '0', '', '', '0', '10');
 INSERT INTO `sys_catalog` VALUES ('14', '角色管理', 'la la-sitemap', '8', '28', 'adm/role', '/adm/role', '13', '11');
 INSERT INTO `sys_catalog` VALUES ('15', '管理员列表', 'la la-reddit', '8', '36', 'adm/admin', '/adm/admin', '13', '12');
@@ -482,7 +492,7 @@ CREATE TABLE `sys_module` (
   `module_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '模块id',
   `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '模块名称',
   `sort` tinyint(4) DEFAULT NULL COMMENT '排序',
-  `remark` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -507,10 +517,10 @@ CREATE TABLE `sys_module_action` (
   `action_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '方法id',
   `module_id` int(11) DEFAULT NULL COMMENT '模块id',
   `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '方法名称',
-  `path` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路径',
-  `route` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路由',
+  `path` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路径',
+  `route` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路由',
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
-  `remark` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`action_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -541,7 +551,7 @@ INSERT INTO `sys_module_action` VALUES ('23', '4', '图标资源', 'resource/ico
 INSERT INTO `sys_module_action` VALUES ('24', '4', '按钮资源', 'resource/button', '/adm/resource/button', '22', '');
 INSERT INTO `sys_module_action` VALUES ('25', '4', '标题资源', 'resource/text', '/adm/resource/text', '23', '');
 INSERT INTO `sys_module_action` VALUES ('26', '4', '引导提示资源', 'resource/notify', '/adm/resource/notify', '24', '');
-INSERT INTO `sys_module_action` VALUES ('27', '5', '首页', 'index/index', '/adm/index', '25', '');
+INSERT INTO `sys_module_action` VALUES ('27', '5', '首页', 'index/index', '/adm', '25', '');
 INSERT INTO `sys_module_action` VALUES ('28', '8', '角色管理-列表', 'adm/role', '/adm/role', '26', '');
 INSERT INTO `sys_module_action` VALUES ('29', '8', '角色信息添加表单', 'adm/role_add', null, '27', '');
 INSERT INTO `sys_module_action` VALUES ('30', '8', '角色信息添加提交', 'adm/role_add_submit', null, '28', '');
@@ -617,10 +627,10 @@ DROP TABLE IF EXISTS `sys_set`;
 CREATE TABLE `sys_set` (
   `set_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '网站设置id',
   `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '网站设置分类id',
-  `title` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
-  `sign` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标签',
-  `type` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型',
-  `value` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
+  `sign` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标签',
+  `type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型',
+  `value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`set_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -635,7 +645,7 @@ CREATE TABLE `sys_set` (
 DROP TABLE IF EXISTS `sys_set_category`;
 CREATE TABLE `sys_set_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '设置分类id',
-  `category_name` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设置分类名称',
+  `category_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设置分类名称',
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

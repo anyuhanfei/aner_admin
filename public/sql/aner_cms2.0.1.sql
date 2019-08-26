@@ -4,7 +4,7 @@ Navicat MySQL Data Transfer
 Source Server         : 本地
 Source Server Version : 80016
 Source Host           : localhost:3306
-Source Database       : aner_cms
+Source Database       : aner_admin
 
 Target Server Type    : MYSQL
 Target Server Version : 80016
@@ -219,7 +219,7 @@ CREATE TABLE `sys_basic` (
 -- ----------------------------
 -- Records of sys_basic
 -- ----------------------------
-INSERT INTO `sys_basic` VALUES ('1', 'aner_cms后台管理系统', 'aner_cms，php，后台管理系统', 'aner_cms后台管理系统', '', '');
+INSERT INTO `sys_basic` VALUES ('1', 'aner_admin后台管理系统', 'aner_admin，php，后台管理系统', 'aner_admin后台管理系统', '', '');
 
 -- ----------------------------
 -- Table structure for `sys_catalog`
