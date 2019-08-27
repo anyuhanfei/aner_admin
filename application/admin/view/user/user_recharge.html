@@ -1,0 +1,150 @@
+{extend name="base" /}
+
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/markdown/markdown.css">
+<script type="text/javascript" src="/static/markdown/marked.min.js"></script>
+{/block}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">会员充值</div>
+                        <div class="card-sub">
+                            当前会员为{$detail->$user_identity}，会员id为{$detail.user_id}
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    {foreach $user_fund_type as $k => $v}
+                                        <th scope="col">当前{$k}</th>
+                                    {/foreach}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {foreach $user_fund_type as $k => $v}
+                                        <td>{$detail.fund->$v}</td>
+                                    {/foreach}
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-check">
+                            <label>资金类型</label><br>
+                            {foreach $user_fund_type as $k => $v}
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="fund_type" value="{$v}">
+                                <span class="form-radio-sign">{$k}</span>
+                            </label>
+                            {/foreach}
+                        </div>
+                        <div class="form-check">
+                            <label>充值金额选择</label><br>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="1">
+                                <span class="form-radio-sign">1</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="5">
+                                <span class="form-radio-sign">5</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="10">
+                                <span class="form-radio-sign">10</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="50">
+                                <span class="form-radio-sign">50</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="100">
+                                <span class="form-radio-sign">100</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="500">
+                                <span class="form-radio-sign">500</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="1000">
+                                <span class="form-radio-sign">1000</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="5000">
+                                <span class="form-radio-sign">5000</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="radio_number" value="10000">
+                                <span class="form-radio-sign">10000</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="input_number">充值金额</label>
+                            <input type="number" class="form-control" id="input_number" value="0">
+                            <small id="emailHelp" class="form-text text-muted text-danger">如果填写充值金额，则以充值金额为准</small>
+                        </div>
+                        <input type="hidden" id="user_id" name="user_id" value="{$detail.user_id}"/>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '会员团队信息', '非法操作');
+    setTimeout(() => {
+        location.href = "/adm/user";
+    }, 1000);
+}
+
+
+//取消
+$("#cancel").click(function(){
+    location.href = "/adm/user/";
+})
+
+//提交
+$("#submit").click(function(){
+    var user_id = $("#user_id").val();
+    var fd = new FormData();
+    fd.append('fund_type', $("input[name='fund_type']:checked").val());
+    fd.append('radio_number', $("input[name='radio_number']:checked").val());
+    fd.append('input_number', $("#input_number").val());
+    $.ajax({
+        url: "/adm/user/recharge/submit/" + user_id,
+        type: "post",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function(data){
+            if(data.status == 3){
+                custom_notify('danger', '会员充值', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '会员充值', data.msg);
+            }else if(data.status == 1){
+                setTimeout(() => {
+                    location.href = "/adm/user/recharge/" + user_id;
+                }, 1500);
+                custom_notify('success', '会员充值', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

@@ -284,7 +284,7 @@ class Cms extends Base{
      */
     public function article(){
         $field = 'article_id, category_id, tag_ids, title, author, intro, keyword, image, sort, content_type';
-        $list = CmsArticle::field($field)->order('sort asc, article_id desc')->select();
+        $list = CmsArticle::field($field)->order('sort asc, article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         foreach($list as &$l){
             $l['tag_ids'] = CmsTag::where('tag_id', 'in', $l['tag_ids'])->column('tag_name');
             $l['tag_ids'] = implode(',', $l['tag_ids']);

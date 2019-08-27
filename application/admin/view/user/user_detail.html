@@ -1,0 +1,201 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            会员信息
+                            <button class="btn btn-success btn-xs" style="float: right;" onclick="location.href='/adm/user'">
+                                <i class="la la-mail-reply"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-sub">
+                            
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">会员id</th>
+                                    <th scope="col">昵称</th>
+                                    <th scope="col">手机号</th>
+                                    <th scope="col">邮箱</th>
+                                    <th scope="col">账号</th>
+                                    <th scope="col">上级会员</th>
+                                    <th scope="col">注册时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.user_id}</td>
+                                    <td>{$detail.nickname}</td>
+                                    <td>{$detail.phone}</td>
+                                    <td>{$detail.email}</td>
+                                    <td>{$detail.account}</td>
+                                    {if condition="$detail.top_id != 0"}
+                                    <td>{$detail.top->$user_identity}</td>
+                                    {else /}
+                                    <td></td>
+                                    {/if}
+                                    <td>{$detail.register_time}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">登录状态</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.is_login_text}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    {foreach $user_fund_type as $k => $v}
+                                        <th scope="col">{$k}</th>
+                                    {/foreach}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {foreach $user_fund_type as $k => $v}
+                                        <td>{$detail.fund->$v}</td>
+                                    {/foreach}
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">银行卡--开户人姓名</th>
+                                    <th scope="col">预留手机号</th>
+                                    <th scope="col">银行卡号</th>
+                                    <th scope="col">开户行</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.userdata.bank_username}</td>
+                                    <td>{$detail.userdata.bank_phone}</td>
+                                    <td>{$detail.userdata.bank_code}</td>
+                                    <td>{$detail.userdata.bank_name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">地址--姓名</th>
+                                    <th scope="col">手机号</th>
+                                    <th scope="col">省</th>
+                                    <th scope="col">市</th>
+                                    <th scope="col">区/县</th>
+                                    <th scope="col">详细地址</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.userdata.site_username}</td>
+                                    <td>{$detail.userdata.site_phone}</td>
+                                    <td>{$detail.userdata.site_province}</td>
+                                    <td>{$detail.userdata.site_city}</td>
+                                    <td>{$detail.userdata.site_district}</td>
+                                    <td>{$detail.userdata.site_address}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">微信账号</th>
+                                    <th scope="col">微信昵称</th>
+                                    <th scope="col">支付宝账号</th>
+                                    <th scope="col">支付宝实名认证姓名</th>
+                                    <th scope="col">qq</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.userdata.wx_account}</td>
+                                    <td>{$detail.userdata.wx_nickname}</td>
+                                    <td>{$detail.userdata.alipay_account}</td>
+                                    <td>{$detail.userdata.alipay_username}</td>
+                                    <td>{$detail.userdata.qq}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">身份证--姓名</th>
+                                    <th scope="col">身份证号</th>
+                                    <th scope="col">身份证正面照</th>
+                                    <th scope="col">身份证背面照</th>
+                                    <th scope="col">手持身份证照</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{$detail.userdata.id_card_username}</td>
+                                    <td>{$detail.userdata.id_card_code}</td>
+                                    <td>
+                                        {if condition="$detail.userdata.id_card_front_img != ''"}
+                                        <img src="{$detail.userdata.id_card_front_img}" width="400px" height="300px"/>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {if condition="$detail.userdata.id_card_verso_img != ''"}
+                                        <img src="{$detail.userdata.id_card_verso_img}" width="400px" height="300px"/>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {if condition="$detail.userdata.id_card_hand_img != ''"}
+                                        <img src="{$detail.userdata.id_card_hand_img}" width="300px" height="400px"/>
+                                        {/if}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script>
+
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '会员信息', '非法操作');
+    setTimeout(() => {
+        location.href = "/adm/user";
+    }, 1000);
+}
+</script>
+{/block}

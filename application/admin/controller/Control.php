@@ -32,6 +32,17 @@ class Control extends Controller{
         'content_type'=> 'on',  //内容类型
     ];
 
+    /*会员*/
+    //会员标识，用于会员与其他表之间的关联标识（user_id是计算机识别的关联标识，此设置为会员识别的关联标识）
+    public $user_identity = 'phone';
+    //会员唯一标识说明
+    public $user_identity_text = '手机号';
+    //会员资金种类，key为资金类型说明，value为字段名
+    public $user_fund_type = ['余额'=> 'money'];
+    //会员删除操作的开关
+    protected $user_delete_onoff = 'off';
+
+
     public function _initialize(){
 
     }

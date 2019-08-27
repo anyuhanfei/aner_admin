@@ -117,3 +117,16 @@ Route::get('adm/cms/article/update/:id', 'admin/cms/article_update');
 Route::post('adm/cms/article/update/submit/:id', 'admin/cms/article_update_submit');
 Route::post('adm/cms/article/delete/submit/:id', 'admin/cms/article_delete_submit');
 Route::get('adm/cms/article/content/:id', 'admin/cms/article_content');
+
+// 会员管理
+Route::get('adm/user', 'admin/user/user');
+Route::get('adm/user/add', 'admin/user/user_add');
+Route::post('adm/user/add/submit', 'admin/user/user_add_submit');
+Route::get('adm/user/team/:id', 'admin/user/user_team');
+Route::get('adm/user/detail/:id', 'admin/user/user_detail');
+Route::get('adm/user/recharge/:id', 'admin/user/user_recharge');
+Route::post('adm/user/recharge/submit/:id', 'admin/user/user_recharge_submit');
+Route::get('adm/user/update/:id', 'admin/user/user_update');
+Route::post('adm/user/update/submit/:type/:id', 'admin/user/user_update_submit');
+Route::get('adm/user/freeze/:id', 'admin/user/user_freeze');
+Route::get('adm/user/delete/:id', 'admin/user/user_delete');
