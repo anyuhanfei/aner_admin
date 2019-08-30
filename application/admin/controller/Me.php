@@ -51,7 +51,9 @@ class Me extends Base{
         $admin->via = $via != '' ? $via : $admin->via;
         $res = $admin->save();
         if($res){
-            delete_image($old_admin_via);
+            if($via != ''){
+                delete_image($old_admin_via);
+            }
             LogAdminOperation::create_data('修改个人资料', 'operation');
             return return_data(1, '', '个人资料修改成功');
         }else{

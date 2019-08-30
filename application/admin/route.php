@@ -63,8 +63,8 @@ Route::post('adm/catalog/update/submit/:id', 'admin/developer/catalog_update_sub
 Route::get('adm/catalog/delete/submit/:id', 'admin/developer/catalog_delete_submit');
 
 // 日志模块
-Route::get('adm/admin/operation/log', 'admin/log/admin_operation_log');
-Route::get('adm/admin/login/log', 'admin/log/admin_login_log');
+Route::rule('adm/admin/operation/log', 'admin/log/admin_operation_log');
+Route::rule('adm/admin/login/log', 'admin/log/admin_login_log');
 
 //个人模块
 Route::get('adm/me/detail', 'admin/me/detail');
@@ -109,7 +109,7 @@ Route::post('adm/cms/category/add/submit', 'admin/cms/category_add_submit');
 Route::get('adm/cms/category/update/:id', 'admin/cms/category_update');
 Route::post('adm/cms/category/update/submit/:id', 'admin/cms/category_update_submit');
 Route::get('adm/cms/category/delete/submit/:id', 'admin/cms/category_delete_submit');
-Route::get('adm/cms/article', 'admin/cms/article');
+Route::rule('adm/cms/article', 'admin/cms/article');
 Route::get('adm/cms/article/add', 'admin/cms/article_add');
 Route::post('adm/cms/article/add/submit', 'admin/cms/article_add_submit');
 Route::post('adm/cms/img', 'admin/cms/article_img');
@@ -119,7 +119,7 @@ Route::post('adm/cms/article/delete/submit/:id', 'admin/cms/article_delete_submi
 Route::get('adm/cms/article/content/:id', 'admin/cms/article_content');
 
 // 会员管理
-Route::get('adm/user', 'admin/user/user');
+Route::rule('adm/user', 'admin/user/user');
 Route::get('adm/user/add', 'admin/user/user_add');
 Route::post('adm/user/add/submit', 'admin/user/user_add_submit');
 Route::get('adm/user/team/:id', 'admin/user/user_team');

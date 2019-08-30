@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <form class="form-inline" role="form" action="" method="post">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="ip" placeholder="ip">
+                                <input type="text" class="form-control" name="ip" id="ip" value="{$ip}" placeholder="ip">
                             </div>
                             <div class="form-group">
                                 <input id='mydatepicker1' type="text" class="form-control" name="start_time" placeholder="起始时间" value="">
@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <input id='mydatepicker2' type="text" class="form-control" name="end_time" placeholder="结束时间" value="">
                             </div>
-                            <button type="submit" class="btn btn-default">搜索</button>&nbsp&nbsp
+                            <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
                             <button type="button" class="btn btn-default" id="from_close">清空</button>
                         </form>
                         <table class="table mt-3">
@@ -84,6 +84,7 @@
         $("#ip").val('');
         $("#mydatepicker1").val('');
         $("#mydatepicker2").val('');
+        $("#search_submit").click();
     })
 </script>
 </script>

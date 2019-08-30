@@ -27,13 +27,22 @@ class User extends Base{
      * @return void
      */
     public function user(){
-        $user_identity = Request::instance()->param($this->user_identity, '');
-        $top_user_identity = Request::instance()->param('top_' . $this->user_identity, '');
-        $user = new IdxUser();
-        $user_identity != '' ? $user->where($this->user_identity, 'like', '%'. $user_identity . '%') : false;
-        $top_user_identity != '' ? $user->where('top_' . $this->user_identity, 'like', '%'. $top_user_identity . '%') : false;
-        $user = $user->order('user_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
-        $this->assign('list', $user);
+        $user_id = Request::instance()->param('user_id', '');
+        $top_user_id = Request::instance()->param('top_user_id', '');
+        $nickname = Request::instance()->param('nickname', '');
+        $user_identity = Request::instance()->param('user_identity', '');
+        $top_user_identity = Request::instance()->param('top_user_identity', '');
+        $user = new IdxUser;
+        $user = ($user_id != '') ? $user->where('user_id', $user_id) : $user;
+        $user = ($top_user_id != '') ? $user->where('top_id', $top_user_id) : $user;
+        $user = ($nickname != '') ? $user->where('nickname', 'like', '%' . $nickname . '%') : $user;
+        $user = ($user_identity != '') ? $user->where($this->user_identity, 'like', '%'. $user_identity . '%') : $user;
+        if($top_user_identity != ''){
+            $top_id = IdxUser::where($this->user_identity, 'like', '%' . $top_user_identity . '%')->find();
+            $user = $user->where('top_id', $top_id);
+        }
+        $list = $user->order('user_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
+        self::many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity]);
         return $this->fetch();
     }
 

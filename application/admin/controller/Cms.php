@@ -283,13 +283,23 @@ class Cms extends Base{
      * @return void
      */
     public function article(){
+        $title = Request::instance()->param('title', '');
+        $category_name = Request::instance()->param('category_name', '');
+        $tag_name = Request::instance()->param('tag_name', '');
+        $author = Request::instance()->param('author', '');
+
         $field = 'article_id, category_id, tag_ids, title, author, intro, keyword, image, sort, content_type';
-        $list = CmsArticle::field($field)->order('sort asc, article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
+        $article = new CmsArticle;
+        $article = $article->field($field);
+        $article = ($title != '') ? $article->where('title', 'like', '%' . $title . '%') : $article;
+        $article = ($category_name != '') ? $article->where('category_name', 'like', '%' . $category_name . '%') : $article;
+        $article = ($tag_name != '') ? $article->where('tag_name', 'like', '%' . $tag_name . '%') : $article;
+        $article = ($author != '') ? $article->where('author', 'like', '%' . $author . '%') : $article;
+        $list = $article->order('sort asc, article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         foreach($list as &$l){
             $l['tag_ids'] = CmsTag::where('tag_id', 'in', $l['tag_ids'])->column('tag_name');
             $l['tag_ids'] = implode(',', $l['tag_ids']);
         }
-        $this->assign('list', $list);
         //删除未被上传的图片
         $article_images = Cookie::get('article_content_images');
         if($article_images){
@@ -299,6 +309,7 @@ class Cms extends Base{
             }
         }
         Cookie::set('article_content_images');
+        self::many_assign(['list'=> $list, 'title'=> $title, 'category_name'=> $category_name, 'tag_name'=> $tag_name, 'author'=> $author]);
         return $this->fetch();
     }
 

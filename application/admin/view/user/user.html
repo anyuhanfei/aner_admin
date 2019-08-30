@@ -13,7 +13,27 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-success btn-xs" id="add">添加</button>
+                        <form class="form-inline" role="form" action="" method="post">
+                            <button class="btn btn-success btn-xs" id="add" style="float: left;">添加</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="user_id" id="user_id" value="{$user_id}" placeholder="会员id" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="nickname" id="nickname" value="{$nickname}" placeholder="会员昵称" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="user_identity" id="user_identity" value="{$search_user_identity}" placeholder="会员{$user_identity_text}" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="top_user_id" id="top_user_id" value="{$top_user_id}" placeholder="上级会员id" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="top_user_identity" id="top_user_identity" value="{$top_user_identity}" placeholder="上级会员{$user_identity_text}" style="width: 150px;">
+                            </div>
+                            <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
+                            <button type="button" class="btn btn-default" id="from_close">清空</button>
+                        </form>
                         <table class="table mt-3">
                             <thead>
                                 <tr>
@@ -60,6 +80,7 @@
                                 {/volist}
                             </tbody>
                         </table>
+                        {$list->render()}
                     </div>
                 </div>
             </div>
@@ -133,5 +154,14 @@
             }
         })
     }
+
+    $("#from_close").click(function(){
+        $("#top_user_id").val('');
+        $("#user_id").val('');
+        $("#nickname").val('');
+        $("#user_identity").val('');
+        $("#top_user_identity").val('');
+        $("#search_submit").click();
+    })
 </script>
 {/block}

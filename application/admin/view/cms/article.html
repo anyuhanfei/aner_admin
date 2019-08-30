@@ -18,7 +18,28 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-success btn-xs" id="add">添加</button>
+                        <form class="form-inline" action="" method="post">
+                            <button class="btn btn-success btn-xs" id="add" style="float: left;">添加</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="title" id="title" value="{$title}" placeholder="标题" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="category_name" id="category_name" value="{$category_name}" placeholder="分类" style="width: 150px;">
+                            </div>
+                            {if condition="$cms_article['tag_ids'] == 'on'"}
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="tag_name" id="tag_name" value="{$tag_name}" placeholder="标签" style="width: 150px;">
+                            </div>
+                            {/if}
+                            {if condition="$cms_article['author'] == 'on'"}
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="作者" style="width: 150px;">
+                            </div>
+                            {/if}
+                            <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
+                            <button type="button" class="btn btn-default" id="from_close">清空</button>
+                        </form>
                         <table class="table mt-3">
                             <thead>
                                 <tr>
@@ -65,7 +86,7 @@
                                 {/volist}
                             </tbody>
                         </table>
-                        {$list->render()};
+                        {$list->render()}
                     </div>
                 </div>
             </div>
@@ -136,5 +157,13 @@
             layer.closeAll();
         });
     }
+
+    $("#from_close").click(function(){
+        $("#title").val('');
+        $("#category_name").val('');
+        $("#tag_name").val('');
+        $("#author").val('');
+        $("#search_submit").click();
+    })
 </script>
 {/block}
