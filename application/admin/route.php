@@ -10,6 +10,7 @@ Route::get('adm', 'admin/index/index');
 // 登录模块
 Route::get('adm/login', 'admin/login/login');
 Route::post('adm/login/submit', 'admin/login/login_submit');
+Route::get('adm/login/out', 'admin/login/login_out');
 
 // 广告模块
 Route::get('adm/ad', 'admin/ad/ad');

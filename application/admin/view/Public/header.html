@@ -103,16 +103,16 @@
                                 <div class="u-img"><img src="{$admin->via != '' ? $admin->via : '/static/logo/aner_admin_favicon.png'}" alt="user"></div>
                                 <div class="u-text">
                                     <h4>{$admin->nickname == '' ? $admin->account : $admin->nickname}</h4>
-                                    <p class="text-muted">{$admin->email}</p><a href="{:url('me/detail')}"
+                                    <p class="text-muted">{$admin->email}</p><a href="/adm/me/detail"
                                         class="btn btn-rounded btn-danger btn-sm">个人中心</a>
                                 </div>
                             </div>
                         </li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{:url('me/detail')}"><i class="ti-user"></i> 个人资料</a>
-                        <a class="dropdown-item" href="{:url('me/update_password')}"></i> 修改密码</a>
+                        <a class="dropdown-item" href="/adm/me/detail"><i class="ti-user"></i> 个人资料</a>
+                        <a class="dropdown-item" href="/adm/me/update/password"></i> 修改密码</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{:url('login/login_out')}"><i class="fa fa-power-off"></i> 退出登录</a>
+                        <a class="dropdown-item" href="/adm/login/out"><i class="fa fa-power-off"></i> 退出登录</a>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
