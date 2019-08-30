@@ -7,7 +7,7 @@ use app\admin\model\LogAdminOperation;
 
 
 class Control extends Controller{
-    protected $version = '2.0.0';
+    protected $version = '2.0.4';
     //调试模式，true开false关
     protected $debug = true;
     //管理员异常登录的最大次数
@@ -41,7 +41,6 @@ class Control extends Controller{
     public $user_fund_type = ['余额'=> 'money'];
     //会员删除操作的开关
     protected $user_delete_onoff = 'off';
-
 
     public function _initialize(){
 
