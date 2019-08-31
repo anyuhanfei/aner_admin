@@ -29,7 +29,7 @@ class IdxUser extends Model{
     }
 
     /**会员统计关联 */
-    public function count(){
+    public function usercount(){
         return $this->hasOne('idx_user_count', 'user_id', 'user_id');
     }
 
