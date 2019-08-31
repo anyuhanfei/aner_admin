@@ -284,16 +284,16 @@ class Cms extends Base{
      */
     public function article(){
         $title = Request::instance()->param('title', '');
-        $category_name = Request::instance()->param('category_name', '');
-        $tag_name = Request::instance()->param('tag_name', '');
+        $category_id = Request::instance()->param('category_id', '');
+        $tag_id = Request::instance()->param('tag_id', '');
         $author = Request::instance()->param('author', '');
 
         $field = 'article_id, category_id, tag_ids, title, author, intro, keyword, image, sort, content_type';
         $article = new CmsArticle;
         $article = $article->field($field);
         $article = ($title != '') ? $article->where('title', 'like', '%' . $title . '%') : $article;
-        $article = ($category_name != '') ? $article->where('category_name', 'like', '%' . $category_name . '%') : $article;
-        $article = ($tag_name != '') ? $article->where('tag_name', 'like', '%' . $tag_name . '%') : $article;
+        $article = ($category_id != '') ? $article->where('category_id', $category_id) : $article;
+        $article = ($tag_id != '') ? $article->where('tag_ids', 'like', '%,' . $tag_id . ',%') : $article;
         $article = ($author != '') ? $article->where('author', 'like', '%' . $author . '%') : $article;
         $list = $article->order('sort asc, article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         foreach($list as &$l){
@@ -309,7 +309,12 @@ class Cms extends Base{
             }
         }
         Cookie::set('article_content_images');
-        self::many_assign(['list'=> $list, 'title'=> $title, 'category_name'=> $category_name, 'tag_name'=> $tag_name, 'author'=> $author]);
+        self::many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'tag_id'=> $tag_id, 'author'=> $author]);
+        //分类和标签
+        $category = CmsCategory::field('category_id, category_name, sort')->order('sort asc')->select();
+        $tag = CmsTag::field('tag_id, tag_name, sort')->order('sort asc')->select();
+        $this->assign('category', $category);
+        $this->assign('tag', $tag);
         return $this->fetch();
     }
 
@@ -378,6 +383,7 @@ class Cms extends Base{
         if($article){
             self::remove_article_content_image($content);
             LogAdminOperation::create_data('文章信息添加：'.$title, 'operation');
+            CmsArticleData::create(['article_id'=> $article->article_id]);
             return return_data(1, '', '添加成功');
         }else{
             if($data['image'] != ''){
@@ -488,6 +494,7 @@ class Cms extends Base{
             delete_image($article->image);
             self::remove_article_content_image($article->content, 'delete');
             LogAdminOperation::create_data('文章信息删除：'.$article->title, 'operation');
+            CmsArticleData::where('article_id', $id)->delete();
             return return_data(1, '', '删除成功');
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
@@ -558,5 +565,28 @@ class Cms extends Base{
             }
         }
         return $return_array;
+    }
+
+    public function article_status($id){
+        $status_type = Request::instance()->param('status_type', '');
+        if($status_type != 'recomment' && $status_type != 'stick' && $status_type != 'hot'){
+            return return_data(2, '', '非法操作');
+        }
+        $status_type = 'is_' . $status_type;
+        $article = CmsArticle::get($id);
+        if(!$article){
+            return return_data(2, '', '非法操作');
+        }
+        $article_data = CmsArticleData::get($id);
+        $article_data->$status_type = $article_data->$status_type == 0 ? 1 : 0;
+        $res = $article_data->save();
+        if($res){
+            $status_type_text = array('is_recomment'=> '推荐', 'is_stick'=> '置顶', 'is_hot'=> '热门');
+            $status_text = array('取消', '开启');
+            LogAdminOperation::create_data('文章文章属性修改：'.$article->title . $status_text[$article_data->$status_type] . $status_type_text[$status_type], 'operation');
+            return return_data(1, '', '设置成功');
+        }else{
+            return return_data(3, '', '设置失败,请联系管理员');
+        }
     }
 }

@@ -39,21 +39,21 @@ class Base extends Control{
         }
         $this->assign('admin', $this->admin);
         //权限控制
-        if($action != 'index'){
-            if($this->admin->role_id == 0){
-                return $this->redirect('/adm/login');
-            }
-            $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
-            if(!$current_url_id){
-                return $this->redirect('/adm');
-            }
-            $role = AdmRole::where('role_id', $this->admin->role_id)->find();
-            if(!$role){
-                return $this->redirect('/adm/login');
-            }
-            if(strpos($role->power, (string)$current_url_id) === false){
-                return $this->redirect('/adm');
-            }
-        }
+        // if($action != 'index'){
+        //     if($this->admin->role_id == 0){
+        //         return $this->redirect('/adm/login');
+        //     }
+        //     $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
+        //     if(!$current_url_id){
+        //         return $this->redirect('/adm');
+        //     }
+        //     $role = AdmRole::where('role_id', $this->admin->role_id)->find();
+        //     if(!$role){
+        //         return $this->redirect('/adm/login');
+        //     }
+        //     if(strpos($role->power, (string)$current_url_id) === false){
+        //         return $this->redirect('/adm');
+        //     }
+        // }
     }
 }

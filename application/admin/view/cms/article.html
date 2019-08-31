@@ -19,22 +19,32 @@
                     </div>
                     <div class="card-body">
                         <form class="form-inline" action="" method="post">
-                            <button class="btn btn-success btn-xs" id="add" style="float: left;">添加</button>
+                            <button type="button" class="btn btn-success btn-xs" id="add" style="float: left;">添加</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-group">
-                                <input type="text" class="form-control" name="title" id="title" value="{$title}" placeholder="标题" style="width: 150px;">
+                                <input type="text" class="form-control" name="title" id="title" value="{$title}" placeholder="搜索标题" style="width: 150px;">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="category_name" id="category_name" value="{$category_name}" placeholder="分类" style="width: 150px;">
+                                <select class="form-control form-control" name="category_id" id="category_id">
+                                    <option value="">搜索文章分类</option>
+                                    {volist name="category" id="c"}
+                                    <option value="{$c.category_id}" {if condition="$category_id == $c.category_id"}selected{/if}>{$c.category_name}</option>
+                                    {/volist}
+                                </select>
                             </div>
                             {if condition="$cms_article['tag_ids'] == 'on'"}
                             <div class="form-group">
-                                <input type="text" class="form-control" name="tag_name" id="tag_name" value="{$tag_name}" placeholder="标签" style="width: 150px;">
+                                <select class="form-control form-control" name="tag_id" id="tag_id">
+                                    <option value="">搜索标签</option>
+                                    {volist name="tag" id="t"}
+                                    <option value="{$t.tag_id}" {if condition="$tag_id == $t.tag_id"}selected{/if}>{$t.tag_name}</option>
+                                    {/volist}
+                                </select>
                             </div>
                             {/if}
                             {if condition="$cms_article['author'] == 'on'"}
                             <div class="form-group">
-                                <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="作者" style="width: 150px;">
+                                <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="搜索作者" style="width: 150px;">
                             </div>
                             {/if}
                             <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
@@ -43,19 +53,25 @@
                         <table class="table mt-3">
                             <thead>
                                 <tr>
-                                    <th scope="col" width="7%">#</th>
-                                    <th scope="col" width="7%">id</th>
+                                    <th scope="col" width="3%">#</th>
+                                    <th scope="col" width="4%">id</th>
+                                    <th scope="col" width="5%">推荐</th>
+                                    <th scope="col" width="5%">置顶</th>
+                                    <th scope="col" width="5%">热门</th>
                                     {if condition="$cms_article['image'] == 'on'"}
-                                    <th scope="col" width="7%">图片</th>
+                                    <th scope="col" width="2%">图片</th>
                                     {/if}
-                                    <th scope="col" width="25%">标题</th>
-                                    <th scope="col" width="13%">分类</th>
+                                    <th scope="col" width="20%">标题</th>
+                                    <th scope="col" width="6%">分类</th>
                                     {if condition="$cms_article['tag_ids'] == 'on'"}
-                                    <th scope="col" width="18%">标签</th>
+                                    <th scope="col" width="10%">标签</th>
                                     {/if}
                                     {if condition="$cms_article['author'] == 'on'"}
-                                    <th scope="col" width="10%">作者</th>
+                                    <th scope="col" width="6%">作者</th>
                                     {/if}
+                                    <th scope="col" width="5%">点击率</th>
+                                    <th scope="col" width="5%">点赞数</th>
+                                    <th scope="col" width="5%">评论数</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -64,6 +80,21 @@
                                 <tr id="tr{$vo.article_id}">
                                     <td>{$vo.sort}</td>
                                     <td>{$vo.article_id}</td>
+                                    <td>
+                                        <div id="divrecomment{$vo.article_id}" onclick="status('recomment', {$vo.article_id})">
+                                            <input id="recomment{$vo.article_id}" type="checkbox" {if condition="$vo.artdata.is_recomment == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div onclick="status('stick', {$vo.article_id})">
+                                            <input type="checkbox" {if condition="$vo.artdata.is_stick == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div onclick="status('hot', {$vo.article_id})">
+                                            <input type="checkbox" {if condition="$vo.artdata.is_hot == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
+                                        </div>
+                                    </td>
                                     {if condition="$cms_article['image'] == 'on'"}
                                     <td>
                                         <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image({$vo.article_id})"/>
@@ -77,6 +108,9 @@
                                     {if condition="$cms_article['author'] == 'on'"}
                                     <td>{$vo.author}</td>
                                     {/if}
+                                    <td>{$vo.artdata.looknum}</td>
+                                    <td>{$vo.artdata.likenum}</td>
+                                    <td>{$vo.artdata.commentnum}</td>
                                     <td>
                                         <button class="btn btn-warning btn-xs" onclick="look({$vo.article_id})">查看</button>
                                         <button class="btn btn-warning btn-xs" onclick="update({$vo.article_id})">修改</button>
@@ -147,10 +181,10 @@
                 type: "post",
                 success: function(data){
                     if(data.status == 3){
-                        custom_notify('danger', '文章标签删除', data.msg);
+                        custom_notify('danger', '文章删除', data.msg);
                     }else{
                         $("#tr" + article_id).html('');
-                        custom_notify('success', '文章标签删除', data.msg);
+                        custom_notify('success', '文章删除', data.msg);
                     }
                 }
             })
@@ -160,10 +194,38 @@
 
     $("#from_close").click(function(){
         $("#title").val('');
-        $("#category_name").val('');
-        $("#tag_name").val('');
+        $("#category_id").val('');
+        $("#tag_id").val('');
         $("#author").val('');
         $("#search_submit").click();
     })
+
+    function status(status_type, article_id){
+        $.ajax({
+            url: "/adm/cms/article/status/" + article_id,
+            type: "post",
+            data: {status_type: status_type},
+            success: function(data){
+                if(data.status == 3 || data.status == 2){
+                    custom_notify('danger', '文章属性修改', data.msg);
+                    $("#divrecomment" + article_id).attr('onclick', '');
+                    var parent_class = $("#" + status_type + article_id).parent().attr('class');
+                    $("#" + status_type + article_id).parent().click();
+                    setTimeout(() => {
+                        $("#divrecomment" + article_id).attr('onclick', "status('"+ status_type +"', " + article_id +")");
+                    }, 300);
+                }
+            },
+            error: function(){
+                custom_notify('danger', '文章属性修改', data.msg);
+                $("#divrecomment" + article_id).attr('onclick', '');
+                var parent_class = $("#" + status_type + article_id).parent().attr('class');
+                $("#" + status_type + article_id).parent().click();
+                setTimeout(() => {
+                    $("#divrecomment" + article_id).attr('onclick', "status('"+ status_type +"', " + article_id +")");
+                }, 300);
+            }
+        })
+    }
 </script>
 {/block}

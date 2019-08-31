@@ -118,6 +118,7 @@ Route::get('adm/cms/article/update/:id', 'admin/cms/article_update');
 Route::post('adm/cms/article/update/submit/:id', 'admin/cms/article_update_submit');
 Route::post('adm/cms/article/delete/submit/:id', 'admin/cms/article_delete_submit');
 Route::get('adm/cms/article/content/:id', 'admin/cms/article_content');
+Route::post('adm/cms/article/status/:id', 'admin/cms/article_status');
 
 // 会员管理
 Route::rule('adm/user', 'admin/user/user');
