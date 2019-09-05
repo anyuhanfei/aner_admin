@@ -196,7 +196,9 @@ $("#submit").click(function(){
             }else if(data.status == 2){
                 custom_notify('warning', '文章信息添加', data.msg);
             }else if(data.status == 1){
-                location.href = "/adm/cms/article/add";
+                setTimeout(() => {
+                    location.href = "/adm/cms/article/add";
+                }, 1500);
                 custom_notify('success', '文章信息添加', data.msg);
             }
         }
