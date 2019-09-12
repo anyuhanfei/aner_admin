@@ -18,12 +18,12 @@ Route::get('adm/adv/add', 'admin/ad/ad_adv_add');
 Route::post('adm/adv/add/submit', 'admin/ad/ad_adv_add_submit');
 Route::get('adm/adv/update/:id', 'admin/ad/ad_adv_update');
 Route::post('adm/adv/update/submit/:id', 'admin/ad/ad_adv_update_submit');
-Route::get('adm/adv/delete/submit/:id', 'admin/ad/ad_adv_delete_submit');
+Route::post('adm/adv/delete/submit/:id', 'admin/ad/ad_adv_delete_submit');
 Route::get('adm/ad/add', 'admin/ad/ad_ad_add');
 Route::post('adm/ad/add/submit', 'admin/ad/ad_ad_add_submit');
 Route::get('adm/ad/update/:id', 'admin/ad/ad_ad_update');
 Route::post('adm/ad/update/submit/:id', 'admin/ad/ad_ad_update_submit');
-Route::get('adm/ad/delete/submit/:id', 'admin/ad/ad_ad_delete_submit');
+Route::post('adm/ad/delete/submit/:id', 'admin/ad/ad_ad_delete_submit');
 Route::post('adm/ad/img', 'admin/ad/ad_img');
 
 // 管理模块
@@ -61,7 +61,7 @@ Route::get('adm/catalog/add', 'admin/developer/catalog_add');
 Route::post('adm/catalog/add/submit', 'admin/developer/catalog_add_submit');
 Route::get('adm/catalog/update/:id', 'admin/developer/catalog_update');
 Route::post('adm/catalog/update/submit/:id', 'admin/developer/catalog_update_submit');
-Route::get('adm/catalog/delete/submit/:id', 'admin/developer/catalog_delete_submit');
+Route::post('adm/catalog/delete/submit/:id', 'admin/developer/catalog_delete_submit');
 
 // 日志模块
 Route::rule('adm/admin/operation/log', 'admin/log/admin_operation_log');

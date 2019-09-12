@@ -40,7 +40,7 @@ class Control extends Controller{
     //会员资金种类，key为资金类型说明，value为字段名
     public $user_fund_type = ['余额'=> 'money'];
     //会员删除操作的开关
-    protected $user_delete_onoff = 'off';
+    protected $user_delete_onoff = 'on';
 
     public function _initialize(){
 

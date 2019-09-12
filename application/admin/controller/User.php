@@ -237,6 +237,9 @@ class User extends Base{
         }
         $res = IdxUser::where('user_id', $id)->delete();
         if($res){
+            IdxUserCount::where('user_id', $id)->delete();
+            IdxUserData::where('user_id', $id)->delete();
+            IdxUserFund::where('user_id', $id)->delete();
             $control_user_identity = $this->user_identity;
             LogAdminOperation::create_data('会员信息删除：'.$user->$control_user_identity, 'operation');
             return return_data(1, '', '删除成功');

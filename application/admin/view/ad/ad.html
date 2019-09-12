@@ -155,8 +155,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "adm/adv/delete/submit/" + adv_id,
-                type: "get",
+                url: "/adm/adv/delete/submit/" + adv_id,
+                type: "post",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '广告位信息删除', data.msg);
@@ -176,8 +176,8 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "adm/ad/delete/submit/" + ad_id,
-                type: "get",
+                url: "/adm/ad/delete/submit/" + ad_id,
+                type: "post",
                 success: function(data){
                     if(data.status == 3){
                         custom_notify('danger', '广告信息删除', data.msg);

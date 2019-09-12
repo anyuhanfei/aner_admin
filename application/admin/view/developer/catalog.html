@@ -126,7 +126,7 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "/adm/catalog/delete/submit" + catalog_id,
+                url: "/adm/catalog/delete/submit/" + catalog_id,
                 type: "post",
                 data: {catalog_id: catalog_id},
                 success: function(data){
