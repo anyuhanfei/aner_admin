@@ -55,8 +55,8 @@
                             <div class="tab-pane " id="password">
                                 <div class="card-body" style="padding: 15px 200px 10px;">
                                     <div class="form-group">
-                                        <label for="password">修改密码</label>
-                                        <input type="text" class="form-control" id="password">
+                                        <label for="login_password">修改密码</label>
+                                        <input type="text" class="form-control" id="login_password">
                                         <small id="emailHelp" class="form-text text-muted text-danger">6到20位数字和字母的组合</small>
                                     </div>
                                     <div class="card-action" style="display: flex; justify-content: center;">
@@ -118,7 +118,7 @@ $("#detail_submit").click(function(){
 
 $("#password_submit").click(function(){
     var fd = new FormData();
-    fd.append('password', $("#password").val());
+    fd.append('password', $("#login_password").val());
     update_submit('password', fd);
 })
 

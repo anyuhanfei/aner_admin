@@ -6,6 +6,7 @@ use think\Controller;
 use think\Request;
 
 use app\admin\model\LogAdminOperation;
+use app\admin\model\AdmAdmin;
 
 class Log extends Base{
     /**
@@ -55,7 +56,7 @@ class Log extends Base{
      * @return void
      */
     protected function where_admin($model, $key, $value){
-        if($account != ''){
+        if($key != ''){
             $admin = AdmAdmin::where($key, $value)->find();
             $model = $admin ? $model->where('admin_id', $admin->admin_id) : $model->where('admin_id', 0);
         }

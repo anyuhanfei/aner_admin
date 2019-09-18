@@ -83,7 +83,7 @@ function file_upload($file, $save_path, $file_validate = array('size'=>156780000
         $info = $file->validate(['size'=>$file_validate['size'],'ext'=>$file_validate['ext']])->move($full_path);
         if($info){
             $res = array('status'=>1, 'file_path'=>'/uploads'. DS . $save_path . DS . $info->getSaveName(), 'error'=>'');
-            chmod($full_path, 0666);
+            chmod($full_path, 0755);
             unset($info);
             unset($file);
             return $res;

@@ -82,7 +82,7 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        {if condition="$detail.userdata.bank_username != ''"}
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -101,7 +101,8 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        {/if}
+                        {if condition="$detail.userdata.site_username != ''"}
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -124,28 +125,42 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        {/if}
+                        {if condition="$detail.userdata.wx_account != '' || $detail.userdata.alipay_account != '' || $detail.userdata.qq != ''"}
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    {if condition="$detail.userdata.wx_account"}
                                     <th scope="col">微信账号</th>
                                     <th scope="col">微信昵称</th>
+                                    {/if}
+                                    {if condition="$detail.userdata.alipay_account"}
                                     <th scope="col">支付宝账号</th>
                                     <th scope="col">支付宝实名认证姓名</th>
+                                    {/if}
+                                    {if condition="$detail.userdata.qq"}
                                     <th scope="col">qq</th>
+                                    {/if}
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    {if condition="$detail.userdata.wx_account"}
                                     <td>{$detail.userdata.wx_account}</td>
                                     <td>{$detail.userdata.wx_nickname}</td>
+                                    {/if}
+                                    {if condition="$detail.userdata.alipay_account"}
                                     <td>{$detail.userdata.alipay_account}</td>
                                     <td>{$detail.userdata.alipay_username}</td>
+                                    {/if}
+                                    {if condition="$detail.userdata.qq"}
                                     <td>{$detail.userdata.qq}</td>
+                                    {/if}
                                 </tr>
                             </tbody>
                         </table>
-
+                        {/if}
+                        {if condition="$detail.userdata.id_card_username != ''"}
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -178,6 +193,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        {/if}
                     </div>
                 </div>
             </div>

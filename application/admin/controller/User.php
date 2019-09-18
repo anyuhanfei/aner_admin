@@ -39,7 +39,9 @@ class User extends Base{
         $user = ($user_identity != '') ? $user->where($this->user_identity, 'like', '%'. $user_identity . '%') : $user;
         if($top_user_identity != ''){
             $top_id = IdxUser::where($this->user_identity, 'like', '%' . $top_user_identity . '%')->find();
-            $user = $user->where('top_id', $top_id);
+            if($top_id){
+            	$user = $user->where('top_id', $top_id->user_id);
+            }
         }
         $list = $user->order('user_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         self::many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity]);
