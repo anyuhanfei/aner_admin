@@ -176,7 +176,7 @@ class Ad extends Base{
             'image'=> $path
         ]);
         if($res){
-            self::remove_ad_content_image($content);
+            self::remove_content_image($content, 'cookie', 'ad_content_images');
             LogAdminOperation::create_data('广告信息添加：'.$title, 'operation');
             return return_data(1, '', '添加成功');
         }else{
@@ -226,6 +226,7 @@ class Ad extends Base{
         }
         $ad = SysAd::get($id);
         $old_ad_title = $ad->title;
+        $old_ad_content = $ad->content;
         $ad->title = $title;
         $ad->adv_id = $adv_id;
         $ad->value = $value;
@@ -234,7 +235,9 @@ class Ad extends Base{
         $ad->image = $path == '' ? $ad->image : $path;
         $res = $ad->save();
         if($res){
-            self::remove_ad_content_image($content);
+            //删除编辑中删除掉的已上传图片，删除旧文本中被删除的图片
+            self::remove_content_image($content, 'cookie', 'ad_content_images');
+            self::remove_content_image($content, 'update', $old_ad_content);
             LogAdminOperation::create_data('广告信息修改：'.$old_ad_title.'->'.$title, 'operation');
             return return_data(1, '', '修改成功');
         }else{
@@ -253,7 +256,7 @@ class Ad extends Base{
         $res = SysAd::where('ad_id', $id)->delete();
         if($res){
             delete_image($ad->image);
-            self::remove_ad_content_image($ad->content, 'delete');
+            self::remove_content_image($ad->content, 'delete');
             LogAdminOperation::create_data('广告信息删除：'.$ad->title, 'operation');
             return return_data(1, '', '删除成功');
         }else{
@@ -268,51 +271,7 @@ class Ad extends Base{
      */
     public function ad_img(){
         $image = Request::instance()->file('upload');
-        $image_res = file_upload($image, 'ad_content');
-        $path = $image_res['file_path'];
-        if(!Cookie::has('ad_content_images')){
-            Cookie::set('ad_content_images', []);
-        }
-        $cookie_images = Cookie::get('ad_content_images');
-        array_push($cookie_images, $path);
-        Cookie::set('ad_content_images', $cookie_images);
-        return json(array('uploaded'=> 1, 'url'=> 'http://' . $_SERVER['HTTP_HOST'] . $path));
-    }
-
-    /**
-     * 删除已添加的图片记录（保证不会被删除）
-     *
-     * @param [type] $content
-     * @return void
-     */
-    private static function remove_ad_content_image($content, $type="cookie"){
-        $rule = "{<img src=\"http://" . $_SERVER['HTTP_HOST'] . "}";
-        $rule_two = "/\">/";
-        $res = preg_split($rule, $content);
-        $return_array = array();
-        foreach($res as $v){
-            $res_v = preg_split($rule_two, $v);
-            array_push($return_array, $res_v[0]);
-        }
-        if($type == 'cookie'){
-            $content_images = Cookie::get('ad_content_images');
-            if($content_images && $return_array){
-                foreach($content_images as $k => $c){
-                    foreach($return_array as $v){
-                        if($c == $v){
-                            unset($content_images[$k]);
-                        }
-                    }
-                }
-            }
-            Cookie::set('ad_content_images', $content_images);
-        }else{
-            if($return_array){
-                foreach($return_array as $v){
-                    delete_image($v);
-                }
-            }
-        }
-        return $return_array;
+        $image_path = self::content_image_upload($image, 'ad_content', 'ad_content_images');
+        return json(array('uploaded'=> 1, 'url'=> $image_path));
     }
 }

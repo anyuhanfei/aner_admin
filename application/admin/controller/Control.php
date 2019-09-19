@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use think\Controller;
+use think\Cookie;
 
 use app\admin\model\LogAdminOperation;
 
@@ -75,5 +76,61 @@ class Control extends Controller{
             $model->where('insert_time', 'between time', [$start_time, $end_time]);
         }
         return $model;
+    }
+
+    /**
+     * 删除已添加的图片记录
+     * cookie模式下remark参数代表保存编辑中图片路径的地址集cookie，
+     *     对比文本中的图片和cookie保存的图片，如果相同则说明此图片已保存到数据库，则留在cookie中等待删除
+     * delete模式下直接将文本中的图片删除
+     * update模式下remark参数代表旧文本，对比新旧文本，将新文本中不存在的图片删除
+     *
+     * array_diff(array1, array2, ...) — 计算数组的差集，对比返回在 array1 中但是不在 array2 及后面参数数组中的值。
+     *
+     * @param string $content
+     * @param string $type
+     * @param string $remark
+     * @return void
+     */
+    protected static function remove_content_image($content, $type="cookie", $remark = ''){
+        $return_array = get_editor_images($content);
+        if($type == 'cookie'){
+            assert($remark != ''); //数据无回滚
+            $content_images = Cookie::get($remark) ? Cookie::get($remark) : array();
+            Cookie::set($remark, array_diff($content_images, $return_array));
+        }elseif($type == 'delete'){
+            if($return_array){
+                foreach($return_array as $v){
+                    delete_image($v);
+                }
+            }
+        }elseif($type == 'update'){
+            $old_return_array = get_editor_images($remark);
+            $delete_images = array_diff($old_return_array, $return_array);
+            foreach($delete_images as $v){
+                delete_image($v);
+            }
+        }
+        return $return_array;
+    }
+
+    /**
+     * 富文本编辑器图片上传
+     *
+     * @param object $image 要上传的文件
+     * @param string $folder_path 文件上传文件夹名称
+     * @param string $cookie_name 保存cookie名称
+     * @return string 图片完整路径
+     */
+    protected static function content_image_upload($image, $folder_path, $cookie_name){
+        $image_res = file_upload($image, $folder_path);
+        $path = $image_res['file_path'];
+        if(!Cookie::has($cookie_name)){
+            Cookie::set($cookie_name, []);
+        }
+        $cookie_images = Cookie::get($cookie_name);
+        array_push($cookie_images, $path);
+        Cookie::set($cookie_name, $cookie_images);
+        return 'http://' . $_SERVER['HTTP_HOST'] . $path;
     }
 }

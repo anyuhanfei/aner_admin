@@ -119,6 +119,24 @@ function delete_image($oldImg, $is_full = false){
 }
 
 /**
+ * 获取富文本编辑器中的图片
+ *
+ * @param [type] $content
+ * @return void
+ */
+function get_editor_images($content){
+    $rule = "{<img src=\"http://" . $_SERVER['HTTP_HOST'] . "}";
+    $rule_two = "/\">/";
+    $res = preg_split($rule, $content);
+    $return_array = array();
+    foreach($res as $v){
+        $res_v = preg_split($rule_two, $v);
+        array_push($return_array, $res_v[0]);
+    }
+    return $return_array;
+}
+
+/**
  * 二维码生成
  *
  * @param [type] $url

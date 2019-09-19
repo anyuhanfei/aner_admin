@@ -381,7 +381,7 @@ class Cms extends Base{
         $data['content'] = $content;
         $article = CmsArticle::create($data);
         if($article){
-            self::remove_article_content_image($content);
+            self::remove_content_image($content, 'cookie', 'article_content_images');
             LogAdminOperation::create_data('文章信息添加：'.$title, 'operation');
             CmsArticleData::create(['article_id'=> $article->article_id]);
             return return_data(1, '', '添加成功');
@@ -464,13 +464,16 @@ class Cms extends Base{
             }
         }
         $old_title = $article->title;
+        $old_content = $article->content;
         $article->title = $title;
         $article->category_id = $category_id;
         $article->sort = $sort;
         $article->content = $content;
         $res = $article->save();
         if($res){
-            self::remove_article_content_image($content);
+            //删除编辑中删除掉的已上传图片，删除旧文本中被删除的图片
+            self::remove_content_image($content, 'cookie', 'article_content_images');
+            self::remove_content_image($content, 'update', $old_content);
             LogAdminOperation::create_data('文章信息修改：'.$old_title . '->' . $title, 'operation');
             return return_data(1, '', '修改成功');
         }else{
@@ -492,7 +495,7 @@ class Cms extends Base{
         $res = CmsArticle::where('article_id', $id)->delete();
         if($res){
             delete_image($article->image);
-            self::remove_article_content_image($article->content, 'delete');
+            self::remove_content_image($article->content, 'delete');
             LogAdminOperation::create_data('文章信息删除：'.$article->title, 'operation');
             CmsArticleData::where('article_id', $id)->delete();
             return return_data(1, '', '删除成功');
@@ -519,52 +522,8 @@ class Cms extends Base{
      */
     public function article_img(){
         $image = Request::instance()->file('upload');
-        $image_res = file_upload($image, 'article_content');
-        $path = $image_res['file_path'];
-        if(!Cookie::has('article_content_images')){
-            Cookie::set('article_content_images', []);
-        }
-        $cookie_images = Cookie::get('article_content_images');
-        array_push($cookie_images, $path);
-        Cookie::set('article_content_images', $cookie_images);
-        return json(array('uploaded'=> 1, 'url'=> 'http://' . $_SERVER['HTTP_HOST'] . $path));
-    }
-
-    /**
-     * 删除已添加的图片记录（保证不会被删除）
-     *
-     * @param [type] $content
-     * @return void
-     */
-    private static function remove_article_content_image($content, $type="cookie"){
-        $rule = "{<img src=\"http://" . $_SERVER['HTTP_HOST'] . "}";
-        $rule_two = "/\">/";
-        $res = preg_split($rule, $content);
-        $return_array = array();
-        foreach($res as $v){
-            $res_v = preg_split($rule_two, $v);
-            array_push($return_array, $res_v[0]);
-        }
-        if($type == 'cookie'){
-            $content_images = Cookie::get('article_content_images');
-            if($content_images && $return_array){
-                foreach($content_images as $k => $c){
-                    foreach($return_array as $v){
-                        if($c == $v){
-                            unset($content_images[$k]);
-                        }
-                    }
-                }
-            }
-            Cookie::set('article_content_images', $content_images);
-        }else{
-            if($return_array){
-                foreach($return_array as $v){
-                    delete_image($v);
-                }
-            }
-        }
-        return $return_array;
+        $image_path = self::content_image_upload($image, 'article_content', 'article_content_images');
+        return json(array('uploaded'=> 1, 'url'=> $image_path));
     }
 
     public function article_status($id){
