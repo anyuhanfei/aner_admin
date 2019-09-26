@@ -153,6 +153,7 @@ class Ad extends Base{
     public function ad_ad_add_submit(){
         $title = Request::instance()->param('title', '');
         $adv_id = Request::instance()->param('adv_id', '');
+        $sign = Request::instance()->param('sign', '');
         $value = Request::instance()->param('value', '');
         $content = Request::instance()->param('content', '');
         $sort = Request::instance()->param('sort', '');
@@ -167,9 +168,14 @@ class Ad extends Base{
         }else{
             $path = '';
         }
+        if($sign == ''){
+            $adv = SysAdv::get($adv_id);
+            $sign = $adv->sign;
+        }
         $res = SysAd::create([
             'title'=> $title,
             'adv_id'=> $adv_id,
+            'sign'=> $sign,
             'value'=> $value,
             'content'=> $content,
             'sort'=> $sort,
