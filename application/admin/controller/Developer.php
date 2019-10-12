@@ -289,15 +289,15 @@ class Developer extends Base{
         if(!$validate->scene('add')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id])){
             return return_data(2, '', $validate->getError());
         }
-        $action_path = SysModuleAction::field('path, route')->where('action_id', $action_id)->find();
+        $action_path = $action_id != 0 ? SysModuleAction::field('path, route')->where('action_id', $action_id)->find() : '';
         $res = SysCatalog::create([
             'title'=> $title,
             'icon'=> $icon,
             'top_id'=> $top_id,
             'action_id'=> $action_id,
             'module_id'=> $module_id,
-            'path'=> $action_path->path ? $action_path->path : '',
-            'route'=> $action_path->route ? $action_path->route : '',
+            'path'=> $action_path ? $action_path->path : '',
+            'route'=> $action_path ? $action_path->route : '',
             'sort'=> $sort,
         ]);
         if($res){
@@ -348,6 +348,7 @@ class Developer extends Base{
             return return_data(2, '', $validate->getError());
         }
         $action_path = SysModuleAction::field('path, route')->where('action_id', $action_id)->find();
+        $action_path = $action_id != 0 ? SysModuleAction::field('path, route')->where('action_id', $action_id)->find() : '';
         $catalog = SysCatalog::get($id);
         $old_catalog_title = $catalog->title;
         $catalog->title = $title;
@@ -356,8 +357,8 @@ class Developer extends Base{
         $catalog->module_id = $module_id;
         $catalog->top_id = $top_id;
         $catalog->sort = $sort;
-        $catalog->path = $action_path->path;
-        $catalog->route = $action_path->route;
+        $catalog->path = $action_path ? $action_path->path : '';
+        $catalog->route = $action_path ? $action_path->route : '';
         $res = $catalog->save();
         if($res){
             LogAdminOperation::create_data('后台目录修改：'.$old_catalog_title.'->'.$title, 'operation');
