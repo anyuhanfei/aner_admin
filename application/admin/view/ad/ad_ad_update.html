@@ -15,8 +15,7 @@
                             <input type="text" class="form-control" id="title" value="{$detail.title}">
                             <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
                         </div>
-                        {if condition="$debug== true"}
-                        <div class="form-group">
+                        <div class="form-group" {if condition="$debug == false"}style="display:none;"{/if}>
                             <label for="adv_id">所属广告位*</label>
                             <select class="form-control form-control-sm" id="adv_id">
                                 <option value="0">请选择所属广告位</option>
@@ -25,30 +24,23 @@
                                 {/volist}
                             </select>
                         </div>
-                        {/if}
-                        {if condition="$debug== true || $detail.value != ''"}
-                        <div class="form-group">
+                        <div class="form-group" {if condition="$debug == false && $detail.value == ''"}style="display:none;"{/if}>
                             <label for="value">值*</label>
                             <input type="text" class="form-control" id="value" value="{$detail.value}">
                         </div>
-                        {/if}
-                        {if condition="$debug== true || $detail.image != ''"}
-                        <div class="form-group">
+                        <div class="form-group" {if condition="$debug== false && $detail.image == ''"}style="display:none;"{/if}>
                             <label for="image">图片</label>
                             <input type="file" class="form-control-file" id="image">
                             {if condition="$detail.image != ''"}
                             <img id="image{$detail.ad_id}" src="{$detail.image}" width="80px" height="80px" onclick="show_image({$detail.ad_id})"/>
                             {/if}
                         </div>
-                        {/if}
-                        {if condition="$debug== true || $detail.content != ''"}
-                        <div class="form-group">
+                        <div class="form-group" {if condition="$debug== false && $detail.content == ''"}style="display:none;"{/if}>
                             <label for="editor">内容</label>
                             <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="editor">
                                 {$detail.content}
                             </textarea>
                         </div>
-                        {/if}
                         <div class="form-group">
                             <label for="sort">排序*</label>
                             <input type="number" class="form-control" id="sort" value="{$detail.sort}">
