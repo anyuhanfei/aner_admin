@@ -271,7 +271,7 @@ class Webset extends Base{
      */
     public function set_set_value_submit($id){
         $value = Request::instance()->param('value', '');
-        $set = SysSet::get($set_id);
+        $set = SysSet::get($id);
         if(!$set){
             return return_data(3, '', '非法操作');
         }
