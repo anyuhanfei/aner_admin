@@ -1,2 +1,5 @@
-.idea
+/.idea
+/.vscode
+/vendor
 *.log
+.env
