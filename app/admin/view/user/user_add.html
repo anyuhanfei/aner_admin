@@ -1,0 +1,88 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">会员信息添加</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="nickname">昵称*</label>
+                            <input type="text" class="form-control" id="nickname">
+                            <small id="emailHelp" class="form-text text-muted text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_identity">{$user_identity_text}*</label>
+                            <input type="text" class="form-control" id="user_identity">
+                            <small id="emailHelp" class="form-text text-muted text-danger">请填写未注册{$user_identity_text}</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码*</label>
+                            <input type="text" class="form-control" id="password">
+                            <small id="emailHelp" class="form-text text-muted text-danger">请填写密码，6到20位数字和字母的组合</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="level_password">二级密码</label>
+                            <input type="text" class="form-control" id="level_password">
+                            <small id="emailHelp" class="form-text text-muted text-danger">选填，6位纯数字</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="top_user_identity">上级会员{$user_identity_text}</label>
+                            <input type="text" class="form-control" id="top_user_identity">
+                            <small id="emailHelp" class="form-text text-muted text-danger">选填，不填写则没有上级会员</small>
+                        </div>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//取消
+$("#cancel").click(function(){
+    location.href = "/admin/user";
+})
+
+//提交
+$("#submit").click(function(){
+    var fd = new FormData();
+    fd.append('nickname', $("#nickname").val());
+    fd.append('user_identity', $("#user_identity").val());
+    fd.append('password', $("#password").val());
+    fd.append('level_password', $("#level_password").val());
+    fd.append('top_user_identity', $("#top_user_identity").val());
+    $.ajax({
+        url: "/admin/user/add/submit",
+        type: "post",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function(data){
+            data = JSON.parse(data);
+            if(data.status == 3){
+                custom_notify('danger', '会员信息添加', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '会员信息添加', data.msg);
+            }else if(data.status == 1){
+                setTimeout(() => {
+                    location.href = "/admin/user/add";
+                }, 1500);
+                custom_notify('success', '会员信息添加', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

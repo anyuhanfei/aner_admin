@@ -1,0 +1,87 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">标签信息修改</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="tag_name">标签名称*</label>
+                            <input type="text" class="form-control" id="tag_name" value="{$detail.tag_name}">
+                            <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
+                        </div>
+                        <div class="form-group" {if condition="$cms_tag_image_onoff == 'off'"}style="display:none;"{/if}>
+                            <label for="tag_image">图片</label>
+                            <input type="file" class="form-control-file" id="tag_image">
+                            {if condition="$detail.tag_image != ''"}
+                            <img id="image{$detail.tag_id}" src="{$detail.tag_image}" width="80px" height="80px" onclick="show_image({$detail.tag_id})"/>
+                            {/if}
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                        </div>
+                        <input type="hidden" name="tag_id" id="tag_id" value="{$detail.tag_id}"/>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="custom_js"}
+<script>
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '分类信息修改', '非法操作');
+    setTimeout(() => {
+        location.href = "/admin/cms/tag";
+    }, 1000);
+}
+
+//取消
+$("#cancel").click(function(){
+    location.href = "/admin/cms/tag";
+})
+
+//提交
+$("#submit").click(function(){
+    var tag_id = $("#tag_id").val();
+    var fd = new FormData();
+    fd.append('tag_name', $("#tag_name").val());
+    fd.append('sort', $("#sort").val());
+    fd.append("tag_image", $('#tag_image')[0].files[0]);
+    $.ajax({
+        url: "/admin/cms/tag/update/submit/" + tag_id,
+        type: "post",
+        processData: false,
+        contentType: false,
+        data: fd,
+        success: function(data){
+            data = JSON.parse(data);
+            if(data.status == 3){
+                custom_notify('danger', '标签信息修改', data.msg);
+            }else if(data.status == 2){
+                custom_notify('warning', '标签信息修改', data.msg);
+            }else{
+                $("#tag_image").val('');
+                $("#image"+data.data['tag_id']).attr('src', data.data['tag_image']);
+                custom_notify('success', '标签信息修改', data.msg);
+            }
+        }
+    })
+})
+</script>
+
+
+{/block}

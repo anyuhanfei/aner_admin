@@ -1,0 +1,39 @@
+<div class="sidebar">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <ul class="nav">
+            <!-- <span class="badge badge-count">5</span> --><!-- 在p标签后 -->
+            {volist name="adm_catalog" id="act"}
+                {if condition="$act.top_id == 0 && $act.path != ''"}
+                <li class="nav-item" id="actl{$act.catalog_id}">
+                    <a href="{$act.route}">
+                        <i class="{$act.icon}"></i>
+                        <p>{$act.title}</p>
+                    </a>
+                </li>
+                {elseif condition="$act.top_id == 0 && $act.path == ''"}
+                <li class="nav-item" id="act{$act.catalog_id}">
+                    <a class="" data-toggle="collapse" href="#catalog{$act.catalog_id}" aria-expanded="true" onclick="catalogonoff({$act.catalog_id})">
+                        <i class="{$act.icon}"></i>
+                        <p>{$act.title}</p>
+                        <span class="badge"><i class="la la-caret-right" id="span{$act.catalog_id}" data-status="false"></i></span>
+                    </a>
+                </li>
+                <div class="collapse in catalog{$act.catalog_id}" id="catalog{$act.catalog_id}" aria-expanded="true">
+                    <ul class="nav">
+                        {volist name="adm_catalog" id="actl"}
+                        {if condition="$actl.top_id == $act.catalog_id"}
+                        <li class="nav-item" id="actl{$actl.catalog_id}" data-topid="{$act.catalog_id}">
+                            <a href="{$actl.route}" style="padding-left: 40px;">
+                                <i class="{$actl.icon}"></i>
+                                <p>{$actl.title}</p>
+                            </a>
+                        </li>
+                        {/if}
+                        {/volist}
+                    </ul>
+                </div>
+                {/if}
+            {/volist}
+        </ul>
+    </div>
+</div>

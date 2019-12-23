@@ -1,0 +1,80 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            会员团队
+                            <button class="btn btn-success btn-xs" style="float: right;" onclick="location.href='/adm/user'">
+                                <i class="la la-mail-reply"></i>
+                            </button>
+                        </div>
+                        <div class="card-sub text-warning">
+                            {$user->$user_identity}的团队会员，直推人数：{$user_count.down_team_number}，团队人数：{$user_count.team_number}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="team" id="vo"}
+                                <tr class="tr{$vo.top_id}" {if condition="$vo->level != 1"}style="display: none;"{/if}>
+                                    <td id="td{$vo.user_id}" data-status="0" onclick="show({$vo.user_id})">
+                                        <?php echo str_repeat('&nbsp', ($vo->level - 1) * 8); ?>
+                                        <i class="la la-caret-right" id='i{$vo.user_id}'></i>
+                                        <?php echo str_repeat('&nbsp', 16); ?>
+                                        <span>{$vo.user_id}</span>
+                                        <?php echo str_repeat('&nbsp', 20); ?>
+                                        <span>{$vo.nickname}</span>
+                                        <?php echo str_repeat('&nbsp', 20); ?>
+                                        <span>{$vo->$user_identity}</span>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script>
+
+//非法操作
+var has_data = "{$has_data}";
+if(has_data == "false"){
+    custom_notify('danger', '会员团队信息', '非法操作');
+    setTimeout(() => {
+        location.href = "/admin/user";
+    }, 1000);
+}
+
+//展示
+function show(id){
+    var module = $("#td"+id);
+    if(module.data('status') == '0'){
+        //没展示
+        $("#i"+id).attr('class', 'la la-caret-down');
+        module.data('status', '1');
+        $(".tr" + id).attr('style', '');
+    }else{
+        //需要关闭
+        $("#i"+id).attr('class', 'la la-caret-right');
+        module.data('status', '0');
+        $(".tr" + id).attr('style', 'display: none;');
+    }
+}
+</script>
+{/block}

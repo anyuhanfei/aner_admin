@@ -1,0 +1,169 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">会员管理</div>
+                        <div class="card-sub text-warning">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline" role="form" action="" method="post">
+                            <button type="button" class="btn btn-success btn-xs" id="add" style="float: left;">添加</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="user_id" id="user_id" value="{$user_id}" placeholder="会员id" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="nickname" id="nickname" value="{$nickname}" placeholder="会员昵称" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="user_identity" id="user_identity" value="{$search_user_identity}" placeholder="会员{$user_identity_text}" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="top_user_id" id="top_user_id" value="{$top_user_id}" placeholder="上级会员id" style="width: 150px;">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="top_user_identity" id="top_user_identity" value="{$top_user_identity}" placeholder="上级会员{$user_identity_text}" style="width: 150px;">
+                            </div>
+                            <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
+                            <button type="button" class="btn btn-default" id="from_close">清空</button>
+                        </form>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="7%">#</th>
+                                    <th scope="col" width="10%">昵称</th>
+                                    <th scope="col" width="10%">{$user_identity_text}</th>
+                                    <th scope="col" width="10%">上级会员</th>
+                                    <th scope="col" width="18%">资金</th>
+                                    <th scope="col" width="5%">状态</th>
+                                    <th scope="col" width="10%">注册时间</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr id="tr{$vo->user_id}">
+                                    <td>{$vo.user_id}</td>
+                                    <td>{$vo.nickname}</td>
+                                    <td>{$vo->$user_identity}</td>
+                                    {if condition="$vo.top_id != 0"}
+                                    <td>{$vo.top->$user_identity}</td>
+                                    {else /}
+                                    <td></td>
+                                    {/if}
+                                    <td>
+                                        {foreach $user_fund_type as $k => $v}
+                                            {$k}: {$vo.userfund->$v}&nbsp&nbsp&nbsp&nbsp
+                                        {/foreach}
+                                    </td>
+                                    <td id="login{$vo.user_id}">{$vo.is_login_text}</td>
+                                    <td>{$vo.register_time}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-xs" onclick="team({$vo.user_id})">团队</button>
+                                        <button class="btn btn-success btn-xs" onclick="detail({$vo.user_id})">详情</button>
+                                        <button class="btn btn-warning btn-xs" onclick="recharge({$vo.user_id})">充值</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.user_id})">编辑</button>
+                                        <button id="freeze{$vo.user_id}" class="btn btn-warning btn-xs" onclick="freeze({$vo.user_id})" {if condition="$vo.is_login == 0"}style="display: none;"{/if}>冻结</button>
+                                        <button id="unfreeze{$vo.user_id}" class="btn btn-primary btn-xs" onclick="freeze({$vo.user_id})" {if condition="$vo.is_login == 1"}style="display: none;"{/if}>解冻</button>
+                                        {if condition="$user_delete_onoff == 'on'"}
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.user_id})">删除</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                        {$list->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script>
+    //添加
+    $("#add").click(function(){
+        location.href = "/admin/user/add";
+    })
+
+    //团队
+    function team(id){
+        location.href = "/admin/user/team/" + id;
+    }
+
+    //详情
+    function detail(id){
+        location.href = "/admin/user/detail/" + id;
+    }
+
+    function recharge(id){
+        location.href = "/admin/user/recharge/" + id;
+    }
+
+    //编辑
+    function update(id){
+        location.href = "/admin/user/update/" + id;
+    }
+
+    function freeze(id){
+        $.ajax({
+            url: "/admin/user/freeze/" + id,
+            success: function(data){
+                data = JSON.parse(data);
+                if(data.status == 3){
+                    custom_notify('danger', '会员权限操作', data.msg);
+                }else if(data.status == 2){
+                    custom_notify('warning', '会员权限操作', data.msg);
+                }else if(data.status == 1){
+                    custom_notify('success', '会员权限操作', data.msg);
+                    if(data.data == 1){
+                        $("#freeze" + id).attr('style', ' ');
+                        $("#unfreeze" + id).attr('style', 'display: none;');
+                        $("#login" + id).html('正常');
+                    }else{
+                        $("#unfreeze" + id).attr('style', ' ');
+                        $("#freeze" + id).attr('style', 'display: none;');
+                        $("#login" + id).html('冻结');
+                    }
+                }
+            }
+        })
+    }
+
+    function item_delete(id){
+        $.ajax({
+            url: "/admin/user/delete/" + id,
+            success: function(data){
+                data = JSON.parse(data);
+                if(data.status == 3){
+                    custom_notify('danger', '会员权限操作', data.msg);
+                }else if(data.status == 2){
+                    custom_notify('warning', '会员权限操作', data.msg);
+                }else if(data.status == 1){
+                    custom_notify('success', '会员权限操作', data.msg);
+                    $("#tr" + id).html(' ');
+                }
+            }
+        })
+    }
+
+    $("#from_close").click(function(){
+        $("#top_user_id").val('');
+        $("#user_id").val('');
+        $("#nickname").val('');
+        $("#user_identity").val('');
+        $("#top_user_identity").val('');
+        $("#search_submit").click();
+    })
+</script>
+{/block}

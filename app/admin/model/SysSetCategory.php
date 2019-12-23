@@ -18,7 +18,7 @@ class SysSetCategory extends Model{
      *
      * @return void
      */
-    public function set(){
+    public function sysset(){
         return $this->hasMany('sys_set', 'category_id', 'category_id');
     }
 }

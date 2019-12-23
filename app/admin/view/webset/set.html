@@ -1,0 +1,268 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">网站设置</div>
+                        <div class="card-sub text-warning">
+                            通常用于对项目的业务逻辑中一些动态变量进行设置。
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {if condition="$debug== true"}
+                        <button class="btn btn-success btn-xs" id="add_category">添加分类</button>
+                        <button class="btn btn-success btn-xs" id="add_set">添加设置</button>
+                        {/if}
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="5%"></th>
+                                    <th scope="col" width="10%">#</th>
+                                    <th scope="col" width="5%">id</th>
+                                    <th scope="col" width="20%">标题</th>
+                                    <th scope="col" width="20%">标签</th>
+                                    <th scope="col" width="15%">值</th>
+                                    <th scope="col" width="25%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="category" id="ca"}
+                                <tr id="tr{$ca.category_id}">
+                                    <td id="td{$ca.category_id}" data-status="0" onclick="show({$ca.category_id})">
+                                        <i class="la la-caret-right"></i>
+                                    </td>
+                                    <td><b>{$ca.category_name}</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        {if condition="$debug== true"}
+                                        <button class="btn btn-warning btn-xs" onclick="category_update({$ca.category_id})">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="category_item_delete({$ca.category_id})">删除</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                    {volist name="list" id="l"}
+                                    {if condition="$l.category_id == $ca.category_id"}
+                                    <tr id="tr{$l.set_id}" class="tr{$ca.category_id}" style="display: none;">
+                                        <td></td>
+                                        <td>{$l.sort}</td>
+                                        <td>{$l.set_id}</td>
+                                        <td>{$l.title}</td>
+                                        <td>{$l.sign}</td>
+                                        <td>{$l.value}</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-xs" onclick="set_value({$l.set_id}, '{$l.type}', '{$l.value}')">设置</button>
+                                            {if condition="$debug== true"}
+                                            <button class="btn btn-warning btn-xs" onclick="set_update({$l.set_id})">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="set_item_delete({$l.set_id})">删除</button>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    {/if}
+                                    {/volist}
+                                {/volist}
+                                <tr id="tr0">
+                                    <td id="td0" data-status="0" onclick="show(0)">
+                                        <i class="la la-caret-right"></i>
+                                    </td>
+                                    <td><b>未分组</b></td>
+                                </tr>
+                                {volist name="list" id="li"}
+                                {if condition="$li.category_id == 0"}
+                                <tr id="tr{$li.set_id}" class="tr0" style="display: none;">
+                                    <td></td>
+                                    <td>{$li.sort}</td>
+                                    <td>{$li.set_id}</td>
+                                    <td>{$li.title}</td>
+                                    <td>{$li.sign}</td>
+                                    <td>{$li.value}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-xs" onclick="set_value({$li.set_id}, '{$li.type}', '{$li.value}')">设置</button>
+                                        {if condition="$debug== true"}
+                                        <button class="btn btn-warning btn-xs" onclick="set_update({$li.set_id})">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="set_item_delete({$li.set_id})">删除</button>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/if}
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<div id="set_value" class="card-body" style="display: None;">
+    <div class="form-group" id="value_type_value">
+        <label for="value_value">请输入值：</label>
+        <input type="text" class="form-control value" id="value_value">
+        <small class="form-text text-muted text-danger"></small>
+    </div>
+    <div class="form-group" id="value_type_onoff">
+        <label for="value_onoff" style="float: left;">请输入值：</label>
+        <span style="display: flex; justify-content: center;">
+            <input class="value" type="checkbox" id="value_onoff" data-toggle="toggle" data-onstyle="danger" data-style="btn-round">
+        </span>
+    </div>
+    <input type="hidden" value="" id="set_id"/>
+    <input type="hidden" value="" id="type"/>
+    <div class="card-action" style="display: flex; justify-content: center;">
+        <button class="btn btn-success" style="margin-right: 10px;" id="set_submit">提交</button>
+        <button class="btn btn-danger" id="set_cancel">取消</button>
+    </div>
+</div>
+
+<script>
+    //添加分类
+    $("#add_category").click(function(){
+        location.href = "/admin/set/category/add";
+    })
+
+    //添加设置
+    $("#add_set").click(function(){
+        location.href = "/admin/set/add";
+    })
+
+    //展示
+    function show(id){
+        var module = $("#td"+id);
+        if(module.data('status') == '0'){
+            //没展示
+            module.html('<i class="la la-caret-down"></i>');
+            module.data('status', '1');
+            $(".tr" + id).attr('style', '');
+        }else{
+            //需要关闭
+            module.html('<i class="la la-caret-right"></i>');
+            module.data('status', '0');
+            $(".tr" + id).attr('style', 'display: none;');
+        }
+    }
+
+    //修改分类
+    function category_update(category_id){
+        location.href = "/admin/set/category/update/" + category_id;
+    }
+
+    //修改设置
+    function set_update(set_id){
+        location.href = "/admin/set/update/" + set_id;
+    }
+
+    //删除分类
+    function category_item_delete(category_id){
+        layer.confirm('是否要删除此条分类', {
+            btn: ['是','否']
+        }, function(){
+            $.ajax({
+                url: "/admin/set/category/delete/submit/" + category_id,
+                type: "get",
+                success: function(data){
+                    data = JSON.parse(data);
+                    if(data.status == 3){
+                        custom_notify('danger', '网站设置分类删除', data.msg);
+                    }else{
+                        $("#tr" + category_id).html('');
+                        custom_notify('success', '网站设置分类删除', data.msg);
+                    }
+                }
+            })
+            layer.closeAll();
+        });
+    }
+    //删除设置
+    function set_item_delete(set_id){
+        layer.confirm('是否要删除此条分类', {
+            btn: ['是','否']
+        }, function(){
+            $.ajax({
+                url: "/admin/set/delete/submit/" + set_id,
+                type: "get",
+                success: function(data){
+                    data = JSON.parse(data);
+                    if(data.status == 3){
+                        custom_notify('danger', '网站设置信息删除', data.msg);
+                    }else{
+                        $("#tr" + set_id).html('');
+                        custom_notify('success', '网站设置信息删除', data.msg);
+                    }
+                }
+            })
+            layer.closeAll();
+        });
+    }
+
+    //设置值
+    function set_value(set_id, type, value){
+        if(type == 'value'){
+            $("#value_type_onoff").attr('style', "display:None;");
+            $("#value_type_value").attr('style', "");
+            $("#value_value").val(value);
+        }else{
+            $("#value_type_value").attr('style', "display:None;");
+            $("#value_type_onoff").attr('style', "");
+            if(value == 'on'){
+                $(".toggle-group").trigger("click");
+            }
+        }
+        $("#set_id").val(set_id);
+        $("#type").val(type);
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false,
+            content: $('#set_value'),
+            area: ['300px', '200px'],
+            cancel: function () {
+
+            }
+        });
+    }
+
+    //弹框取消
+    $("#set_cancel").click(function(){
+        layer.closeAll();
+    })
+
+    $("#set_submit").click(function(){
+        var type = $("#type").val();
+        var set_id = $("#set_id").val();
+        if(type == 'value'){
+            var value = $("#value_value").val();
+        }else{
+            if($("#value_onoff").is(":checked")){
+                var value = 'on';
+            }else{
+                var value = "off";
+            }
+        }
+        $.ajax({
+            url: "/admin/set/value/submit/" + set_id,
+            type: "post",
+            data: {value: value},
+            success: function(data){
+                data = JSON.parse(data);
+                if(data.status == 3){
+                    custom_notify('danger', '网站设置修改', data.msg);
+                }else if(data.status == 2){
+                    custom_notify('warning', '网站设置修改', data.msg);
+                }else{
+                    custom_notify('success', '网站设置修改', data.msg);
+                }
+            }
+        })
+        layer.closeAll();
+    })
+</script>
+{/block}

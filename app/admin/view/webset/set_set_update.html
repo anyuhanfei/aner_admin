@@ -1,0 +1,147 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">网站设置信息修改</div>
+                    </div>
+                    <div class="card-body" style="padding: 15px 200px 10px;">
+                        <div class="form-group">
+                            <label for="title">标题*</label>
+                            <input type="text" class="form-control" id="title" value="{$detail.title}">
+                            <small class="form-text text-muted text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="category_id">所属分类*</label>
+                            <select class="form-control form-control-sm" id="category_id">
+                                <option value="0">请选择所属分类</option>
+                                {volist name="category" id="ca"}
+                                <option value="{$ca.category_id}" {if condition="$ca.category_id == $detail.category_id"}selected{/if}>{$ca.category_name}</option>
+                                {/volist}
+                            </select>
+                            <small class="form-text text-muted text-danger">不选择则为单独分组</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sign">标签*</label>
+                            <input type="text" class="form-control" id="sign" value="{$detail.sign}">
+                            <small class="form-text text-muted text-danger"></small>
+                        </div>
+                        <div class="form-check">
+                            <label>类型</label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input type" type="radio" name="type" value="value" {if condition="$detail.type == 'value'"}checked{/if}>
+                                <span class="form-radio-sign">输入值类型</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input type" type="radio" name="type" value="onoff" {if condition="$detail.type == 'onoff'"}checked{/if}>
+                                <span class="form-radio-sign">开关类型</span>
+                            </label>
+                        </div>
+                        <div class="form-group" id="value_type_value" {if condition="$detail.type == 'onoff'"}style="display: None;"{/if}>
+                            <label for="value">值*</label>
+                            <input type="text" class="form-control value" id="value_value" {if condition="$detail.type == 'value'"}value="{$detail.value}"{/if}>
+                            <small class="form-text text-muted text-danger"></small>
+                        </div>
+                        <div class="form-group" id="value_type_onoff" {if condition="$detail.type == 'value'"}style="display: None;"{/if}>
+                            <label for="value">值*</label><br/>
+                            <input class="value" type="checkbox" id="value_onoff" data-toggle="toggle" data-onstyle="danger" data-style="btn-round" {if condition="$detail.type == 'onoff'"}{if condition="$detail.value == 'on'"}checked{/if}{/if}>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort">排序*</label>
+                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                        </div>
+                        <input type="hidden" name="set_id" value="{$detail.set_id}" id="set_id"/>
+                        <div class="card-action" style="display: flex; justify-content: center;">
+                            <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
+                            <button class="btn btn-danger" id="cancel">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/block}
+
+    {block name="custom_js"}
+    <script>
+
+        //非法操作
+        var has_data = "{$has_data}";
+        if(has_data == "false"){
+            custom_notify('danger', '模块修改', '非法操作');
+            setTimeout(() => {
+                location.href = "/admin/set";
+            }, 1000);
+        }
+        //取消
+        $("#cancel").click(function () {
+            location.href = "/admin/set";
+        })
+
+        $(".type").click(function(){
+            var value = $("input[type='radio']:checked").val();
+            if(value == 'value'){
+                $("#value_type_value").attr('style', '');
+                $("#value_type_onoff").attr('style', 'display: None;');
+            }else{
+                $("#value_type_value").attr('style', 'display: None;');
+                $("#value_type_onoff").attr('style', '');
+            }
+        })
+
+        //提交
+        $("#submit").click(function () {
+            var title = $("#title").val();
+            var category_id = $("#category_id").val();
+            var sign = $("#sign").val();
+            var type = $("input[type='radio']:checked").val();
+            if(type == 'value'){
+                var value = $("#value_value").val();
+            }else{
+                if($("#value_onoff").is(":checked")){
+                    var value = 'on';
+                }else{
+                    var value = "off";
+                }
+            }
+            var sort = $("#sort").val();
+            var set_id = $("#set_id").val();
+            if (title == '') {
+                custom_notify('warning', '网站设置修改', '请输入网站设置标题');
+                return;
+            }
+            if (sign == '') {
+                custom_notify('warning', '网站设置修改', '请输入网站设置标签');
+                return;
+            }
+            $.ajax({
+                url: "/admin/set/update/submit/" + set_id,
+                type: "post",
+                data: {
+                    title: title,
+                    category_id: category_id,
+                    sign: sign,
+                    type: type,
+                    value: value,
+                    sort: sort
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.status == 3) {
+                        custom_notify('danger', '网站设置修改', data.msg);
+                    } else if (data.status == 2) {
+                        custom_notify('warning', '网站设置修改', data.msg);
+                    } else {
+                        custom_notify('success', '网站设置修改', data.msg);
+                    }
+                }
+            })
+        })
+    </script>
+
+
+    {/block}

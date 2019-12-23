@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- meta data -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>aner_admin</title>
+
+    {include file="public/favicon"}
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <!--style.css-->
+    <link rel="stylesheet" href="/static/admin/login/style.css">
+</head>
+
+<body>
+    <!-- signin end -->
+    <section class="signin popup-in">
+        <div class="container">
+            <div class="sign-content popup-in-content">
+                <div class="popup-in-txt">
+                    <h2><img src="/static/logo/aner_admin_login_logo.png"/></h2>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-form">
+                                <form action="signin.html">
+                                    <div class="form-group">
+                                        <label for="account">账号</label>
+                                        <input type="email" class="form-control" id="account" placeholder="请输入登录账号">
+                                    </div>
+                                    <!--/.form-group -->
+                                    <div class="form-group">
+                                        <label for="password">密码</label>
+                                        <input type="password" class="form-control" id="password"
+                                            placeholder="请输入登录密码">
+                                    </div>
+                                    <!--/.form-group -->
+                                </form>
+                                <!--/form -->
+                            </div>
+                            <!--/.signin-form -->
+                        </div>
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-password">
+                                <div class="password-circle">
+                                    <!--/.single-password-circle-->
+                                </div>
+                                <!--/.password-circle-->
+                            </div>
+                            <!--/.signin-password -->
+                        </div>
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="signin-footer">
+                                <button type="button" id="submit" class="btn signin_btn signin_btn_two" data-toggle="modal" data-target=".signin_modal">
+                                    登录
+                                </button>
+                            </div>
+                            <!--/.signin-footer -->
+                        </div>
+                        <!--/.col -->
+                    </div>
+                    <!--/.row -->
+                </div><!-- .popup-in-txt -->
+            </div>
+            <!--/.sign-content -->
+        </div>
+        <!--/.container -->
+    </section>
+    <!--/.signin -->
+    <!-- signin end -->
+</body>
+<script src="/static/jquery/jquery.3.2.1.min.js"></script>
+<script src="/static/layer/layer.js"></script>
+<script>
+$("#submit").click(function(){
+    var account = $("#account").val();
+    var password = $("#password").val();
+    if(account == ''){
+        layer.msg('登录账号不能为空');
+        return;
+    }
+    if(password == ''){
+        layer.msg('登录密码不能为空')
+    }
+    $.ajax({
+        url: "/admin/login/submit",
+        type: 'post',
+        data: {account: account, password: password},
+        success: function(data){
+            data = JSON.parse(data);
+            layer.msg(data.msg);
+            $('meta[name="csrf-token"]').click();
+            if(data.status == 1){
+                setTimeout(() => {
+                    location.href = "/admin"
+                }, 1500);
+            }
+        }
+    })
+})
+</script>
+
+</html>

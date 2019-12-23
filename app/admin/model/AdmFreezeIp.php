@@ -13,4 +13,19 @@ class AdmFreezeIp extends Model{
         'freeze_start_time'=> 'datetime',
         'freeze_end_time'=> 'datetime'
     ];
+
+    /**
+     * 创建一条新数据
+     *
+     * @param string $ip  ip地址
+     * @param int $freeze_time  冻结时间
+     * @return void
+     */
+    public static function create_data($ip, $freeze_time){
+        self::create([
+            'ip'=> $ip,
+            'freeze_start_time'=> date("Y-m-d H:i:s", time()),
+            'freeze_end_time'=> date("Y-m-d H:i:s", time() + $freeze_time)
+        ]);
+    }
 }

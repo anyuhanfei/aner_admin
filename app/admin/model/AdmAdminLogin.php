@@ -13,4 +13,18 @@ class AdmAdminLogin extends Model{
         'error_number'=> 'tinyint',
         'insert_time'=> 'datetime'
     ];
+
+    /**
+     * 创建一条新数据
+     *
+     * @param [type] $ip
+     * @return void
+     */
+    public static function create_data($ip){
+        self::create([
+            'ip'=> $ip,
+            'error_number'=> 1,
+            'insert_time'=> date("Y-m-d H:i:s", time())
+        ]);
+    }
 }

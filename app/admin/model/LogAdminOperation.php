@@ -2,7 +2,7 @@
 namespace app\admin\model;
 
 use think\Model;
-use think\Session;
+use think\facade\Session;
 
 
 class LogAdminOperation extends Model{
