@@ -79,7 +79,7 @@ class Ad extends Admin{
      * @return void
      */
     public function ad_adv_update($id){
-        $adv = SysAdv::get($id);
+        $adv = SysAdv::find($id);
         $has_data = "true";
         if(!$adv){
             $has_data = "false";
