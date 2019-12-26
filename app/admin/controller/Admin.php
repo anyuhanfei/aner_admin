@@ -15,6 +15,10 @@ use app\admin\controller\Base;
 
 class Admin extends Base{
     protected $admin = null;
+    protected $middleware = [
+        \app\admin\middleware\CheckAdmin::class,
+        \app\admin\middleware\GetCatalog::class
+    ];
 
     public function __construct(){
         //引用父类初始化方法
@@ -31,33 +35,14 @@ class Admin extends Base{
         $current = SysCatalog::where('path', $current_url)->find();
         if($current){
             Cookie::set('current_id', $current->catalog_id);
+            View::assign('current_id', $current->catalog_id);
+        }else{
+            View::assign('current_id', Cookie::get('current_id'));
         }
-        View::assign('current_id', Cookie::get('current_id'));
-        //管理员
+
+        //管理员(中间件已判断，这里直接获取)
         $admin_id = Session::get('admin_id');
         $this->admin = AdmAdmin::find($admin_id);
-        if(!$this->admin){
-            return redirect('/adm/login');
-        }
         View::assign('admin', $this->admin);
-        //权限控制
-        if($this->admin_power_onoff == 'on'){
-            if($action != 'index'){
-                if($this->admin->role_id == 0){
-                    return redirect('/admin/login');
-                }
-                $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
-                if(!$current_url_id){
-                    return redirect('/admin');
-                }
-                $role = AdmRole::where('role_id', $this->admin->role_id)->find();
-                if(!$role){
-                    return redirect('/admin/login');
-                }
-                if(strpos($role->power, (string)$current_url_id) === false){
-                    return redirect('/admin');
-                }
-            }
-        }
     }
 }
