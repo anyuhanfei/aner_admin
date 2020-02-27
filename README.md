@@ -2,6 +2,10 @@
 
 使用框架：`ThinkPHP6.0.0`
 
+# 使用前置操作
+- 在项目根目录下打开命令行输入 "composer install" 命令来安装更新扩展
+- 将项目根目录下的 ".example.env" 文件的文件名修改为 ".env"
+
 ## 安装扩展
 
 ### vendor
