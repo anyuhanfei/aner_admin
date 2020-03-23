@@ -48,7 +48,7 @@ class Login extends Base{
 
     public function login_out(){
         Session::delete('admin_id');
-        return $this->redirect('/adm/login');
+        return redirect('/admin/login');
     }
 
     /**
