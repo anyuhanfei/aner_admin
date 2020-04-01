@@ -25,7 +25,7 @@ function return_data($status, $data, $msg, $type = 'array'){
  * @return void
  */
 function create_captcha($number, $type = 'figure'){
-    $array_figure = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    $array_figure = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     $array_lowercase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     $array_uppercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     switch($type){
@@ -114,15 +114,15 @@ function delete_image($oldImg, $is_full = false){
  */
 function png_erwei($url, $phone)
 {
-   include_once EXTEND_PATH.'phpqrcode/phpqrcode.php';//放在extend中
+   include_once '../extend/phpqrcode/phpqrcode.php';//放在extend中
     //vendor('phpqrcode.phpqrcode');//放在vender中
     $errorCorrectionLevel = 'H';//容错级别
     $matrixPointSize = 5;//图片大小慢慢自己调整，只要是int就行
-    $path = ROOT_PATH . 'public/uploads/qrcode/';
+    $path = '../public/storage/qrcode/';
     $QR = $QRB = $path . $phone . ".png";
     \QRcode::png($url, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
     if(file_exists($path . $phone . ".png")){
-        return "/uploads/qrcode/" . $phone . ".png";
+        return "/storage/qrcode/" . $phone . ".png";
     }else{
         return false;
     }

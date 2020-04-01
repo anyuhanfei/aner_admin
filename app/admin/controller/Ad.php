@@ -102,7 +102,7 @@ class Ad extends Admin{
         if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort, 'adv_id'=> $id])){
             return return_data(2, '', $validate->getError(), 'json');
         }
-        $adv = SysAdv::get($id);
+        $adv = SysAdv::find($id);
         $old_adv_name = $adv->adv_name;
         $adv->adv_name = $adv_name;
         $adv->sign = $sign;
@@ -169,7 +169,7 @@ class Ad extends Admin{
             $path = '';
         }
         if($sign == ''){
-            $adv = SysAdv::get($adv_id);
+            $adv = SysAdv::find($adv_id);
             $sign = $adv->sign;
         }
         $res = SysAd::create([
