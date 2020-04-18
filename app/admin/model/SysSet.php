@@ -7,15 +7,6 @@ use think\Model;
 class SysSet extends Model{
     protected $table = "sys_set";
     protected $pk = 'set_id';
-    protected $schema = [
-        'set_id'=> 'int',
-        'category_id'=> 'int',
-        'title'=> 'varchar',
-        'sign'=> 'varchar',
-        'type'=> 'varchar',
-        'value'=> 'varchar',
-        'sort'=> 'tinyint'
-    ];
 
     /**
      * 关联设置分类表

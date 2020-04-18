@@ -9,10 +9,6 @@ use app\admin\controller\Base;
 class IdxUserFund extends Model{
     protected $table = 'idx_user_fund';
     protected $pk = 'user_id';
-    protected $schema = [
-        'user_id'=> 'int',
-        'money'=> 'decimal'
-    ];
 
     /**
      * 关联会员表

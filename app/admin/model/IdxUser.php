@@ -12,19 +12,6 @@ use app\admin\model\IdxUserCount;
 class IdxUser extends Model{
     protected $table = "idx_user";
     protected $pk = 'user_id';
-    protected $schema = [
-        'user_id'=> 'int',
-        'account'=> 'varchar',
-        'phone'=> 'char',
-        'email'=> 'varchar',
-        'nickname'=> 'varchar',
-        'password'=> 'char',
-        'level_password'=> 'char',
-        'password_salt'=> 'char',
-        'top_id'=> 'int',
-        'register_time'=> 'date',
-        'is_login'=> 'tinyint'
-    ];
 
     /**
      * 关联自己的上级

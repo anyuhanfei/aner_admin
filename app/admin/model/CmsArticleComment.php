@@ -7,15 +7,6 @@ use think\Model;
 class CmsArticleComment extends Model{
     protected $table = 'cms_article_comment';
     protected $pk = 'comment_id';
-    protected $schema = [
-        'comment_id'=> 'int',
-        'article_id'=> 'int',
-        'user_id'=> 'int',
-        'user_identity'=> 'varchar',
-        'top_id'=> 'int',
-        'content'=> 'varchar',
-        'insert_time'=> 'datetime'
-    ];
 
     /**
      * 关联文章表

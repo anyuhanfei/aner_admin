@@ -8,14 +8,6 @@ use think\facade\Session;
 class LogAdminOperation extends Model{
     protected $table = "log_admin_operation";
     protected $pk = 'id';
-    protected $schema = [
-        'id'=> 'int',
-        'admin_id'=> 'int',
-        'type'=> 'varchar',
-        'ip'=> 'varchar',
-        'content'=> 'varchar',
-        'insert_time'=> 'datetime'
-    ];
 
     /**
      * 关联管理员表

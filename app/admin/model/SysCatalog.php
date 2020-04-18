@@ -7,17 +7,6 @@ use think\Model;
 class SysCatalog extends Model{
     protected $table = "sys_catalog";
     protected $pk = 'catalog_id';
-    protected $schema = [
-        'catalog_id'=> 'int',
-        'title'=> 'varchar',
-        'icon'=> 'varchar',
-        'module_id'=> 'int',
-        'action_id'=> 'int',
-        'path'=> 'varchar',
-        'route'=> 'varchar',
-        'top_id'=> 'int',
-        'sort'=> 'tinyint'
-    ];
 
     /**
      * 关联模块表

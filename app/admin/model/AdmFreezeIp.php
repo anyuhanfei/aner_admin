@@ -7,12 +7,6 @@ use think\Model;
 class AdmFreezeIp extends Model{
     protected $table = "adm_freeze_ip";
     protected $pk = 'id';
-    protected $schema = [
-        'id'=> 'int',
-        'ip'=> 'varchar',
-        'freeze_start_time'=> 'datetime',
-        'freeze_end_time'=> 'datetime'
-    ];
 
     /**
      * 创建一条新数据

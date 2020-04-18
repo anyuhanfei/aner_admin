@@ -7,16 +7,6 @@ use think\Model;
 class SysAd extends Model{
     protected $table = 'sys_ad';
     protected $pk = 'ad_id';
-    protected $schema = [
-        'ad_id'=> 'int',
-        'adv_id'=> 'int',
-        'sign'=> 'varchar',
-        'title'=> 'varchar',
-        'image'=> 'varchar',
-        'value'=> 'varchar',
-        'content'=> 'text',
-        'sort'=> 'int'
-    ];
 
     /**
      * 关联广告位表

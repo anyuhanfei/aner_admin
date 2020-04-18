@@ -11,11 +11,6 @@ use app\admin\model\IdxUser;
 class IdxUserCount extends Model{
     protected $table = 'idx_user_count';
     protected $pk = 'user_id';
-    protected $schema = [
-        'user_id'=> 'int',
-        'down_team_number'=> 'int',
-        'team_number'=> 'int'
-    ];
 
     /**
      * 关联会员表

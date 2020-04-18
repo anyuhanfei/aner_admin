@@ -6,12 +6,6 @@ use think\Model;
 class SysModule extends Model{
     protected $table = "sys_module";
     protected $pk = 'module_id';
-    protected $schema = [
-        'module_id'=> 'int',
-        'title'=> 'varchar',
-        'sort'=> 'tinyint',
-        'remark'=> 'varchar'
-    ];
 
     /**
      * 关联方法表
