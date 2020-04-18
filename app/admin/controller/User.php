@@ -232,7 +232,7 @@ class User extends Admin{
      * @return void
      */
     public function user_delete($id){
-        if($this->user_delete_onoff == 'off'){
+        if($this->user_delete_onoff == false){
             return return_data(2, '', '无此权限', 'json');
         }
         $user = IdxUser::find($id);

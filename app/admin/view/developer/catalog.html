@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {if condition="$debug== true"}
+                        {if condition="$developer_model== true"}
                         <button class="btn btn-success btn-xs" id="add">添加</button>
                         {/if}
                         <table class="table mt-3">
@@ -39,7 +39,7 @@
                                         <td><i class="{$vo.icon}" style="font-size:18px;"></i></td>
                                         <td>{$vo.path}</td>
                                         <td>
-                                            {if condition="$debug== true"}
+                                            {if condition="$developer_model== true"}
                                             <button class="btn btn-warning btn-xs" onclick="update({$vo.catalog_id})">修改</button>
                                             <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.catalog_id})">删除</button>
                                             {/if}
@@ -56,7 +56,7 @@
                                         <td><i class="{$vo.icon}" style="font-size:18px;"></i></td>
                                         <td>{$vo.path}</td>
                                         <td>
-                                            {if condition="$debug== true"}
+                                            {if condition="$developer_model== true"}
                                             <button class="btn btn-warning btn-xs" onclick="update({$vo.catalog_id})">修改</button>
                                             <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.catalog_id})">删除</button>
                                             {/if}
@@ -72,7 +72,7 @@
                                         <td><i class="{$vol.icon}" style="font-size:18px;"></i></td>
                                         <td>{$vol.path}</td>
                                         <td>
-                                            {if condition="$debug== true"}
+                                            {if condition="$developer_model== true"}
                                             <button class="btn btn-warning btn-xs" onclick="update({$vol.catalog_id})">修改</button>
                                             <button class="btn btn-danger btn-xs" onclick="item_delete({$vol.catalog_id})">删除</button>
                                             {/if}

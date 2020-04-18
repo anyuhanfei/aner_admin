@@ -32,7 +32,7 @@
                                     {/volist}
                                 </select>
                             </div>
-                            {if condition="$cms_article['tag_ids'] == 'on'"}
+                            {if condition="$cms_article['tag_ids'] == true"}
                             <div class="form-group">
                                 <select class="form-control form-control" name="tag_id" id="tag_id">
                                     <option value="">搜索标签</option>
@@ -42,7 +42,7 @@
                                 </select>
                             </div>
                             {/if}
-                            {if condition="$cms_article['author'] == 'on'"}
+                            {if condition="$cms_article['author'] == true"}
                             <div class="form-group">
                                 <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="搜索作者" style="width: 150px;">
                             </div>
@@ -55,23 +55,28 @@
                                 <tr>
                                     <th scope="col" width="3%">#</th>
                                     <th scope="col" width="4%">id</th>
+                                    {if condition="$cms_article['stick'] == true"}
                                     <th scope="col" width="5%">推荐</th>
+                                    {/if}
+                                    {if condition="$cms_article['hot'] == true"}
                                     <th scope="col" width="5%">置顶</th>
+                                    {/if}
+                                    {if condition="$cms_article['recomment'] == true"}
                                     <th scope="col" width="5%">热门</th>
-                                    {if condition="$cms_article['image'] == 'on'"}
+                                    {/if}
+                                    {if condition="$cms_article['image'] == true"}
                                     <th scope="col" width="2%">图片</th>
                                     {/if}
                                     <th scope="col" width="20%">标题</th>
                                     <th scope="col" width="6%">分类</th>
-                                    {if condition="$cms_article['tag_ids'] == 'on'"}
+                                    {if condition="$cms_article['tag_ids'] == true"}
                                     <th scope="col" width="10%">标签</th>
                                     {/if}
-                                    {if condition="$cms_article['author'] == 'on'"}
+                                    {if condition="$cms_article['author'] == true"}
                                     <th scope="col" width="6%">作者</th>
                                     {/if}
                                     <th scope="col" width="5%">点击率</th>
                                     <th scope="col" width="5%">点赞数</th>
-                                    <th scope="col" width="5%">评论数</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -80,37 +85,42 @@
                                 <tr id="tr{$vo.article_id}">
                                     <td>{$vo.sort}</td>
                                     <td>{$vo.article_id}</td>
+                                    {if condition="$cms_article['stick'] == true"}
                                     <td>
                                         <div id="divrecomment{$vo.article_id}" onclick="status('recomment', {$vo.article_id})">
                                             <input id="recomment{$vo.article_id}" type="checkbox" {if condition="$vo.artdata.is_recomment == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
+                                    {/if}
+                                    {if condition="$cms_article['hot'] == true"}
                                     <td>
                                         <div onclick="status('stick', {$vo.article_id})">
                                             <input type="checkbox" {if condition="$vo.artdata.is_stick == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
+                                    {/if}
+                                    {if condition="$cms_article['recomment'] == true"}
                                     <td>
                                         <div onclick="status('hot', {$vo.article_id})">
                                             <input type="checkbox" {if condition="$vo.artdata.is_hot == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
-                                    {if condition="$cms_article['image'] == 'on'"}
+                                    {/if}
+                                    {if condition="$cms_article['image'] == true"}
                                     <td>
                                         <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image({$vo.article_id})"/>
                                     </td>
                                     {/if}
                                     <td>{$vo.title}</td>
                                     <td>{$vo.category.category_name}</td>
-                                    {if condition="$cms_article['tag_ids'] == 'on'"}
+                                    {if condition="$cms_article['tag_ids'] == true"}
                                     <td>{$vo.tag_ids}</td>
                                     {/if}
-                                    {if condition="$cms_article['author'] == 'on'"}
+                                    {if condition="$cms_article['author'] == true"}
                                     <td>{$vo.author}</td>
                                     {/if}
                                     <td>{$vo.artdata.looknum}</td>
                                     <td>{$vo.artdata.likenum}</td>
-                                    <td>{$vo.artdata.commentnum}</td>
                                     <td>
                                         <button class="btn btn-warning btn-xs" onclick="look({$vo.article_id})">查看</button>
                                         <button class="btn btn-warning btn-xs" onclick="update({$vo.article_id})">修改</button>
@@ -120,7 +130,7 @@
                                 {/volist}
                             </tbody>
                         </table>
-                        {$list->render()}
+                        {$list->render() | raw}
                     </div>
                 </div>
             </div>

@@ -9,10 +9,10 @@ use think\facade\View;
 class Base{
     public function __construct(){
         $this->version = Env::get('ANER_ADMIN.VERSION');
-        //调试模式，true开false关
-        $this->debug = Env::get('ANER_ADMIN.DEBUG');
+        //调试模式
+        $this->developer_model = boolval(Env::get('ANER_ADMIN.DEVELOPER_MODEL'));
         //管理员权限开关
-        $this->admin_power_onoff = Env::get('ANER_ADMIN.ADMIN_POWER_ONOFF');
+        $this->admin_power_onoff = boolval(Env::get('ANER_ADMIN.ADMIN_POWER_ONOFF'));
         //管理员异常登录的最大次数
         $this->admin_error_login_maximum = Env::get('ANER_ADMIN.ADMIN_ERROR_LOGIN_MAXIMUM');
         //管理员异常登录后的冻结时间
@@ -22,28 +22,48 @@ class Base{
 
         /*cms*/
         //标签图片上传开关
-        $this->cms_tag_image_onoff = Env::get('ANER_ADMIN.CMS_TAG_IMAGE_ONOFF');
+        $this->cms_tag_image_onoff = boolval(Env::get('ANER_ADMIN.CMS_TAG_IMAGE_ONOFF'));
         //分类图片上传开关
-        $this->cms_category_image_onoff = Env::get('ANER_ADMIN.CMS_CATRGORY_IMAGE_ONOFF');
+        $this->cms_category_image_onoff = boolval(Env::get('ANER_ADMIN.CMS_CATRGORY_IMAGE_ONOFF'));
         //文章字段控制
         $this->cms_article = [
-            'tag_ids'=> Env::get('ANER_ADMIN.CMS_TAG_IDS_ONOFF'),  //文章标签
-            'author'=> Env::get('ANER_ADMIN.CMS_AUTHOR_ONOFF'),  //作者
-            'intro'=> Env::get('ANER_ADMIN.CMS_INTRO_ONOFF'),  //简介
-            'keyword'=> Env::get('ANER_ADMIN.CMS_KEYWORD_ONOFF'),  //关键字
-            'image'=> Env::get('ANER_ADMIN.CMS_IMAGE_ONOFF'),  //图片
-            'content_type'=> Env::get('ANER_ADMIN.CMS_CONTENT_TYPE_ONOFF'),  //文章格式
+            'tag_ids'=> boolval(Env::get('ANER_ADMIN.CMS_TAG_IDS_ONOFF')),  //文章标签
+            'author'=> boolval(Env::get('ANER_ADMIN.CMS_AUTHOR_ONOFF')),  //作者
+            'intro'=> boolval(Env::get('ANER_ADMIN.CMS_INTRO_ONOFF')),  //简介
+            'keyword'=> boolval(Env::get('ANER_ADMIN.CMS_KEYWORD_ONOFF')),  //关键字
+            'image'=> boolval(Env::get('ANER_ADMIN.CMS_IMAGE_ONOFF')),  //图片
+            'content_type'=> boolval(Env::get('ANER_ADMIN.CMS_CONTENT_TYPE_ONOFF')),  //文章格式
+            'stick'=> boolval(Env::get('ANER_ADMIN.CMS_STICK_ONOFF')),  //置顶
+            'hot'=> boolval(Env::get('ANER_ADMIN.CMS_HOT_ONOFF')),  //热门
+            'recomment'=> boolval(Env::get('ANER_ADMIN.CMS_RECOMMENT_ONOFF')),  //推荐
         ];
 
         /*会员*/
         //会员标识，用于会员与其他表之间的关联标识（user_id是计算机识别的关联标识，此设置为会员识别的关联标识）
-        $this->user_identity = 'phone';
+        $this->user_identity = Env::get('ANER_ADMIN.USER_IDENTITY');
         //会员唯一标识说明
-        $this->user_identity_text = '手机号';
+        $this->user_identity_text = Env::get('ANER_ADMIN.USER_IDENTITY_TEXT');
         //会员资金种类，key为资金类型说明，value为字段名
-        $this->user_fund_type = ['余额'=> 'money'];
+        $this->user_fund_type = $this->env_array('USER_FUND_TYPE');
         //会员删除操作的开关
-        $this->user_delete_onoff = Env::get('ANER_ADMIN.USER_DELETE_ONOFF');
+        $this->user_delete_onoff = boolval(Env::get('ANER_ADMIN.USER_DELETE_ONOFF'));
+    }
+
+    /**
+     * 处理 env 文件中的类似数组的配置
+     *
+     * @param [type] $name 配置名称
+     * @return void
+     */
+    public function env_array($name){
+        $set_str =  Env::get('ANER_ADMIN.' . $name);
+        $temp = explode(', ', $set_str);
+        $res_array = [];
+        foreach($temp as $v){
+            $temp_v = explode('=> ', $v);
+            $res_array[$temp_v[0]] = $temp_v[1];
+        }
+        return $res_array;
     }
 
     /**
@@ -93,21 +113,23 @@ class Base{
      */
     protected function remove_content_image($content, $type="cookie", $remark = ''){
         $return_array = self::get_editor_images($content);
-        if($type == 'cookie'){
-            assert($remark != ''); //数据无回滚
-            $content_images = Session::get($remark) ? Session::get($remark) : array();
-            Session::set($remark, array_diff($content_images, $return_array));
-        }elseif($type == 'delete'){
-            if($return_array){
-                foreach($return_array as $v){
+        if($return_array){
+            if($type == 'cookie'){
+                assert($remark != ''); //数据无回滚
+                $content_images = Session::get($remark) ? Session::get($remark) : array();
+                Session::set($remark, array_diff($content_images, $return_array));
+            }elseif($type == 'delete'){
+                if($return_array){
+                    foreach($return_array as $v){
+                        delete_image($v);
+                    }
+                }
+            }elseif($type == 'update'){
+                $old_return_array = self::get_editor_images($remark);
+                $delete_images = array_diff($old_return_array, $return_array);
+                foreach($delete_images as $v){
                     delete_image($v);
                 }
-            }
-        }elseif($type == 'update'){
-            $old_return_array = self::get_editor_images($remark);
-            $delete_images = array_diff($old_return_array, $return_array);
-            foreach($delete_images as $v){
-                delete_image($v);
             }
         }
         return $return_array;

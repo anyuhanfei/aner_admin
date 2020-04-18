@@ -29,7 +29,7 @@
                                 {/volist}
                             </select>
                         </div>
-                        {if condition="$cms_article['tag_ids'] == 'on'"}
+                        {if condition="$cms_article['tag_ids'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
@@ -44,7 +44,7 @@
                                 {/volist}
                             </p>
                         </div>
-                        {if condition="$cms_article['image'] == 'on'"}
+                        {if condition="$cms_article['image'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
@@ -55,7 +55,7 @@
                                 <img id="image{$detail.article_id}" src="{$detail.image}" width="80px" height="80px" onclick="show_image({$detail.article_id})"/>
                             {/if}
                         </div>
-                        {if condition="$cms_article['author'] == 'on'"}
+                        {if condition="$cms_article['author'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
@@ -64,7 +64,7 @@
                             <input type="text" class="form-control" id="author" value="{$detail.author}">
                             <small id="emailHelp" class="form-text text-muted text-danger">不填写则为当前管理员昵称</small>
                         </div>
-                        {if condition="$cms_article['keyword'] == 'on'"}
+                        {if condition="$cms_article['keyword'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
@@ -76,7 +76,7 @@
                             <label for="sort">排序*</label>
                             <input type="number" class="form-control" id="sort" value="{$detail.sort}">
                         </div>
-                        {if condition="$cms_article['intro'] == 'on'"}
+                        {if condition="$cms_article['intro'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
@@ -86,7 +86,7 @@
                                 {$detail.intro}
                             </textarea>
                         </div>
-                        {if condition="$cms_article['content_type'] == 'on'"}
+                        {if condition="$cms_article['content_type'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">

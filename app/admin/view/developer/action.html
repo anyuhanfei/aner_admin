@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {if condition="$debug== true"}
+                        {if condition="$developer_model== true"}
                         <button class="btn btn-success btn-xs" id="add">添加</button>
                         {/if}
                         <table class="table mt-3">
@@ -48,7 +48,7 @@
                                             <td>{$ac.route}</td>
                                             <td>{$ac.remark}</td>
                                             <td>
-                                                {if condition="$debug== true"}
+                                                {if condition="$developer_model== true"}
                                                 <button class="btn btn-warning btn-xs" onclick="update({$ac.action_id})">修改</button>
                                                 <button class="btn btn-danger btn-xs" onclick="item_delete({$ac.action_id})">删除</button>
                                                 {/if}

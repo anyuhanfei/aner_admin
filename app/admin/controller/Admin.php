@@ -24,7 +24,7 @@ class Admin extends Base{
         //引用父类初始化方法
         parent::__construct();
         //系统设置
-        View::assign('debug', $this->debug);
+        View::assign('developer_model', $this->developer_model);
         //后台目录
         $catalog = SysCatalog::order('sort asc')->select();
         View::assign('adm_catalog', $catalog);

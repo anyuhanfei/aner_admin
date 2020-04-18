@@ -9,8 +9,17 @@ use app\admin\controller\Admin;
 
 use app\admin\model\LogAdminOperation;
 use app\admin\model\AdmAdmin;
+use app\admin\model\LogIdxUserFund;
 
 class Log extends Admin{
+    public function __construct(){
+        parent::__construct();
+        View::assign('user_fund_type', $this->user_fund_type);
+        View::assign('user_delete_onoff', $this->user_delete_onoff);
+        View::assign('user_identity', $this->user_identity);
+        View::assign('user_identity_text', $this->user_identity_text);
+    }
+
     /**
      * 管理员操作日志列表
      *
@@ -63,5 +72,28 @@ class Log extends Admin{
             $model = $admin ? $model->where('admin_id', $admin->admin_id) : $model->where('admin_id', 0);
         }
         return $model;
+    }
+
+    /**
+     * 会员资金流水
+     *
+     * @return void
+     */
+    public function index_user_fund_log(){
+        $user_identity = Request::instance()->param('user_identity', '');
+        $coin_type = Request::instance()->param('coin_type', '');
+        $fund_type = Request::instance()->param('fund_type', '');
+        $start_time = Request::instance()->param('start_time', '');
+        $end_time = Request::instance()->param('end_time', '');
+        $log = new LogIdxUserFund;
+        $log = self::where_time($log, $start_time, $end_time);
+        $log = ($user_identity != '') ? $log->where($this->user_identity, $user_identity) : $log;
+        $log = ($coin_type != '') ? $log->where('coin_type', $coin_type) : $log;
+        $log = ($fund_type != '') ? $log->where('fund_type', $fund_type) : $log;
+        $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'coin_type'=> $coin_type, 'fund_type'=> $fund_type, 'start_time'=> $start_time, 'end_time'=> $end_time]);
+        // 操作集
+        View::assign('fund_type_text', LogIdxUserFund::fund_type_text());
+        return View::fetch();
     }
 }

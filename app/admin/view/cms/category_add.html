@@ -15,7 +15,7 @@
                             <input type="text" class="form-control" id="category_name" placeholder="请输入分类名称">
                             <small id="emailHelp" class="form-text text-muted text-danger">不能超过30个字符</small>
                         </div>
-                        <div class="form-group" {if condition="$cms_category_image_onoff == 'off'"}style="display:none;"{/if}>
+                        <div class="form-group" {if condition="$cms_category_image_onoff == false"}style="display:none;"{/if}>
                             <label for="category_image">图片</label>
                             <input type="file" class="form-control-file" id="category_image">
                         </div>

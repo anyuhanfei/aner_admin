@@ -64,7 +64,7 @@ class Cms extends Admin{
             return return_data(2, '', $validate->getError(), 'json');
         }
         $path = '';
-        if($this->cms_tag_image_onoff == 'on'){
+        if($this->cms_tag_image_onoff == true){
             if(!$tag_image){
                 return return_data(2, '', '请上传标签图片', 'json');
             }
@@ -113,7 +113,7 @@ class Cms extends Admin{
             return return_data(2, '', $validate->getError(), 'json');
         }
         $path = '';
-        if($this->cms_tag_image_onoff == 'on'){
+        if($this->cms_tag_image_onoff == true){
             if($tag_image){
                 $image_res = file_upload($tag_image, 'tag');
                 $path = $image_res['file_path'];
@@ -187,7 +187,7 @@ class Cms extends Admin{
             return return_data(2, '', $validate->getError());
         }
         $path = '';
-        if($this->cms_category_image_onoff == 'on'){
+        if($this->cms_category_image_onoff == true){
             if(!$category_image){
                 return return_data(2, '', '请上传标签图片', 'json');
             }
@@ -236,7 +236,7 @@ class Cms extends Admin{
             return return_data(2, '', $validate->getError(), 'json');
         }
         $path = '';
-        if($this->cms_category_image_onoff == 'on'){
+        if($this->cms_category_image_onoff == true){
             if($category_image){
                 $image_res = file_upload($category_image, 'category');
                 $path = $image_res['file_path'];
@@ -357,7 +357,7 @@ class Cms extends Admin{
         }
         foreach($this->cms_article as $k => $v){
             if($k != 'image'){
-                if($v == 'on'){
+                if($v == true){
                     if($$k == ''){
                         return return_data(2, '', $this->cms_hint_array[$k], 'json');
                     }else{
@@ -366,7 +366,7 @@ class Cms extends Admin{
                 }
             }
         }
-        if($this->cms_article['image'] == 'on'){
+        if($this->cms_article['image'] == true){
             if($image){
                 $image_res = file_upload($image, 'article');
                 $data['image'] = $image_res['file_path'];
@@ -445,7 +445,7 @@ class Cms extends Admin{
         $article->author = $author == '' ? $this->admin->nickname : $author;
         foreach($this->cms_article as $k => $v){
             if($k != 'image'){
-                if($v == 'on'){
+                if($v == true){
                     if($$k == ''){
                         return return_data(2, '', $this->cms_hint_array[$k], 'json');
                     }else{
@@ -455,7 +455,7 @@ class Cms extends Admin{
             }
         }
         $old_image = '';
-        if($this->cms_article['image'] == 'on'){
+        if($this->cms_article['image'] == true){
             if($image){
                 $image_res = file_upload($image, 'article');
                 $article->image = $image_res['file_path'];

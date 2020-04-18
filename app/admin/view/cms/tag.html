@@ -20,7 +20,7 @@
                                     <th scope="col" width="15%">#</th>
                                     <th scope="col" width="15%">id</th>
                                     <th scope="col" width="15%">名称</th>
-                                    {if condition="$cms_tag_image_onoff == 'on'"}
+                                    {if condition="$cms_tag_image_onoff == true"}
                                     <th scope="col" width="15%">图片</th>
                                     {/if}
                                     <th scope="col"></th>
@@ -32,7 +32,7 @@
                                     <td>{$vo.sort}</td>
                                     <td>{$vo.tag_id}</td>
                                     <td>{$vo.tag_name}</td>
-                                    {if condition="$cms_tag_image_onoff == 'on'"}
+                                    {if condition="$cms_tag_image_onoff == true"}
                                     <td><img id="image{$vo.tag_id}" src="{$vo.tag_image}" width="60px" height="60px" onclick="show_image({$vo.tag_id})"/></td>
                                     {/if}
                                     <td>
