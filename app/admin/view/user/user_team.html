@@ -9,7 +9,7 @@
                     <div class="card-header">
                         <div class="card-title">
                             会员团队
-                            <button class="btn btn-success btn-xs" style="float: right;" onclick="location.href='/adm/user'">
+                            <button class="btn btn-success btn-xs" style="float: right;" onclick="location.href='/admin/user'">
                                 <i class="la la-mail-reply"></i>
                             </button>
                         </div>
@@ -27,7 +27,7 @@
                             <tbody>
                                 {volist name="team" id="vo"}
                                 <tr class="tr{$vo.top_id}" {if condition="$vo->level != 1"}style="display: none;"{/if}>
-                                    <td id="td{$vo.user_id}" data-status="0" onclick="show({$vo.user_id})">
+                                    <td id="td{$vo.user_id}" data-status="0" onclick="show('{$vo.user_id}')">
                                         <?php echo str_repeat('&nbsp', ($vo->level - 1) * 8); ?>
                                         <i class="la la-caret-right" id='i{$vo.user_id}'></i>
                                         <?php echo str_repeat('&nbsp', 16); ?>
