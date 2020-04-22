@@ -1,0 +1,118 @@
+{extend name="base" /}
+
+{block name="custom_css"}
+<link rel="stylesheet" href="/static/dcalendar.picker/dcalendar.picker.css">
+{/block}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">会员资金流水日志</div>
+                        <div class="card-sub text-warning">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline" role="form" action="" method="post">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="user_identity" id="user_identity" value="{$user_identity}" placeholder="{$user_identity_text}">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control form-control" name="coin_type" id="coin_type">
+                                    <option value="">选择币种</option>
+                                    {foreach $user_fund_type as $key=> $value}
+                                    <option value="{$value}" {if condition="$coin_type == $value"}selected{/if}>{$key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control form-control" name="fund_type" id="fund_type">
+                                    <option value="">选择类型</option>
+                                    {volist name="fund_type_text" id="ftt"}
+                                    <option value="{$ftt}" {if condition="$fund_type == $ftt"}selected{/if}>{$ftt}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input id='mydatepicker1' type="text" class="form-control" name="start_time" placeholder="起始时间" value="" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <input id='mydatepicker2' type="text" class="form-control" name="end_time" placeholder="结束时间" value="" autocomplete="off">
+                            </div>
+                            <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
+                            <button type="button" class="btn btn-default" id="from_close">清空</button>
+                        </form>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="8%">#</th>
+                                    <th scope="col" width="6%">会员id</th>
+                                    <th scope="col" width="15%">{$user_identity_text}</th>
+                                    <th scope="col">金额</th>
+                                    <th scope="col">币种</th>
+                                    <th scope="col">操作</th>
+                                    <th scope="col">说明</th>
+                                    <th scope="col">备注</th>
+                                    <th scope="col">记录时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list" id="vo"}
+                                <tr>
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.user_id}</td>
+                                    <td>{$vo.user_identity}</td>
+                                    <td>{$vo.number}</td>
+                                    <td>{$vo.coin_type}</td>
+                                    <td>{$vo.fund_type}</td>
+                                    <td>{$vo.content}</td>
+                                    <td>{$vo.remark}</td>
+                                    <td>{$vo.insert_time}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                        {$list->render() | raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script type="text/javascript" src="/static/dcalendar.picker/dcalendar.picker.js"></script>
+<script type="text/javascript">
+    $('#mydatepicker1').dcalendarpicker({
+        format:'yyyy-mm-dd'
+    });
+    $('#mydatepicker2').dcalendarpicker({
+        format:'yyyy-mm-dd'
+    });
+
+    setTimeout(function(){
+        var start_time = "{$start_time}";
+        var end_time = "{$end_time}";
+        if(start_time != ''){
+            $("#mydatepicker1").val(start_time);
+        }
+        if(end_time != ''){
+            $("#mydatepicker2").val(end_time);
+        }
+    }, 200);
+
+    $("#from_close").click(function(){
+        $("#user_identity").val('');
+        $("#coin_type").val('');
+        $("#fund_type").val('');
+        $("#mydatepicker1").val('');
+        $("#mydatepicker2").val('');
+        $("#search_submit").click();
+    })
+</script>
+</script>
+{/block}

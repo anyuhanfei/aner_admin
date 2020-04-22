@@ -20,15 +20,6 @@ class CmsArticle extends Model{
     }
 
     /**
-     * 关联文章评论表
-     *
-     * @return void
-     */
-    public function comment(){
-        return $this->hasMany('cms_article_comment', 'article_id', 'article_id');
-    }
-
-    /**
      * 关联文章分类表
      *
      * @return void

@@ -9,7 +9,8 @@ use app\admin\controller\Admin;
 
 use app\admin\model\LogAdminOperation;
 use app\admin\model\AdmAdmin;
-use app\admin\model\LogIdxUserFund;
+use app\admin\model\LogUserFund;
+use app\admin\model\LogUserOperation;
 
 class Log extends Admin{
     public function __construct(){
@@ -79,13 +80,13 @@ class Log extends Admin{
      *
      * @return void
      */
-    public function index_user_fund_log(){
+    public function user_fund_log(){
         $user_identity = Request::instance()->param('user_identity', '');
         $coin_type = Request::instance()->param('coin_type', '');
         $fund_type = Request::instance()->param('fund_type', '');
         $start_time = Request::instance()->param('start_time', '');
         $end_time = Request::instance()->param('end_time', '');
-        $log = new LogIdxUserFund;
+        $log = new LogUserFund;
         $log = self::where_time($log, $start_time, $end_time);
         $log = ($user_identity != '') ? $log->where($this->user_identity, $user_identity) : $log;
         $log = ($coin_type != '') ? $log->where('coin_type', $coin_type) : $log;
@@ -93,7 +94,26 @@ class Log extends Admin{
         $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
         self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'coin_type'=> $coin_type, 'fund_type'=> $fund_type, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         // 操作集
-        View::assign('fund_type_text', LogIdxUserFund::fund_type_text());
+        View::assign('fund_type_text', LogUserFund::fund_type_text());
+        return View::fetch();
+    }
+
+    /**
+     * 会员操作表
+     *
+     * @return void
+     */
+    public function user_operation_log(){
+        $user_identity = Request::instance()->param('user_identity', '');
+        $ip = Request::instance()->param('ip', '');
+        $start_time = Request::instance()->param('start_time', '');
+        $end_time = Request::instance()->param('end_time', '');
+        $log = new LogUserFund;
+        $log = self::where_time($log, $start_time, $end_time);
+        $log = ($user_identity != '') ? $log->where($this->user_identity, $user_identity) : $log;
+        $log = ($ip != '') ? $log->where('ip', $ip) : $log;
+        $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'ip'=> $ip, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         return View::fetch();
     }
 }

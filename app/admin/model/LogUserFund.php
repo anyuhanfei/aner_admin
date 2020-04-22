@@ -5,8 +5,8 @@ use think\Model;
 use think\facade\Env;
 
 
-class LogIdxUserFund extends Model{
-    protected $table = 'log_idx_user_fund';
+class LogUserFund extends Model{
+    protected $table = 'log_user_fund';
     protected $pk = "id";
 
     public function user(){

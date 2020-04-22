@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">资金流水</div>
+                        <div class="card-title">会员操作日志</div>
                         <div class="card-sub text-warning">
                         </div>
                     </div>
@@ -21,20 +21,7 @@
                                 <input type="text" class="form-control" name="user_identity" id="user_identity" value="{$user_identity}" placeholder="{$user_identity_text}">
                             </div>
                             <div class="form-group">
-                                <select class="form-control form-control" name="coin_type" id="coin_type">
-                                    <option value="">选择币种</option>
-                                    {foreach $user_fund_type as $key=> $value}
-                                    <option value="{$value}" {if condition="$coin_type == $value"}selected{/if}>{$key}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control form-control" name="fund_type" id="fund_type">
-                                    <option value="">选择类型</option>
-                                    {volist name="fund_type_text" id="ftt"}
-                                    <option value="{$ftt}" {if condition="$fund_type == $ftt"}selected{/if}>{$ftt}</option>
-                                    {/volist}
-                                </select>
+                                <input type="text" class="form-control" name="ip" id="ip" value="{$ip}" placeholder="IP地址">
                             </div>
                             <div class="form-group">
                                 <input id='mydatepicker1' type="text" class="form-control" name="start_time" placeholder="起始时间" value="" autocomplete="off">
@@ -51,9 +38,7 @@
                                     <th scope="col" width="8%">#</th>
                                     <th scope="col" width="6%">会员id</th>
                                     <th scope="col" width="15%">{$user_identity_text}</th>
-                                    <th scope="col">金额</th>
-                                    <th scope="col">币种</th>
-                                    <th scope="col">操作</th>
+                                    <th scope="col">IP地址</th>
                                     <th scope="col">说明</th>
                                     <th scope="col">备注</th>
                                     <th scope="col">记录时间</th>
@@ -65,9 +50,7 @@
                                     <td>{$vo.id}</td>
                                     <td>{$vo.user_id}</td>
                                     <td>{$vo.user_identity}</td>
-                                    <td>{$vo.number}</td>
-                                    <td>{$vo.coin_type}</td>
-                                    <td>{$vo.fund_type}</td>
+                                    <td>{$vo.ip}</td>
                                     <td>{$vo.content}</td>
                                     <td>{$vo.remark}</td>
                                     <td>{$vo.insert_time}</td>

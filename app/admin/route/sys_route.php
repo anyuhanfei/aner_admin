@@ -129,4 +129,5 @@ Route::get('user/update/:id', 'admin/user/user_update');
 Route::post('user/update/submit/:type/:id', 'admin/user/user_update_submit');
 Route::get('user/freeze/:id', 'admin/user/user_freeze');
 Route::get('user/delete/:id', 'admin/user/user_delete');
-Route::rule('index/user/fund/log', 'admin/log/index_user_fund_log');
+Route::rule('user/fund/log', 'admin/log/user_fund_log');
+Route::rule('user/operation/log', 'admin/log/user_operation_log');
