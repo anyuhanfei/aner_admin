@@ -37,7 +37,7 @@ class Log extends Admin{
         $log = ($account != '') ? $this->where_admin($log, 'nickname', $nickname) : $log;
         $log = ($ip != '') ? $log->where('ip', $ip) : $log;
         $log = self::where_time($log, $start_time, $end_time);
-        $list = $log->where('type', 'operation')->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        $list = $log->where('type', 'operation')->order('insert_time desc')->paginate(['list_rows'=> $this->page_number, 'query'=>Request()->param()]);
         self::many_assign(['list'=> $list, 'account'=> $account, 'nickname'=> $nickname, 'ip'=> $ip, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         return View::fetch();
     }
@@ -54,7 +54,7 @@ class Log extends Admin{
         $log = new LogAdminOperation;
         $log = ($ip != '') ? $log->where('ip', $ip) : $log;
         $log = self::where_time($log, $start_time, $end_time);
-        $list = $log->where('type', 'login')->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        $list = $log->where('type', 'login')->order('insert_time desc')->paginate(['list_rows'=> $this->page_number, 'query'=>Request()->param()]);
         self::many_assign(['list'=> $list, 'ip'=> $ip, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         return View::fetch();
     }
@@ -91,7 +91,7 @@ class Log extends Admin{
         $log = ($user_identity != '') ? $log->where('user_identity', $user_identity) : $log;
         $log = ($coin_type != '') ? $log->where('coin_type', $coin_type) : $log;
         $log = ($fund_type != '') ? $log->where('fund_type', $fund_type) : $log;
-        $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        $list = $log->order('insert_time desc')->paginate(['list_rows'=> $this->page_number, 'query'=>Request()->param()]);
         self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'coin_type'=> $coin_type, 'fund_type'=> $fund_type, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         // 操作集
         View::assign('fund_type_text', LogUserFund::fund_type_text());
@@ -112,7 +112,7 @@ class Log extends Admin{
         $log = self::where_time($log, $start_time, $end_time);
         $log = ($user_identity != '') ? $log->where('user_identity', $user_identity) : $log;
         $log = ($ip != '') ? $log->where('ip', $ip) : $log;
-        $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
+        $list = $log->order('insert_time desc')->paginate(['list_rows'=> $this->page_number, 'query'=>Request()->param()]);
         self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'ip'=> $ip, 'start_time'=> $start_time, 'end_time'=> $end_time]);
         return View::fetch();
     }
