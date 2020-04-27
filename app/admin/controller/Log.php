@@ -88,7 +88,7 @@ class Log extends Admin{
         $end_time = Request::instance()->param('end_time', '');
         $log = new LogUserFund;
         $log = self::where_time($log, $start_time, $end_time);
-        $log = ($user_identity != '') ? $log->where($this->user_identity, $user_identity) : $log;
+        $log = ($user_identity != '') ? $log->where('user_identity', $user_identity) : $log;
         $log = ($coin_type != '') ? $log->where('coin_type', $coin_type) : $log;
         $log = ($fund_type != '') ? $log->where('fund_type', $fund_type) : $log;
         $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
@@ -110,7 +110,7 @@ class Log extends Admin{
         $end_time = Request::instance()->param('end_time', '');
         $log = new LogUserFund;
         $log = self::where_time($log, $start_time, $end_time);
-        $log = ($user_identity != '') ? $log->where($this->user_identity, $user_identity) : $log;
+        $log = ($user_identity != '') ? $log->where('user_identity', $user_identity) : $log;
         $log = ($ip != '') ? $log->where('ip', $ip) : $log;
         $list = $log->order('insert_time desc')->paginate($this->page_number,false,['query'=>request()->param()]);
         self::many_assign(['list'=> $list, 'user_identity'=> $user_identity, 'ip'=> $ip, 'start_time'=> $start_time, 'end_time'=> $end_time]);

@@ -190,7 +190,7 @@ class User extends Admin{
             if(!$validate->scene('level_password')->check(['id'=> $id, 'level_password'=> $level_password])){
                 return return_data(2, '', $validate->getError(), 'json');
             }
-            $user->level_password = md5($level_password . $user->password_salt);
+            $user->level_password = $level_password;
         }
         $res = $user->save();
         if($res){
