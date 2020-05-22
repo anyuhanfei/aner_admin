@@ -1,0 +1,102 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            网站设置
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul id="myTab" class="nav nav-tabs" role="tablist">
+                            {volist name="setting_category" id="c"}
+                            <li style="padding-right: 10px;">
+                                <a href="/admin/setting/{$c.category_name}">
+                                    <button {if condition="$c.category_name == $cgory"}class="tab_btn btn btn-default"{else /}class="tab_btn btn btn-warning"{/if}>{$c.category_name}</button>
+                                </a>
+                            </li>
+                            {/volist}
+                            {if condition="$developer_model== true"}
+                                <button class="btn btn-success btn-xs" id="add" style="margin-left: 80%; width: 60px;">添加</button>
+                            {/if}
+                        </ul>
+                        <form id="ajaxForm" method="post" action="/admin/setting/value/submit" enctype="multipart/form-data">
+                        <div class="card-body" style="padding: 15px 200px 10px;">
+                            <?php $i=1;?>
+                            {volist name="setting" id="s"}
+                            <?php $i++;?>
+                            {if condition="$s.input_type == 'text' || $s.input_type == 'number' || $s.input_type == 'password'"}
+                            <div class="form-group">
+                                <label for="{$s.sign}">{$s.title}</label>
+                                <input type="{$s.input_type}" class="form-control" id="{$s.sign}" name="{$s.sign}" value="{$s.value}">
+                                <small id="emailHelp" class="form-text text-muted text-danger">{$s.remark}</small>
+                            </div>
+                            {elseif condition="$s.input_type == 'onoff'"}
+                            <div class="form-group">
+                                <label for="{$s.sign}">{$s.title}</label><br/>
+                                <input class="value" type="checkbox" id="{$s.sign}" name="{$s.sign}" data-toggle="toggle" data-onstyle="danger" data-style="btn-round" {if condition="$s.value == 'on'"}checked{/if}>
+                            </div>
+                            {elseif condition="$s.input_type == 'select'"}
+                            <!-- <div class="form-group" id="div{$s.sign}">
+                                <label for="{$s.sign}">{$s.title}</label>
+                                <select class="form-control form-control-sm" id="{$s.sign}" name="{$s.sign}" onclick='add_select("{$s.sign}", {$s.remark | raw})'>
+                                    <option value="">{if condition="$s.value == ''"}请选择{else /}当前选择:{$s.value}{/if}</option>
+                                </select>
+                            </div> -->
+                            {/if}
+                            {/volist}
+                            <div class="card-action" style="display: flex; justify-content: center;"></div>
+                            {if condition="$i > 0"}
+                            <a class="btn btn-success" style="margin-right: 10px;" id="detail_submit">提交</a>
+                            {/if}
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="custom_js"}
+<script src="/static/jquery/jquery.form.js"></script>
+<script>
+    // 添加
+    $("#add").click(function(){
+        location.href = "/admin/setting/add/input"
+    })
+
+    //展示下拉框的参数
+    function add_select(sign, remark){
+        var str = $("#" + sign).html()
+    　　for(var key in remark){
+            str += '<option value="'+remark[key]+'">'+key+'</option>'
+    　　}
+        $("#" + sign).html(str)
+        $("#" + sign).removeAttr('onclick');
+    }
+
+    $(function () {
+        $("#detail_submit").click(function(){
+            $("#ajaxForm").ajaxSubmit(function(data){
+                data = JSON.parse(data);
+                custom_notify('success', '网站设置', data.msg);
+            });
+        })
+    })
+
+    $("#delete_category").click(function(){
+
+    })
+
+    // 删除当前分类
+    function delete_item(id){
+
+    }
+</script>
+{/block}

@@ -81,18 +81,10 @@ Route::get('resource/notify', 'admin/resource/notify');
 //网站设置
 Route::get('basic', 'admin/webset/basic');
 Route::post('basic/submit', 'admin/webset/basic_submit');
-Route::get('set', 'admin/webset/set');
-Route::get('set/category/add', 'admin/webset/set_category_add');
-Route::post('set/category/add/submit', 'admin/webset/set_category_add_submit');
-Route::get('set/category/update/:id', 'admin/webset/set_category_update');
-Route::post('set/category/update/submit/:id', 'admin/webset/set_category_update_submit');
-Route::get('set/category/delete/submit/:id', 'admin/webset/set_category_delete_submit');
-Route::get('set/add', 'admin/webset/set_set_add');
-Route::post('set/add/submit', 'admin/webset/set_set_add_submit');
-Route::get('set/update/:id', 'admin/webset/set_set_update');
-Route::post('set/update/submit/:id', 'admin/webset/set_set_update_submit');
-Route::get('set/delete/submit/:id', 'admin/webset/set_set_delete_submit');
-Route::post('set/value/submit/:id', 'admin/webset/set_set_value_submit');
+Route::get('setting/[:cgory]', 'admin/webset/setting');
+Route::get('setting/add/input', 'admin/webset/setting_add');
+Route::post('setting/add/submit', 'admin/webset/setting_add_submit');
+Route::post('setting/value/submit', 'admin/webset/setting_value_submit');
 
 //文章管理
 Route::get('cms/tag', 'admin/cms/tag');

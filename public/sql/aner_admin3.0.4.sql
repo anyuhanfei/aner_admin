@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80016
 File Encoding         : 65001
 
-Date: 2020-04-22 16:54:25
+Date: 2020-05-22 16:51:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -263,7 +263,7 @@ CREATE TABLE `log_admin_operation` (
   `remark` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
   `insert_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=593 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=608 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of log_admin_operation
@@ -278,6 +278,21 @@ INSERT INTO `log_admin_operation` VALUES ('589', '1', 'operation', '127.0.0.1', 
 INSERT INTO `log_admin_operation` VALUES ('590', '1', 'operation', '127.0.0.1', '后台目录添加：会员操作日志', '', '2020-04-22 16:48:00');
 INSERT INTO `log_admin_operation` VALUES ('591', '1', 'operation', '127.0.0.1', '后台目录修改：资金流水->会员资金流水日志', '', '2020-04-22 16:48:18');
 INSERT INTO `log_admin_operation` VALUES ('592', '1', 'operation', '127.0.0.1', '后台目录修改：会员管理->会员管理', '', '2020-04-22 16:50:16');
+INSERT INTO `log_admin_operation` VALUES ('593', '0', 'login', '127.0.0.1', '登录成功，账号：root', '', '2020-05-13 14:26:00');
+INSERT INTO `log_admin_operation` VALUES ('594', '0', 'login', '127.0.0.1', '登录成功，账号：root', '', '2020-05-22 11:00:05');
+INSERT INTO `log_admin_operation` VALUES ('595', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 14:25:00');
+INSERT INTO `log_admin_operation` VALUES ('596', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 14:25:56');
+INSERT INTO `log_admin_operation` VALUES ('597', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 14:26:12');
+INSERT INTO `log_admin_operation` VALUES ('598', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 15:03:14');
+INSERT INTO `log_admin_operation` VALUES ('599', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 15:03:55');
+INSERT INTO `log_admin_operation` VALUES ('600', '1', 'operation', '127.0.0.1', '网站设置添加', '', '2020-05-22 15:43:48');
+INSERT INTO `log_admin_operation` VALUES ('601', '1', 'operation', '127.0.0.1', '方法信息修改：网站设置-列表->网站设置-列表', '', '2020-05-22 16:31:58');
+INSERT INTO `log_admin_operation` VALUES ('602', '1', 'operation', '127.0.0.1', '方法信息修改：网站设置信息添加-表单->网站设置添加-表单', '', '2020-05-22 16:32:20');
+INSERT INTO `log_admin_operation` VALUES ('603', '1', 'operation', '127.0.0.1', '方法信息修改：网站设置信息添加-提交->网站设置信息添加-提交', '', '2020-05-22 16:32:33');
+INSERT INTO `log_admin_operation` VALUES ('604', '1', 'operation', '127.0.0.1', '方法信息添加：网站设置值修改--提交', '', '2020-05-22 16:33:19');
+INSERT INTO `log_admin_operation` VALUES ('605', '1', 'operation', '127.0.0.1', '后台目录修改：网站设置->网站设置', '', '2020-05-22 16:33:32');
+INSERT INTO `log_admin_operation` VALUES ('606', '1', 'operation', '127.0.0.1', '方法信息修改：网站设置-列表->网站设置-列表', '', '2020-05-22 16:33:54');
+INSERT INTO `log_admin_operation` VALUES ('607', '1', 'operation', '127.0.0.1', '后台目录修改：首页->首页', '', '2020-05-22 16:35:29');
 
 -- ----------------------------
 -- Table structure for `log_user_fund`
@@ -411,7 +426,7 @@ INSERT INTO `sys_catalog` VALUES ('14', '角色管理', 'la la-sitemap', '8', '2
 INSERT INTO `sys_catalog` VALUES ('15', '管理员列表', 'la la-reddit', '8', '36', 'adm/admin', '/admin/admin', '13', '2');
 INSERT INTO `sys_catalog` VALUES ('16', '系统设置', 'la la-cog', '0', '0', '', '', '0', '3');
 INSERT INTO `sys_catalog` VALUES ('17', '基本信息', 'la la-leanpub', '9', '43', 'webset/basic', '/admin/basic', '16', '1');
-INSERT INTO `sys_catalog` VALUES ('18', '网站设置', 'la la-wrench', '9', '45', 'webset/set', '/admin/set', '16', '2');
+INSERT INTO `sys_catalog` VALUES ('18', '网站设置', 'la la-wrench', '9', '45', 'webset/setting', '/admin/setting', '16', '2');
 INSERT INTO `sys_catalog` VALUES ('19', '广告管理', ' la la-cc-amex', '10', '57', 'ad/ad', '/admin/ad', '16', '1');
 INSERT INTO `sys_catalog` VALUES ('20', '个人中心', 'la la-institution', '0', '0', '', '', '0', '1');
 INSERT INTO `sys_catalog` VALUES ('21', '个人资料', 'la la-hdd-o', '11', '69', 'me/detail', '/admin/me/detail', '20', '1');
@@ -467,37 +482,37 @@ CREATE TABLE `sys_module_action` (
   `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
   `remark` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`action_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_module_action
 -- ----------------------------
-INSERT INTO `sys_module_action` VALUES ('1', '2', '模块管理-列表', 'developer/module', '/adm/module', '1', '');
+INSERT INTO `sys_module_action` VALUES ('1', '2', '模块管理-列表', 'developer/module', '/admin/module', '1', '');
 INSERT INTO `sys_module_action` VALUES ('3', '2', '模块信息添加-表单', 'developer/module_add', '', '2', null);
 INSERT INTO `sys_module_action` VALUES ('4', '2', '模块信息添加-提交', 'developer/module_add_submit', '', '3', '');
 INSERT INTO `sys_module_action` VALUES ('5', '2', '模块信息修改-表单', 'developer/module_update', '', '4', '');
 INSERT INTO `sys_module_action` VALUES ('6', '2', '模块信息修改-提交', 'developer/module_update_submit', '', '5', '');
 INSERT INTO `sys_module_action` VALUES ('7', '2', '模块信息删除-操作', 'developer/module_delete_submit', '', '6', '');
-INSERT INTO `sys_module_action` VALUES ('8', '2', '方法管理-列表', 'developer/action', '/adm/action', '7', '');
+INSERT INTO `sys_module_action` VALUES ('8', '2', '方法管理-列表', 'developer/action', '/admin/action', '7', '');
 INSERT INTO `sys_module_action` VALUES ('9', '2', '方法信息添加-表单', 'developer/action_add', null, '8', '');
 INSERT INTO `sys_module_action` VALUES ('10', '2', '方法信息添加-提交', 'developer/action_add_submit', null, '9', '');
 INSERT INTO `sys_module_action` VALUES ('11', '2', '方法信息修改-表单', 'developer/action_update', null, '10', '');
 INSERT INTO `sys_module_action` VALUES ('12', '2', '方法信息修改-提交', 'developer/action_update_submit', null, '11', '');
 INSERT INTO `sys_module_action` VALUES ('13', '2', '方法信息删除-操作', 'developer/action_delete_submit', null, '12', '');
-INSERT INTO `sys_module_action` VALUES ('14', '2', '后台目录管理-列表', 'developer/catalog', '/adm/catalog', '13', '');
+INSERT INTO `sys_module_action` VALUES ('14', '2', '后台目录管理-列表', 'developer/catalog', '/admin/catalog', '13', '');
 INSERT INTO `sys_module_action` VALUES ('15', '2', '后台目录添加-表单', 'developer/catalog_add', null, '14', '');
 INSERT INTO `sys_module_action` VALUES ('16', '2', '后台目录添加-提交', 'developer/catalog_add_submit', null, '15', '');
 INSERT INTO `sys_module_action` VALUES ('18', '2', '后台目录修改-表单', 'developer/catalog_update', null, '16', '');
 INSERT INTO `sys_module_action` VALUES ('19', '2', '后台目录修改-提交', 'developer/catalog_update_submit', null, '17', '');
 INSERT INTO `sys_module_action` VALUES ('20', '2', '后台目录删除-操作', 'developer/catalog_delete_submit', null, '18', '');
-INSERT INTO `sys_module_action` VALUES ('21', '4', '列表资源-展示页', 'resource/table', '/adm/resource/table', '1', '');
-INSERT INTO `sys_module_action` VALUES ('22', '4', '表单资源-展示页', 'resource/form', '/adm/resource/form', '2', '');
-INSERT INTO `sys_module_action` VALUES ('23', '4', '图标资源-展示页', 'resource/icon', '/adm/resource/icon', '3', '');
-INSERT INTO `sys_module_action` VALUES ('24', '4', '按钮资源-展示页', 'resource/button', '/adm/resource/button', '4', '');
-INSERT INTO `sys_module_action` VALUES ('25', '4', '标题资源-展示页', 'resource/text', '/adm/resource/text', '5', '');
-INSERT INTO `sys_module_action` VALUES ('26', '4', '引导提示资源-展示页', 'resource/notify', '/adm/resource/notify', '6', '');
-INSERT INTO `sys_module_action` VALUES ('27', '5', '首页', 'index/index', '/adm', '1', '');
-INSERT INTO `sys_module_action` VALUES ('28', '8', '角色管理-列表', 'adm/role', '/adm/role', '1', '');
+INSERT INTO `sys_module_action` VALUES ('21', '4', '列表资源-展示页', 'resource/table', '/admin/resource/table', '1', '');
+INSERT INTO `sys_module_action` VALUES ('22', '4', '表单资源-展示页', 'resource/form', '/admin/resource/form', '2', '');
+INSERT INTO `sys_module_action` VALUES ('23', '4', '图标资源-展示页', 'resource/icon', '/admin/resource/icon', '3', '');
+INSERT INTO `sys_module_action` VALUES ('24', '4', '按钮资源-展示页', 'resource/button', '/admin/resource/button', '4', '');
+INSERT INTO `sys_module_action` VALUES ('25', '4', '标题资源-展示页', 'resource/text', '/admin/resource/text', '5', '');
+INSERT INTO `sys_module_action` VALUES ('26', '4', '引导提示资源-展示页', 'resource/notify', '/admin/resource/notify', '6', '');
+INSERT INTO `sys_module_action` VALUES ('27', '5', '首页', 'index/index', '/admin', '1', '');
+INSERT INTO `sys_module_action` VALUES ('28', '8', '角色管理-列表', 'adm/role', '/admin/role', '1', '');
 INSERT INTO `sys_module_action` VALUES ('29', '8', '角色信息添加-表单', 'adm/role_add', null, '2', '');
 INSERT INTO `sys_module_action` VALUES ('30', '8', '角色信息添加-提交', 'adm/role_add_submit', null, '3', '');
 INSERT INTO `sys_module_action` VALUES ('31', '8', '角色信息修改-表单', 'adm/role_update', null, '4', '');
@@ -505,28 +520,19 @@ INSERT INTO `sys_module_action` VALUES ('32', '8', '角色信息修改-提交', 
 INSERT INTO `sys_module_action` VALUES ('33', '8', '角色信息删除-操作', 'adm/role_delete_submit', null, '6', '');
 INSERT INTO `sys_module_action` VALUES ('34', '8', '角色权限设置-表单', 'adm/role_power', null, '7', '');
 INSERT INTO `sys_module_action` VALUES ('35', '8', '角色权限设置-提交', 'adm/role_power_submit', null, '8', '');
-INSERT INTO `sys_module_action` VALUES ('36', '8', '管理员管理-列表', 'adm/admin', '/adm/admin', '9', '');
+INSERT INTO `sys_module_action` VALUES ('36', '8', '管理员管理-列表', 'adm/admin', '/admin/admin', '9', '');
 INSERT INTO `sys_module_action` VALUES ('37', '8', '管理员信息添加-表单', 'adm/admin_add', null, '10', '');
 INSERT INTO `sys_module_action` VALUES ('38', '8', '管理员信息添加-提交', 'adm/admin_add_submit', null, '11', '');
 INSERT INTO `sys_module_action` VALUES ('39', '8', '管理员信息修改-表单', 'adm/admin_update', null, '12', '');
 INSERT INTO `sys_module_action` VALUES ('40', '8', '管理员信息修改-提交', 'adm/admin_update_submit', null, '13', '');
 INSERT INTO `sys_module_action` VALUES ('41', '8', '管理员信息删除-操作', 'adm/admin_delete_submit', null, '14', '');
 INSERT INTO `sys_module_action` VALUES ('42', '8', '分配管理员角色-操作', 'adm/admin_allot', null, '15', '');
-INSERT INTO `sys_module_action` VALUES ('43', '9', '基本信息展示-表单', 'webset/basic', '/adm/basic', '1', '');
+INSERT INTO `sys_module_action` VALUES ('43', '9', '基本信息展示-表单', 'webset/basic', '/admin/basic', '1', '');
 INSERT INTO `sys_module_action` VALUES ('44', '9', '基本信息修改-提交', 'webset/basic_submit', null, '2', '');
-INSERT INTO `sys_module_action` VALUES ('45', '9', '网站设置-列表', 'webset/set', '/adm/set', '3', '');
-INSERT INTO `sys_module_action` VALUES ('46', '9', '网站设置分类信息添加-表单', 'webset/set_category_add', null, '4', '');
-INSERT INTO `sys_module_action` VALUES ('47', '9', '网站设置分类信息添加-提交', 'webset/set_category_add_submit', null, '5', '');
-INSERT INTO `sys_module_action` VALUES ('48', '9', '网站设置分类信息修改-表单', 'webset/set_category_update', null, '6', '');
-INSERT INTO `sys_module_action` VALUES ('49', '9', '网站设置分类信息修改-提交', 'webset/set_category_update_submit', null, '7', '');
-INSERT INTO `sys_module_action` VALUES ('50', '9', '网站设置分类信息删除-操作', 'webset/set_category_delete_submit', null, '8', '');
-INSERT INTO `sys_module_action` VALUES ('51', '9', '网站设置信息添加-表单', 'webset/set_set_add', null, '9', '');
-INSERT INTO `sys_module_action` VALUES ('52', '9', '网站设置信息添加-提交', 'webset/set_set_add_submit', null, '10', '');
-INSERT INTO `sys_module_action` VALUES ('53', '9', '网站设置信息修改-表单', 'webset/set_set_update', null, '11', '');
-INSERT INTO `sys_module_action` VALUES ('54', '9', '网站设置信息修改-提交', 'webset/set_set_update_submit', null, '12', '');
-INSERT INTO `sys_module_action` VALUES ('55', '9', '网站设置信息删除-操作', 'webset/set_set_delete_submit', null, '13', '');
-INSERT INTO `sys_module_action` VALUES ('56', '9', '网站设置信息值修改-操作', 'webset/set_set_value_submit', null, '14', '');
-INSERT INTO `sys_module_action` VALUES ('57', '10', '广告管理-列表', 'ad/ad', '/adm/ad', '1', '');
+INSERT INTO `sys_module_action` VALUES ('45', '9', '网站设置-列表', 'webset/setting', '/admin/setting', '3', '');
+INSERT INTO `sys_module_action` VALUES ('51', '9', '网站设置添加-表单', 'webset/setting_add', '', '9', '');
+INSERT INTO `sys_module_action` VALUES ('52', '9', '网站设置信息添加-提交', 'webset/setting_add_submit', '', '10', '');
+INSERT INTO `sys_module_action` VALUES ('57', '10', '广告管理-列表', 'ad/ad', '/admin/ad', '1', '');
 INSERT INTO `sys_module_action` VALUES ('58', '10', '广告位信息添加-表单', 'ad/ad_adv_add', null, '2', '');
 INSERT INTO `sys_module_action` VALUES ('59', '10', '广告位信息添加-提交', 'ad/ad_adv_add_submit', null, '3', '');
 INSERT INTO `sys_module_action` VALUES ('60', '10', '广告位信息修改-表单', 'ad/ad_adv_update', null, '4', '');
@@ -538,25 +544,25 @@ INSERT INTO `sys_module_action` VALUES ('65', '10', '广告信息修改-表单',
 INSERT INTO `sys_module_action` VALUES ('66', '10', '广告信息修改-提交', 'ad/ad_ad_update_submit', null, '10', '');
 INSERT INTO `sys_module_action` VALUES ('67', '10', '广告信息删除-操作', 'ad/ad_ad_delete_submit', null, '11', '');
 INSERT INTO `sys_module_action` VALUES ('68', '10', '广告信息文本编辑上传图片-提交', 'ad/ad_img', null, '12', '');
-INSERT INTO `sys_module_action` VALUES ('69', '11', '个人资料展示-表单', 'me/detail', '/adm/me/detail', '1', '');
+INSERT INTO `sys_module_action` VALUES ('69', '11', '个人资料展示-表单', 'me/detail', '/admin/me/detail', '1', '');
 INSERT INTO `sys_module_action` VALUES ('70', '11', '个人资料修改-提交', 'me/detail_submit', null, '2', '');
-INSERT INTO `sys_module_action` VALUES ('71', '11', '修改密码-表单', 'me/update_password', '/adm/me/update/password', '3', '');
+INSERT INTO `sys_module_action` VALUES ('71', '11', '修改密码-表单', 'me/update_password', '/admin/me/update/password', '3', '');
 INSERT INTO `sys_module_action` VALUES ('72', '11', '修改密码-提交', 'me/update_password_submit', null, '4', '');
-INSERT INTO `sys_module_action` VALUES ('73', '12', '管理员操作日志-列表', 'log/admin_operation_log', '/adm/admin/operation/log', '1', '');
-INSERT INTO `sys_module_action` VALUES ('74', '12', '管理员登录日志-列表', 'log/admin_login_log', '/adm/admin/login/log', '2', '');
-INSERT INTO `sys_module_action` VALUES ('75', '13', '文章标签管理-列表', 'cms/tag', '/adm/cms/tag', '1', '');
+INSERT INTO `sys_module_action` VALUES ('73', '12', '管理员操作日志-列表', 'log/admin_operation_log', '/admin/admin/operation/log', '1', '');
+INSERT INTO `sys_module_action` VALUES ('74', '12', '管理员登录日志-列表', 'log/admin_login_log', '/admin/admin/login/log', '2', '');
+INSERT INTO `sys_module_action` VALUES ('75', '13', '文章标签管理-列表', 'cms/tag', '/admin/cms/tag', '1', '');
 INSERT INTO `sys_module_action` VALUES ('76', '13', '文章标签信息添加-表单', 'cms/tag_add', null, '2', '');
 INSERT INTO `sys_module_action` VALUES ('77', '13', '文章标签信息添加-提交', 'cms/tag_add_submit', null, '3', '');
 INSERT INTO `sys_module_action` VALUES ('78', '13', '文章标签信息修改-表单', 'cms/tag_update', null, '4', '');
 INSERT INTO `sys_module_action` VALUES ('79', '13', '文章标签信息修改-提交', 'cms/tag_update_submit', null, '5', '');
 INSERT INTO `sys_module_action` VALUES ('80', '13', '文章标签信息删除-操作', 'cms/tag_delete_submit', null, '6', '');
-INSERT INTO `sys_module_action` VALUES ('81', '13', '文章分类管理-列表', 'cms/category', '/adm/cms/category', '7', '');
+INSERT INTO `sys_module_action` VALUES ('81', '13', '文章分类管理-列表', 'cms/category', '/admin/cms/category', '7', '');
 INSERT INTO `sys_module_action` VALUES ('82', '13', '文章分类信息添加-表单', 'cms/category_add', null, '8', '');
 INSERT INTO `sys_module_action` VALUES ('83', '13', '文章分类信息添加-提交', 'cms/category_add_submit', null, '9', '');
 INSERT INTO `sys_module_action` VALUES ('84', '13', '文章分类信息修改-表单', 'cms/category_update', null, '10', '');
 INSERT INTO `sys_module_action` VALUES ('85', '13', '文章分类信息修改-提交', 'cms/category_update_submit', null, '11', '');
 INSERT INTO `sys_module_action` VALUES ('86', '13', '文章分类信息删除-操作', 'cms/category_delete_submit', null, '12', '');
-INSERT INTO `sys_module_action` VALUES ('88', '13', '文章管理-列表', 'cms/article', '/adm/cms/article', '13', '');
+INSERT INTO `sys_module_action` VALUES ('88', '13', '文章管理-列表', 'cms/article', '/admin/cms/article', '13', '');
 INSERT INTO `sys_module_action` VALUES ('89', '13', '文章信息添加-表单', 'cms/article_add', '', '14', '');
 INSERT INTO `sys_module_action` VALUES ('90', '13', '文章信息添加-提交', 'cms/article_add_submit', '', '15', '');
 INSERT INTO `sys_module_action` VALUES ('91', '13', '文章信息修改-表单', 'cms/article_update', '', '16', '');
@@ -564,7 +570,7 @@ INSERT INTO `sys_module_action` VALUES ('92', '13', '文章信息修改-提交',
 INSERT INTO `sys_module_action` VALUES ('93', '13', '文章信息删除-操作', 'cms/article_delete_submit', '', '18', '');
 INSERT INTO `sys_module_action` VALUES ('94', '13', '文章信息内容获取-操作', 'cms/article_content', '', '19', '');
 INSERT INTO `sys_module_action` VALUES ('95', '13', '文章信息上传图片-操作', 'cms/article_img', '', '20', '');
-INSERT INTO `sys_module_action` VALUES ('96', '14', '会员管理--列表', 'user/user', '/adm/user', '1', '');
+INSERT INTO `sys_module_action` VALUES ('96', '14', '会员管理--列表', 'user/user', '/admin/user', '1', '');
 INSERT INTO `sys_module_action` VALUES ('97', '14', '会员信息添加-表单', 'user/user_add', '', '2', '');
 INSERT INTO `sys_module_action` VALUES ('98', '14', '会员信息添加-提交', 'user/user_add_submit', '', '3', '');
 INSERT INTO `sys_module_action` VALUES ('99', '14', '会员团队-展示页', 'user/user_team', '', '4', '');
@@ -577,37 +583,25 @@ INSERT INTO `sys_module_action` VALUES ('105', '14', '会员充值-表单', 'use
 INSERT INTO `sys_module_action` VALUES ('106', '14', '会员充值-提交', 'user/user_recharge_submit', '', '11', '');
 INSERT INTO `sys_module_action` VALUES ('115', '12', '会员资金流水日志-列表', 'log/user_fund_log', '/admin/user/fund/log', '3', '');
 INSERT INTO `sys_module_action` VALUES ('116', '12', '会员操作日志-列表', 'log/user_operation_log', '/admin/user/operation/log', '4', '');
+INSERT INTO `sys_module_action` VALUES ('117', '9', '网站设置值修改--提交', 'webset/setting_value_submit', '', '21', '');
 
 -- ----------------------------
--- Table structure for `sys_set`
+-- Table structure for `sys_setting`
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_set`;
-CREATE TABLE `sys_set` (
-  `set_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '网站设置id',
-  `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '网站设置分类id',
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标题',
-  `sign` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '标签',
-  `type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型',
-  `value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '值',
-  `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`set_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `sys_setting`;
+CREATE TABLE `sys_setting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '设置id',
+  `type` char(5) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类型: cgory 分类  value 设置',
+  `category_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `title` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `input_type` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '表单类型',
+  `sign` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标签',
+  `value` varchar(200) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '值',
+  `sort` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
+  `remark` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注, select表单是以逗号分割的, 其他为输入提示',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
--- Records of sys_set
--- ----------------------------
-
--- ----------------------------
--- Table structure for `sys_set_category`
--- ----------------------------
-DROP TABLE IF EXISTS `sys_set_category`;
-CREATE TABLE `sys_set_category` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '设置分类id',
-  `category_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设置分类名称',
-  `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- ----------------------------
--- Records of sys_set_category
+-- Records of sys_setting
 -- ----------------------------
