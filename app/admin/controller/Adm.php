@@ -182,7 +182,7 @@ class Adm extends Admin{
      * @return void
      */
     public function admin_add(){
-        return $this->fetch();
+        return View::fetch();
     }
 
     /**

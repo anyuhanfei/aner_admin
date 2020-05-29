@@ -170,7 +170,7 @@ $("#submit").click(function(){
             }else{
                 custom_notify('success', '网站设置添加', data.msg);
                 setTimeout(() => {
-                    location.href.go(0)
+                    location.href = "/admin/setting/add"
                 }, 1500);
             }
         }

@@ -17,7 +17,7 @@
                         </div>
                         <div class="form-group" {if condition="$developer_model == false"}style="display:none;"{/if}>
                             <label for="adv_id">所属广告位*</label>
-                            <select class="form-control form-control-sm" id="adv_id">
+                            <select class="form-control form-control-sm" id="advv_id">
                                 <option value="0">请选择所属广告位</option>
                                 {volist name="adv" id="advvo"}
                                 <option value="{$advvo.adv_id}" {if condition="$advvo.adv_id == $detail.adv_id"}selected{/if}>{$advvo.adv_name}</option>
@@ -95,7 +95,7 @@ $("#submit").click(function(){
     var ad_id = $("#ad_id").val();
     var fd = new FormData();
     fd.append('title', $("#title").val());
-    fd.append('adv_id', $("#adv_id").val());
+    fd.append('adv_id', $("#advv_id").val());
     fd.append('value', $("#value").val());
     fd.append('content', editor.getData());
     fd.append('sort', $("#sort").val());

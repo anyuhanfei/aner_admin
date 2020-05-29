@@ -17,7 +17,7 @@
                         </div>
                         <div class="form-group">
                             <label for="adv_id">所属广告位*</label>
-                            <select class="form-control form-control-sm" id="adv_id">
+                            <select class="form-control form-control-sm" id="advv_id"> <!--这里id为adv_id时会不显示-->
                                 <option value="0">请选择所属广告位</option>
                                 {volist name="adv" id="advvo"}
                                 <option value="{$advvo.adv_id}">{$advvo.adv_name}</option>
@@ -83,7 +83,7 @@ $("#cancel").click(function(){
 $("#submit").click(function(){
     var fd = new FormData();
     fd.append('title', $("#title").val());
-    fd.append('adv_id', $("#adv_id").val());
+    fd.append('adv_id', $("#advv_id").val());
     fd.append('sign', $("#sign").val());
     fd.append('value', $("#value").val());
     fd.append('content', editor.getData());

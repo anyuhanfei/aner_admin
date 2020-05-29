@@ -23,9 +23,10 @@
                                     <th scope="col" width="5%"></th>
                                     <th scope="col" width="7%">#</th>
                                     <th scope="col" width="7%">#</th>
+                                    {if condition="$developer_model== true"}
                                     <th scope="col" width="15%">标签</th>
+                                    {/if}
                                     <th scope="col" width="20%">标题</th>
-                                    <th scope="col" width="10%">图片</th>
                                     <th scope="col" width="15%">值</th>
                                     <th scope="col" width="15%"></th>
                                 </tr>
@@ -33,13 +34,14 @@
                             <tbody>
                                 {volist name="adv" id="advvo"}
                                 <tr id="tr{$advvo.adv_id}">
-                                    <td id="td{$advvo.adv_id}" data-status="0" onclick="show('{$advvo.adv_id}')">
-                                        <i class="la la-caret-right"></i>
+                                    <td id="td{$advvo.adv_id}" data-status="1" onclick="show('{$advvo.adv_id}')">
+                                        <i class="la la-caret-down"></i>
                                     </td>
                                     <td><b>{$advvo.adv_name}</b></td>
                                     <td></td>
+                                    {if condition="$developer_model== true"}
                                     <td><b>{$advvo.sign}</b></td>
-                                    <td></td>
+                                    {/if}
                                     <td></td>
                                     <td></td>
                                     <td>
@@ -51,26 +53,29 @@
                                 </tr>
                                     {volist name="ad" id="advo"}
                                     {if condition="$advo.adv_id == $advvo.adv_id"}
-                                    <tr id="tr{$advo.ad_id}" class="tr{$advo.adv_id}" style="display: none;">
-                                        
+                                    <tr id="tr{$advo.ad_id}" class="tr{$advo.adv_id}">
                                         <td></td>
                                         <td></td>
                                         <td>{$advo.sort}</td>
+                                        {if condition="$developer_model== true"}
                                         <td>{$advo.sign}</td>
+                                        {/if}
                                         <td>{$advo.title}</td>
                                         <td>
                                             {if condition="$advo.image != ''"}
-                                            <img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image('{$advo.ad_id}')"/>
+                                                <img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image('{$advo.ad_id}')"/>
+                                            {/if}
+                                            {if condition="$advo.value != ''"}
+                                                {$advo.value}
+                                            {/if}
+                                            {if condition="$advo.content != ''"}
+                                            <button class="btn btn-warning btn-xs" onclick="show_content('{$advo.ad_id}')">查看</button>
                                             {/if}
                                         </td>
-                                        <td>{$advo.value}</td>
                                         <td style="display: none;" id="content{$advo.ad_id}">
-                                            {$advo.content}
+                                            {$advo.content | raw}
                                         </td>
                                         <td>
-                                            {if condition="$advo.content != ''"}
-                                            <button class="btn btn-warning btn-xs" onclick="show_content('{$advo.ad_id}')">正文</button>
-                                            {/if}
                                             <button class="btn btn-warning btn-xs" onclick="ad_update('{$advo.ad_id}')">修改</button>
                                             {if condition="$developer_model== true"}
                                             <button class="btn btn-danger btn-xs" onclick="ad_item_delete('{$advo.ad_id}')">删除</button>
@@ -108,7 +113,7 @@
             shade: false,
             title: false,
             content: $('#div_show_content'),
-            area: ['400px', '800px'],
+            area: ['900px', '700px'],
             cancel: function () {
 
             }
