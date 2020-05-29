@@ -32,7 +32,7 @@
                             <tbody>
                                 {volist name="category" id="ca"}
                                 <tr id="tr{$ca.category_id}">
-                                    <td id="td{$ca.category_id}" data-status="0" onclick="show({$ca.category_id})">
+                                    <td id="td{$ca.category_id}" data-status="0" onclick="show('{$ca.category_id}')">
                                         <i class="la la-caret-right"></i>
                                     </td>
                                     <td><b>{$ca.category_name}</b></td>
@@ -42,8 +42,8 @@
                                     <td></td>
                                     <td>
                                         {if condition="$developer_model== true"}
-                                        <button class="btn btn-warning btn-xs" onclick="category_update({$ca.category_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="category_item_delete({$ca.category_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="category_update('{$ca.category_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="category_item_delete('{$ca.category_id}')">删除</button>
                                         {/if}
                                     </td>
                                 </tr>
@@ -57,10 +57,10 @@
                                         <td>{$l.sign}</td>
                                         <td>{$l.value}</td>
                                         <td>
-                                            <button class="btn btn-warning btn-xs" onclick="set_value({$l.set_id}, '{$l.type}', '{$l.value}')">设置</button>
+                                            <button class="btn btn-warning btn-xs" onclick="set_value('{$l.set_id}', '{$l.type}', '{$l.value}')">设置</button>
                                             {if condition="$developer_model== true"}
-                                            <button class="btn btn-warning btn-xs" onclick="set_update({$l.set_id})">修改</button>
-                                            <button class="btn btn-danger btn-xs" onclick="set_item_delete({$l.set_id})">删除</button>
+                                            <button class="btn btn-warning btn-xs" onclick="set_update('{$l.set_id}')">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="set_item_delete('{$l.set_id}')">删除</button>
                                             {/if}
                                         </td>
                                     </tr>
@@ -83,10 +83,10 @@
                                     <td>{$li.sign}</td>
                                     <td>{$li.value}</td>
                                     <td>
-                                        <button class="btn btn-warning btn-xs" onclick="set_value({$li.set_id}, '{$li.type}', '{$li.value}')">设置</button>
+                                        <button class="btn btn-warning btn-xs" onclick="set_value('{$li.set_id}', '{$li.type}', '{$li.value}')">设置</button>
                                         {if condition="$developer_model== true"}
-                                        <button class="btn btn-warning btn-xs" onclick="set_update({$li.set_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="set_item_delete({$li.set_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="set_update('{$li.set_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="set_item_delete('{$li.set_id}')">删除</button>
                                         {/if}
                                     </td>
                                 </tr>
@@ -170,7 +170,7 @@
                 type: "get",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '网站设置分类删除', data.msg);
                     }else{
                         $("#tr" + category_id).html('');
@@ -191,7 +191,7 @@
                 type: "get",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '网站设置信息删除', data.msg);
                     }else{
                         $("#tr" + set_id).html('');
@@ -253,9 +253,9 @@
             data: {value: value},
             success: function(data){
                 data = JSON.parse(data);
-                if(data.status == 3){
+                if(data.code == 3){
                     custom_notify('danger', '网站设置修改', data.msg);
-                }else if(data.status == 2){
+                }else if(data.code == 2){
                     custom_notify('warning', '网站设置修改', data.msg);
                 }else{
                     custom_notify('success', '网站设置修改', data.msg);

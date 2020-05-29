@@ -32,10 +32,10 @@
                                     <td>{$vo.account}</td>
                                     <td id="role{$vo.admin_id}">{$vo.role.role_name}</td>
                                     <td>
-                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.admin_id})">修改</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update('{$vo.admin_id}')">修改</button>
                                         {if condition="$vo.account != 'root'"}
-                                        <button class="btn btn-warning btn-xs" onclick="allot({$vo.admin_id}, {$vo.role_id})">分配</button>
-                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.admin_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="allot('{$vo.admin_id}', '{$vo.role_id}')">分配</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.admin_id}')">删除</button>
                                         {/if}
                                     </td>
                                 </tr>
@@ -88,7 +88,7 @@
                 type: "get",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '管理员删除', data.msg);
                     }else{
                         $("#tr" + admin_id).html('');
@@ -127,9 +127,9 @@
             success: function(data){
                 data = JSON.parse(data);
                 layer.closeAll();
-                if(data.status == 3){
+                if(data.code == 3){
                     custom_notify('danger', '分配权限', data.msg);
-                }else if(data.status == 2){
+                }else if(data.code == 2){
                     custom_notify('warning', '分配权限', data.msg);
                 }else{
                     $("#role" + data.data['admin_id']).html(data.data['role_name']);

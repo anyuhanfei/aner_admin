@@ -33,7 +33,7 @@
                             <tbody>
                                 {volist name="adv" id="advvo"}
                                 <tr id="tr{$advvo.adv_id}">
-                                    <td id="td{$advvo.adv_id}" data-status="0" onclick="show({$advvo.adv_id})">
+                                    <td id="td{$advvo.adv_id}" data-status="0" onclick="show('{$advvo.adv_id}')">
                                         <i class="la la-caret-right"></i>
                                     </td>
                                     <td><b>{$advvo.adv_name}</b></td>
@@ -44,8 +44,8 @@
                                     <td></td>
                                     <td>
                                         {if condition="$developer_model== true"}
-                                        <button class="btn btn-warning btn-xs" onclick="adv_update({$advvo.adv_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="adv_item_delete({$advvo.adv_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="adv_update('{$advvo.adv_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="adv_item_delete('{$advvo.adv_id}')">删除</button>
                                         {/if}
                                     </td>
                                 </tr>
@@ -60,7 +60,7 @@
                                         <td>{$advo.title}</td>
                                         <td>
                                             {if condition="$advo.image != ''"}
-                                            <img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image({$advo.ad_id})"/>
+                                            <img id="image{$advo.ad_id}" src="{$advo.image}" width="60px" height="60px" onclick="show_image('{$advo.ad_id}')"/>
                                             {/if}
                                         </td>
                                         <td>{$advo.value}</td>
@@ -69,11 +69,11 @@
                                         </td>
                                         <td>
                                             {if condition="$advo.content != ''"}
-                                            <button class="btn btn-warning btn-xs" onclick="show_content({$advo.ad_id})">正文</button>
+                                            <button class="btn btn-warning btn-xs" onclick="show_content('{$advo.ad_id}')">正文</button>
                                             {/if}
-                                            <button class="btn btn-warning btn-xs" onclick="ad_update({$advo.ad_id})">修改</button>
+                                            <button class="btn btn-warning btn-xs" onclick="ad_update('{$advo.ad_id}')">修改</button>
                                             {if condition="$developer_model== true"}
-                                            <button class="btn btn-danger btn-xs" onclick="ad_item_delete({$advo.ad_id})">删除</button>
+                                            <button class="btn btn-danger btn-xs" onclick="ad_item_delete('{$advo.ad_id}')">删除</button>
                                             {/if}
                                         </td>
                                     </tr>
@@ -160,7 +160,7 @@
                 type: "post",
                 success: function(data){
                     data = JSON.parse(data)
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '广告位信息删除', data.msg);
                     }else{
                         $("#tr" + adv_id).html('');
@@ -182,7 +182,7 @@
                 type: "post",
                 success: function(data){
                     data = JSON.parse(data)
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '广告信息删除', data.msg);
                     }else{
                         $("#tr" + ad_id).html('');

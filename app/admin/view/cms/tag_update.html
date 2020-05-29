@@ -19,7 +19,7 @@
                             <label for="tag_image">图片</label>
                             <input type="file" class="form-control-file" id="tag_image">
                             {if condition="$detail.tag_image != ''"}
-                            <img id="image{$detail.tag_id}" src="{$detail.tag_image}" width="80px" height="80px" onclick="show_image({$detail.tag_id})"/>
+                            <img id="image{$detail.tag_id}" src="{$detail.tag_image}" width="80px" height="80px" onclick="show_image('{$detail.tag_id}')"/>
                             {/if}
                         </div>
                         <div class="form-group">
@@ -69,9 +69,9 @@ $("#submit").click(function(){
         data: fd,
         success: function(data){
             data = JSON.parse(data);
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '标签信息修改', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '标签信息修改', data.msg);
             }else{
                 $("#tag_image").val('');

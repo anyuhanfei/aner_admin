@@ -33,11 +33,11 @@
                                     <td>{$vo.category_id}</td>
                                     <td>{$vo.category_name}</td>
                                     {if condition="$cms_category_image_onoff == true"}
-                                    <td><img id="image{$vo.category_id}" src="{$vo.category_image}" width="60px" height="60px" onclick="show_image({$vo.category_id})"/></td>
+                                    <td><img id="image{$vo.category_id}" src="{$vo.category_image}" width="60px" height="60px" onclick="show_image('{$vo.category_id}')"/></td>
                                     {/if}
                                     <td>
-                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.category_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.category_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update('{$vo.category_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.category_id}')">删除</button>
                                     </td>
                                 </tr>
                                 {/volist}
@@ -73,7 +73,7 @@
                 type: "get",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '文章分类删除', data.msg);
                     }else{
                         $("#tr" + category_id).html('');

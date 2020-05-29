@@ -11,7 +11,7 @@
                     </a>
                 </li>
                 {elseif condition="$act.top_id == 0 && $act.path == ''"}
-                {if condition="$act.title != '开发者中心' && $act.title != '静态资源管理'"}
+                {if condition="($act.title != '开发者中心' && $act.title != '静态资源管理') || $developer_model == true"}
                 <li class="nav-item" id="act{$act.catalog_id}">
                     <a class="" data-toggle="collapse" href="#catalog{$act.catalog_id}" aria-expanded="true" onclick="catalogonoff({$act.catalog_id})">
                         <i class="{$act.icon}"></i>

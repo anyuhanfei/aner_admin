@@ -32,7 +32,7 @@
                             <label for="image">图片</label>
                             <input type="file" class="form-control-file" id="image">
                             {if condition="$detail.image != ''"}
-                            <img id="image{$detail.ad_id}" src="{$detail.image}" width="80px" height="80px" onclick="show_image({$detail.ad_id})"/>
+                            <img id="image{$detail.ad_id}" src="{$detail.image}" width="80px" height="80px" onclick="show_image('{$detail.ad_id}')"/>
                             {/if}
                         </div>
                         <div class="form-group" {if condition="$developer_model== false && $detail.content == ''"}style="display:none;"{/if}>
@@ -108,9 +108,9 @@ $("#submit").click(function(){
         data: fd,
         success: function(data){
             data = JSON.parse(data)
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '广告信息修改', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '广告信息修改', data.msg);
             }else{
                 custom_notify('success', '广告信息修改', data.msg);

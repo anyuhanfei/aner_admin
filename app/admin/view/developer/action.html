@@ -34,7 +34,7 @@
                             <tbody>
                                 {volist name="list" id="vo"}
                                 <tr>
-                                    <td id="td{$vo.module_id}" data-status="0" onclick="show({$vo.module_id})">
+                                    <td id="td{$vo.module_id}" data-status="0" onclick="show('{$vo.module_id}')">
                                         <i class="la la-caret-right"></i>
                                     </td>
                                     <td><b>{$vo.title}</b></td>
@@ -50,8 +50,8 @@
                                             <td>{$ac.remark}</td>
                                             <td>
                                                 {if condition="$developer_model== true"}
-                                                <button class="btn btn-warning btn-xs" onclick="update({$ac.action_id})">修改</button>
-                                                <button class="btn btn-danger btn-xs" onclick="item_delete({$ac.action_id})">删除</button>
+                                                <button class="btn btn-warning btn-xs" onclick="update('{$ac.action_id}')">修改</button>
+                                                <button class="btn btn-danger btn-xs" onclick="item_delete('{$ac.action_id}')">删除</button>
                                                 {/if}
                                             </td>
                                         </tr>
@@ -106,7 +106,7 @@
                 data: {action_id: action_id},
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '方法删除', data.msg);
                     }else{
                         $("#tr" + action_id).html('');

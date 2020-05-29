@@ -72,9 +72,9 @@ $("#submit").click(function(){
         data: {adv_name: adv_name, sign: sign, sort: sort},
         success: function(data){
             data = JSON.parse(data)
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '广告位信息修改', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '广告位信息修改', data.msg);
             }else{
                 custom_notify('success', '广告位信息修改', data.msg);

@@ -19,7 +19,7 @@
                             <label for="category_image">图片</label>
                             <input type="file" class="form-control-file" id="category_image">
                             {if condition="$detail.category_image != ''"}
-                            <img id="image{$detail.category_id}" src="{$detail.category_image}" width="80px" height="80px" onclick="show_image({$detail.category_id})"/>
+                            <img id="image{$detail.category_id}" src="{$detail.category_image}" width="80px" height="80px" onclick="show_image('{$detail.category_id}')"/>
                             {/if}
                         </div>
                         <div class="form-group">
@@ -69,9 +69,9 @@ $("#submit").click(function(){
         data: fd,
         success: function(data){
             data = JSON.parse(data);
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '分类信息修改', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '分类信息修改', data.msg);
             }else{
                 $("#category_image").val('');

@@ -68,9 +68,9 @@ $("#submit").click(function(){
         data: {title: title, remark: remark, sort: sort},
         success: function(data){
             data = JSON.parse(data);
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '模块修改', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '模块修改', data.msg);
             }else{
                 custom_notify('success', '模块修改', data.msg);

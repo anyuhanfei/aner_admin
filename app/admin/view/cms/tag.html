@@ -33,11 +33,11 @@
                                     <td>{$vo.tag_id}</td>
                                     <td>{$vo.tag_name}</td>
                                     {if condition="$cms_tag_image_onoff == true"}
-                                    <td><img id="image{$vo.tag_id}" src="{$vo.tag_image}" width="60px" height="60px" onclick="show_image({$vo.tag_id})"/></td>
+                                    <td><img id="image{$vo.tag_id}" src="{$vo.tag_image}" width="60px" height="60px" onclick="show_image('{$vo.tag_id}')"/></td>
                                     {/if}
                                     <td>
-                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.tag_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.tag_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update('{$vo.tag_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.tag_id}')">删除</button>
                                     </td>
                                 </tr>
                                 {/volist}
@@ -73,7 +73,7 @@
                 type: "get",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '文章标签删除', data.msg);
                     }else{
                         $("#tr" + tag_id).html('');

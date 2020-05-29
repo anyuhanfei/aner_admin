@@ -35,8 +35,8 @@
                                     <td>{$vo.remark}</td>
                                     <td>
                                         {if condition="$developer_model== true"}
-                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.module_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.module_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update('{$vo.module_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.module_id}')">删除</button>
                                         {/if}
                                     </td>
                                 </tr>
@@ -74,7 +74,7 @@
                 data: {module_id: module_id},
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '模块删除', data.msg);
                     }else{
                         $("#tr" + module_id).html('');

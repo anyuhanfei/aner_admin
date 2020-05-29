@@ -114,9 +114,9 @@ $("#submit").click(function(){
         data: {title: title, icon: icon, sort: sort, module_id: module_id, action_id: action_id, top_id: top_id},
         success: function(data){
             data = JSON.parse(data);
-            if(data.status == 3){
+            if(data.code == 3){
                 custom_notify('danger', '目录添加', data.msg);
-            }else if(data.status == 2){
+            }else if(data.code == 2){
                 custom_notify('warning', '目录添加', data.msg);
             }else{
                 $("#title").val('');

@@ -103,7 +103,7 @@ $("#submit").click(function(){
             data = JSON.parse(data);
             layer.msg(data.msg);
             $('meta[name="csrf-token"]').click();
-            if(data.status == 1){
+            if(data.code == 1){
                 setTimeout(() => {
                     location.href = "/admin"
                 }, 1500);

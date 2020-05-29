@@ -87,28 +87,28 @@
                                     <td>{$vo.article_id}</td>
                                     {if condition="$cms_article['stick'] == true"}
                                     <td>
-                                        <div id="divrecomment{$vo.article_id}" onclick="status('recomment', {$vo.article_id})">
+                                        <div id="divrecomment{$vo.article_id}" onclick="status('recomment', '{$vo.article_id}')">
                                             <input id="recomment{$vo.article_id}" type="checkbox" {if condition="$vo.artdata.is_recomment == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
                                     {/if}
                                     {if condition="$cms_article['hot'] == true"}
                                     <td>
-                                        <div onclick="status('stick', {$vo.article_id})">
+                                        <div onclick="status('stick', '{$vo.article_id}')">
                                             <input type="checkbox" {if condition="$vo.artdata.is_stick == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
                                     {/if}
                                     {if condition="$cms_article['recomment'] == true"}
                                     <td>
-                                        <div onclick="status('hot', {$vo.article_id})">
+                                        <div onclick="status('hot', '{$vo.article_id}')">
                                             <input type="checkbox" {if condition="$vo.artdata.is_hot == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
                                     {/if}
                                     {if condition="$cms_article['image'] == true"}
                                     <td>
-                                        <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image({$vo.article_id})"/>
+                                        <img id="image{$vo.article_id}" src="{$vo.image}" width="60px" height="60px" onclick="show_image('{$vo.article_id}')"/>
                                     </td>
                                     {/if}
                                     <td>{$vo.title}</td>
@@ -122,9 +122,9 @@
                                     <td>{$vo.artdata.looknum}</td>
                                     <td>{$vo.artdata.likenum}</td>
                                     <td>
-                                        <button class="btn btn-warning btn-xs" onclick="look({$vo.article_id})">查看</button>
-                                        <button class="btn btn-warning btn-xs" onclick="update({$vo.article_id})">修改</button>
-                                        <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.article_id})">删除</button>
+                                        <button class="btn btn-warning btn-xs" onclick="look('{$vo.article_id}')">查看</button>
+                                        <button class="btn btn-warning btn-xs" onclick="update('{$vo.article_id}')">修改</button>
+                                        <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.article_id}')">删除</button>
                                     </td>
                                 </tr>
                                 {/volist}
@@ -192,7 +192,7 @@
                 type: "post",
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '文章删除', data.msg);
                     }else{
                         $("#tr" + article_id).html('');
@@ -219,7 +219,7 @@
             data: {status_type: status_type},
             success: function(data){
                 data = JSON.parse(data);
-                if(data.status == 3 || data.status == 2){
+                if(data.code == 3 || data.code == 2){
                     custom_notify('danger', '文章属性修改', data.msg);
                     $("#divrecomment" + article_id).attr('onclick', '');
                     var parent_class = $("#" + status_type + article_id).parent().attr('class');

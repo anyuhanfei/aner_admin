@@ -40,14 +40,14 @@
                                         <td>{$vo.path}</td>
                                         <td>
                                             {if condition="$developer_model== true"}
-                                            <button class="btn btn-warning btn-xs" onclick="update({$vo.catalog_id})">修改</button>
-                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.catalog_id})">删除</button>
+                                            <button class="btn btn-warning btn-xs" onclick="update('{$vo.catalog_id}')">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.catalog_id}')">删除</button>
                                             {/if}
                                         </td>
                                     </tr>
                                 {elseif condition="$vo.path == '' && $vo.top_id == 0"}
                                     <tr>
-                                        <td id="td{$vo.catalog_id}" data-status="0" onclick="show({$vo.catalog_id})">
+                                        <td id="td{$vo.catalog_id}" data-status="0" onclick="show('{$vo.catalog_id}')">
                                                 <i class="la la-caret-right"></i>
                                         </td>
                                         <td>{$vo.sort}</td>
@@ -57,8 +57,8 @@
                                         <td>{$vo.path}</td>
                                         <td>
                                             {if condition="$developer_model== true"}
-                                            <button class="btn btn-warning btn-xs" onclick="update({$vo.catalog_id})">修改</button>
-                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$vo.catalog_id})">删除</button>
+                                            <button class="btn btn-warning btn-xs" onclick="update('{$vo.catalog_id}')">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.catalog_id}')">删除</button>
                                             {/if}
                                         </td>
                                     </tr>
@@ -73,8 +73,8 @@
                                         <td>{$vol.path}</td>
                                         <td>
                                             {if condition="$developer_model== true"}
-                                            <button class="btn btn-warning btn-xs" onclick="update({$vol.catalog_id})">修改</button>
-                                            <button class="btn btn-danger btn-xs" onclick="item_delete({$vol.catalog_id})">删除</button>
+                                            <button class="btn btn-warning btn-xs" onclick="update('{$vol.catalog_id}')">修改</button>
+                                            <button class="btn btn-danger btn-xs" onclick="item_delete('{$vol.catalog_id}')">删除</button>
                                             {/if}
                                         </td>
                                     </tr>
@@ -131,7 +131,7 @@
                 data: {catalog_id: catalog_id},
                 success: function(data){
                     data = JSON.parse(data);
-                    if(data.status == 3){
+                    if(data.code == 3){
                         custom_notify('danger', '方法删除', data.msg);
                     }else{
                         $("#tr" + catalog_id).html('');
