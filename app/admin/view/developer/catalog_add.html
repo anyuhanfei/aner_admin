@@ -121,9 +121,9 @@ $("#submit").click(function(){
             }else{
                 $("#title").val('');
                 $("#icon").val('');
-                $("#action_id").find("option[value='0']").attr("selected",true);
-                $("#module_id").find("option[value='0']").attr("selected",true);
-                $("#top_id").find("option[value='0']").attr("selected",true);
+                $("#action_id").val('0');
+                $("#module_id").val('0');
+                $("#top_id").val('0');
                 $("#sort").val(parseInt(data.data) + 1);
                 custom_notify('success', '目录添加', data.msg);
             }

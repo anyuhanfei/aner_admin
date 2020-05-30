@@ -96,7 +96,7 @@ $("#submit").click(function(){
                 $("#remark").val('');
                 $("#path").val('');
                 $("#route").val('');
-                $("#module_id").find("option[value='0']").attr("selected",true);
+                $("#module_id").val('0');
                 $("#sort").val(parseInt(data.data) + 1);
                 custom_notify('success', '方法添加', data.msg);
             }

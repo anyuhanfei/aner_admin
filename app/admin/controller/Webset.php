@@ -83,6 +83,7 @@ class Webset extends Admin{
                 }
             }
         }
+        LogAdminOperation::create_data('网站设置修改', 'operation');
         return return_data(1, '', '操作完成', 'json');
     }
 

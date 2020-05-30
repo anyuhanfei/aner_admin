@@ -46,7 +46,7 @@ class User extends Admin{
             }
         }
         $list = $user->order('user_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
-        self::many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity]);
+        $this->many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity]);
         return View::fetch();
     }
 

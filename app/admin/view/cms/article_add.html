@@ -182,7 +182,7 @@ $("#submit").click(function(){
     if(content_type == 'html'){
         fd.append('content', editor.getData());
     }else{
-        fd.append('content', $("$content_write").val());
+        fd.append('content', $("#content_write").val());
     }
     $.ajax({
         url: "/admin/cms/article/add/submit",

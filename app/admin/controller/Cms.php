@@ -308,7 +308,7 @@ class Cms extends Admin{
             }
         }
         Session::set('article_content_images', array());
-        self::many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'tag_id'=> $tag_id, 'author'=> $author]);
+        $this->many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'tag_id'=> $tag_id, 'author'=> $author]);
         //分类和标签
         $category = CmsCategory::field('category_id, category_name, sort')->order('sort asc')->select();
         $tag = CmsTag::field('tag_id, tag_name, sort')->order('sort asc')->select();
@@ -357,7 +357,7 @@ class Cms extends Admin{
         }
         foreach($this->cms_article as $k => $v){
             if($k != 'image'){
-                if($v == true){
+                if($v == true && $v != 'stick' && $v != 'hot' && $v != 'recomment'){
                     if($$k == ''){
                         return return_data(2, '', $this->cms_hint_array[$k], 'json');
                     }else{
@@ -380,7 +380,7 @@ class Cms extends Admin{
         $data['content'] = $content;
         $article = CmsArticle::create($data);
         if($article){
-            self::remove_content_image($content, 'cookie', 'article_content_images');
+            $this->remove_content_image($content, 'cookie', 'article_content_images');
             LogAdminOperation::create_data('文章信息添加：'.$title, 'operation');
             CmsArticleData::create(['article_id'=> $article->article_id]);
             return return_data(1, '', '添加成功', 'json');
@@ -471,8 +471,8 @@ class Cms extends Admin{
         $res = $article->save();
         if($res){
             //删除编辑中删除掉的已上传图片，删除旧文本中被删除的图片
-            self::remove_content_image($content, 'cookie', 'article_content_images');
-            self::remove_content_image($content, 'update', $old_content);
+            $this->remove_content_image($content, 'cookie', 'article_content_images');
+            $this->remove_content_image($content, 'update', $old_content);
             LogAdminOperation::create_data('文章信息修改：'.$old_title . '->' . $title, 'operation');
             return return_data(1, '', '修改成功', 'json');
         }else{
@@ -494,7 +494,7 @@ class Cms extends Admin{
         $res = CmsArticle::where('article_id', $id)->delete();
         if($res){
             delete_image($article->image);
-            self::remove_content_image($article->content, 'delete');
+            $this->remove_content_image($article->content, 'delete');
             LogAdminOperation::create_data('文章信息删除：'.$article->title, 'operation');
             CmsArticleData::where('article_id', $id)->delete();
             return return_data(1, '', '删除成功', 'json');
@@ -521,7 +521,7 @@ class Cms extends Admin{
      */
     public function article_img(){
         $image = Request::instance()->file('upload');
-        $image_path = self::content_image_upload($image, 'article_content', 'article_content_images');
+        $image_path = $this->content_image_upload($image, 'article_content', 'article_content_images');
         return json(array('uploaded'=> 1, 'url'=> $image_path));
     }
 

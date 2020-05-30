@@ -112,27 +112,29 @@ class Base{
      * @return void
      */
     protected function remove_content_image($content, $type="cookie", $remark = ''){
-        $return_array = self::get_editor_images($content);
-        if($return_array){
-            if($type == 'cookie'){
-                assert($remark != ''); //数据无回滚
-                $content_images = Session::get($remark) ? Session::get($remark) : array();
-                Session::set($remark, array_diff($content_images, $return_array));
-            }elseif($type == 'delete'){
-                if($return_array){
-                    foreach($return_array as $v){
-                        delete_image($v);
-                    }
-                }
-            }elseif($type == 'update'){
-                $old_return_array = self::get_editor_images($remark);
-                $delete_images = array_diff($old_return_array, $return_array);
-                foreach($delete_images as $v){
-                    delete_image($v);
-                }
+        $editor_images_array = $this->get_editor_images($content);
+        if($editor_images_array){
+            return array();
+        }
+        if($type == 'cookie'){
+            assert($remark != ''); //数据无回滚
+            $content_images = Session::get($remark) ? Session::get($remark) : array();
+            Session::set($remark, array_diff($content_images, $editor_images_array));
+        }elseif($type == 'delete'){
+            foreach($editor_images_array as $v){
+                delete_image($v);
+            }
+        }elseif($type == 'update'){
+            $old_return_array = $this->get_editor_images($remark);
+            if($old_return_array){
+                return $editor_images_array;
+            }
+            $delete_images = array_diff($old_return_array, $editor_images_array);
+            foreach($delete_images as $v){
+                delete_image($v);
             }
         }
-        return $return_array;
+        return $editor_images_array;
     }
 
     /**
