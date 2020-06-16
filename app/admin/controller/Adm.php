@@ -48,7 +48,7 @@ class Adm extends Admin{
         $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Role;
         if(!$validate->scene('add')->check(['role_name'=> $role_name])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $res = Admrole::create([
             'role_name'=> $role_name,
@@ -58,9 +58,9 @@ class Adm extends Admin{
         if($res){
             $max_sort = Admrole::order('sort desc')->value('sort');
             LogAdminOperation::create_data('角色信息添加：'.$role_name, 'operation');
-            return return_data(1, $max_sort, '添加成功', 'json');
+            return return_data(1, $max_sort, '添加成功');
         }else{
-            return return_data(3, '', '添加失败，请联系管理员', 'json');
+            return return_data(3, '', '添加失败，请联系管理员');
         }
     }
 
@@ -91,7 +91,7 @@ class Adm extends Admin{
         $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Role;
         if(!$validate->scene('update')->check(['role_id'=> $id, 'role_name'=> $role_name, 'remark'=> $remark, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $role = Admrole::find($id);
         $old_role_name = $role->role_name;
@@ -101,9 +101,9 @@ class Adm extends Admin{
         $res = $role->save();
         if($res){
             LogAdminOperation::create_data('角色信息修改：'.$old_role_name.'->'.$role_name, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败,请联系管理员', 'json');
+            return return_data(3, '', '修改失败,请联系管理员');
         }
     }
 
@@ -117,9 +117,9 @@ class Adm extends Admin{
         $res = Admrole::where('role_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('角色信息删除：'.$role->role_name, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -157,9 +157,9 @@ class Adm extends Admin{
         $res = $role->save();
         if($res){
             LogAdminOperation::create_data('角色信息权限设置：'.$role->role_name, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败,请联系管理员', 'json');
+            return return_data(3, '', '修改失败,请联系管理员');
         }
     }
 
@@ -197,7 +197,7 @@ class Adm extends Admin{
         $password_confirm = Request::instance()->param('password_confirm', '');
         $validate = new \app\admin\validate\Admin;
         if(!$validate->scene('add')->check(['account'=> $account, 'nickname'=> $nickname, 'password'=> $password, 'password_confirm'=> $password_confirm])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $password_salt = create_captcha(8, 'lowercase+uppercase+figure');
         $res = AdmAdmin::create([
@@ -208,9 +208,9 @@ class Adm extends Admin{
         ]);
         if($res){
             LogAdminOperation::create_data('管理员信息添加：'.$account, 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
-            return return_data(3, '', '添加失败,请联系管理员', 'json');
+            return return_data(3, '', '添加失败,请联系管理员');
         }
     }
 
@@ -241,7 +241,7 @@ class Adm extends Admin{
         $password = Request::instance()->param('password', '');
         $validate = new \app\admin\validate\Admin;
         if(!$validate->scene('update')->check(['admin_id'=> $id, 'account'=> $account, 'nickname'=> $nickname])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $admin = AdmAdmin::find($id);
         $old_admin_account = $admin->account;
@@ -251,9 +251,9 @@ class Adm extends Admin{
         $res = $admin->save();
         if($res){
             LogAdminOperation::create_data('管理员信息修改：'.$old_admin_account.'->'.$account, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(2, '', '未修改任何信息或修改失败，请检查原因', 'json');
+            return return_data(2, '', '未修改任何信息或修改失败，请检查原因');
         }
     }
 
@@ -267,9 +267,9 @@ class Adm extends Admin{
         $res = AdmAdmin::where('admin_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('管理员信息删除：'.$admin->account, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -284,18 +284,18 @@ class Adm extends Admin{
         $admin = AdmAdmin::find($admin_id);
         $role = AdmRole::find($role_id);
         if(!$admin && !$role){
-            return return_data(2, '', '非法操作', 'json');
+            return return_data(2, '', '非法操作');
         }
         if($role->role_id == $admin->role_id){
-            return return_data(2, '', '已经是此角色了', 'json');
+            return return_data(2, '', '已经是此角色了');
         }
         $admin->role_id = $role_id;
         $res = $admin->save();
         if($res){
             LogAdminOperation::create_data('分配角色给管理员：'.$admin->account.'->'.$role->role_name, 'operation');
-            return return_data(1, array('admin_id'=> $admin_id, 'role_name'=> $admin->role->role_name), '分配角色成功', 'json');
+            return return_data(1, array('admin_id'=> $admin_id, 'role_name'=> $admin->role->role_name), '分配角色成功');
         }else{
-            return return_data(3, '', '分配角色失败,请联系管理员', 'json');
+            return return_data(3, '', '分配角色失败,请联系管理员');
         }
     }
 }

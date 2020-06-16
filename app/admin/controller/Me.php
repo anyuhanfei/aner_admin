@@ -56,10 +56,10 @@ class Me extends Admin{
                 delete_image($old_admin_via);
             }
             LogAdminOperation::create_data('修改个人资料', 'operation');
-            return return_data(1, '', '个人资料修改成功', 'json');
+            return return_data(1, '', '个人资料修改成功');
         }else{
             delete_image($via);
-            return return_data(2, '', '个人资料修改失败或没有要修改的资料', 'json');
+            return return_data(2, '', '个人资料修改失败或没有要修改的资料');
         }
     }
 
@@ -83,7 +83,7 @@ class Me extends Admin{
         $password_confirm = Request::instance()->param('password_confirm', '');
         $validate = new \app\admin\validate\UpdatePassword;
         if(!$validate->check(['old_password'=> $old_password, 'password'=> $password, 'password_confirm'=> $password_confirm])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $admin_id = Session::get('admin_id');
         $admin = AdmAdmin::find($admin_id);
@@ -91,9 +91,9 @@ class Me extends Admin{
         $res = $admin->save();
         if($res){
             LogAdminOperation::create_data('修改个人登录密码', 'operation');
-            return return_data(1, '', '密码修改成功', 'json');
+            return return_data(1, '', '密码修改成功');
         }else{
-            return return_data(2, '', '密码修改失败，请查明错误原因', 'json');
+            return return_data(2, '', '密码修改失败，请查明错误原因');
         }
     }
 }

@@ -41,9 +41,9 @@ class Webset extends Admin{
         $res = $basic->save($data);
         if($res){
             LogAdminOperation::create_data('基本信息修改', 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败,请联系管理员', 'json');
+            return return_data(3, '', '修改失败,请联系管理员');
         }
     }
 
@@ -84,7 +84,7 @@ class Webset extends Admin{
             }
         }
         LogAdminOperation::create_data('网站设置修改', 'operation');
-        return return_data(1, '', '操作完成', 'json');
+        return return_data(1, '', '操作完成');
     }
 
     /**
@@ -119,20 +119,20 @@ class Webset extends Admin{
         if($type == 'cgory'){
             $check_array = ['type'=> $type, 'category_name'=> $category_name];
             if(!$validate->scene('category')->check($check_array)){
-                return return_data(2, '', $validate->getError(), 'json');
+                return return_data(2, '', $validate->getError());
             }
         }else{
             $check_array = ['type'=> $type, 'category_name'=> $category_name, 'title'=> $title, 'sign'=> $sign, 'input_type'=> $input_type];
             if(!$validate->scene('value')->check($check_array)){
-                return return_data(2, '', $validate->getError(), 'json');
+                return return_data(2, '', $validate->getError());
             }
         }
         $res = SysSetting::create(['type'=> $type, 'category_name'=> $category_name, 'title'=> $title, 'sign'=> $sign, 'input_type'=> $input_type, 'sort'=> $sort, 'remark'=> $remark]);
         if($res){
             LogAdminOperation::create_data('网站设置添加', 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
-            return return_data(2, '', '添加失败', 'json');
+            return return_data(2, '', '添加失败');
         }
     }
 }

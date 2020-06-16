@@ -4,17 +4,13 @@
 /**
  * 前后端数据传输格式
  *
- * @param [type] $code 状态,1成功2失败
- * @param [type] $data 数据
- * @param [type] $msg 提示信息
+ * @param int $code 状态,1成功2失败
+ * @param int|array $data 数据
+ * @param string $msg 提示信息
  * @return void
  */
-function return_data($code, $data, $msg, $type = 'array'){
-    if($type == 'array'){
-        return array('code'=>$code, 'data'=>$data, 'msg'=>$msg);
-    }else{
-        return json_encode(array('code'=>$code, 'data'=>$data, 'msg'=>$msg));
-    }
+function return_data($code, $data, $msg){
+    return json_encode(array('code'=>$code, 'data'=>$data, 'msg'=>$msg));
 }
 
 /**

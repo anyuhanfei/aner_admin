@@ -57,7 +57,7 @@ class Ad extends Admin{
         $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Adv;
         if(!$validate->scene('add')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $res = SysAdv::create([
             'adv_name'=> $adv_name,
@@ -67,9 +67,9 @@ class Ad extends Admin{
         if($res){
             $max_sort = SysAdv::order('sort desc')->value('sort');
             LogAdminOperation::create_data('广告位信息添加：'.$adv_name, 'operation');
-            return return_data(1, $max_sort, '添加成功', 'json');
+            return return_data(1, $max_sort, '添加成功');
         }else{
-            return return_data(3, '', '添加失败，请联系管理员', 'json');
+            return return_data(3, '', '添加失败，请联系管理员');
         }
     }
 
@@ -100,7 +100,7 @@ class Ad extends Admin{
         $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Adv;
         if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort, 'adv_id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $adv = SysAdv::find($id);
         $old_adv_name = $adv->adv_name;
@@ -110,9 +110,9 @@ class Ad extends Admin{
         $res = $adv->save();
         if($res){
             LogAdminOperation::create_data('广告位信息修改：'.$old_adv_name.'->'.$adv_name, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(2, '', '修改失败，请联系管理员', 'json');
+            return return_data(2, '', '修改失败，请联系管理员');
         }
     }
 
@@ -126,9 +126,9 @@ class Ad extends Admin{
         $res = SysAdv::where('adv_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('广告位信息删除：'.$adv->adv_name, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -160,7 +160,7 @@ class Ad extends Admin{
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Ad;
         if(!$validate->scene('add')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         if($image){
             $image_res = file_upload($image, 'ad');
@@ -184,10 +184,10 @@ class Ad extends Admin{
         if($res){
             $this->remove_content_image($content, 'cookie', 'ad_content_images');
             LogAdminOperation::create_data('广告信息添加：'.$title, 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
             delete_image($path);
-            return return_data(3, '', '添加失败,请联系管理员', 'json');
+            return return_data(3, '', '添加失败,请联系管理员');
         }
     }
 
@@ -223,7 +223,7 @@ class Ad extends Admin{
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Ad;
         if(!$validate->scene('update')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort, 'ad_id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $path = '';
         if($image){
@@ -245,10 +245,10 @@ class Ad extends Admin{
             $this->remove_content_image($content, 'cookie', 'ad_content_images');
             $this->remove_content_image($content, 'update', $old_ad_content);
             LogAdminOperation::create_data('广告信息修改：'.$old_ad_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
             delete_image($path);
-            return return_data(3, '', '修改失败或没有修改信息', 'json');
+            return return_data(3, '', '修改失败或没有修改信息');
         }
     }
 
@@ -264,9 +264,9 @@ class Ad extends Admin{
             delete_image($ad->image);
             $this->remove_content_image($ad->content, 'delete');
             LogAdminOperation::create_data('广告信息删除：'.$ad->title, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 

@@ -73,16 +73,16 @@ class User extends Admin{
         $validate = new \app\admin\validate\User;
         $validate_data = ['nickname'=> $nickname, 'user_identity'=> $user_identity, 'password'=> $password, 'level_password'=> $level_password, 'top_user_identity'=> $top_user_identity];
         if(!$validate->scene('add')->check($validate_data)){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $top_user_id = IdxUser::field('user_id')->where($this->user_identity, $top_user_identity)->value('user_id');
         $top_user_id = $top_user_id == null ? 0 : $top_user_id;
         $res = IdxUser::create_data($user_identity, $password, $top_user_id, $nickname, $level_password);
         if($res){
             LogAdminOperation::create_data('会员信息添加：'.$user_identity, 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
-            return return_data(2, '', '添加失败，请联系管理员', 'json');
+            return return_data(2, '', '添加失败，请联系管理员');
         }
     }
 
@@ -167,7 +167,7 @@ class User extends Admin{
         $control_user_identity = $this->user_identity;
         $validate = new \app\admin\validate\User;
         if(!$validate->scene('get')->check(['type'=> $type, 'id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $validate = new \app\admin\validate\User;
         $user = IdxUser::find($id);
@@ -175,20 +175,20 @@ class User extends Admin{
             $nickname = Request::instance()->param('nickname', '');
             $user_identity = Request::instance()->param('user_identity', '');
             if(!$validate->scene('detail')->check(['id'=> $id, 'nickname'=> $nickname, 'user_identity'=> $user_identity])){
-                return return_data(2, '', $validate->getError(), 'json');
+                return return_data(2, '', $validate->getError());
             }
             $user->nickname = $nickname;
             $user->$control_user_identity = $user_identity;
         }elseif($type == 'password'){
             $password = Request::instance()->param('password', '');
             if(!$validate->scene('password')->check(['id'=> $id, 'password'=> $password])){
-                return return_data(2, '', $validate->getError(), 'json');
+                return return_data(2, '', $validate->getError());
             }
             $user->password = md5($password . $user->password_salt);
         }elseif($type == 'level_password'){
             $level_password = Request::instance()->param('level_password', '');
             if(!$validate->scene('level_password')->check(['id'=> $id, 'level_password'=> $level_password])){
-                return return_data(2, '', $validate->getError(), 'json');
+                return return_data(2, '', $validate->getError());
             }
             $user->level_password = $level_password;
         }
@@ -196,9 +196,9 @@ class User extends Admin{
         if($res){
             $update_type = array('detail'=> '信息编辑', 'password'=> '密码修改', 'level_password'=> '二级密码修改');
             LogAdminOperation::create_data('会员信息--'.$update_type[$type].'：'.$user->$control_user_identity, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(2, '', '修改失败或未修改信息', 'json');
+            return return_data(2, '', '修改失败或未修改信息');
         }
     }
 
@@ -211,7 +211,7 @@ class User extends Admin{
     public function user_freeze($id){
         $user = IdxUser::find($id);
         if(!$user){
-            return return_data(2, '', '非法操作', 'json');
+            return return_data(2, '', '非法操作');
         }
         $user->is_login = $user->is_login == 1 ? 0 : 1;
         $res = $user->save();
@@ -219,9 +219,9 @@ class User extends Admin{
             $control_user_identity = $this->user_identity;
             $operation_type = $user->is_login == 1 ? '解冻' : '冻结';
             LogAdminOperation::create_data('会员登录权限-'.$operation_type.'：'.$user->$control_user_identity, 'operation');
-            return return_data(1, $user->is_login, '修改成功', 'json');
+            return return_data(1, $user->is_login, '修改成功');
         }else{
-            return return_data(2, '', '修改失败或未修改信息', 'json');
+            return return_data(2, '', '修改失败或未修改信息');
         }
     }
 
@@ -233,11 +233,11 @@ class User extends Admin{
      */
     public function user_delete($id){
         if($this->user_delete_onoff == false){
-            return return_data(2, '', '无此权限', 'json');
+            return return_data(2, '', '无此权限');
         }
         $user = IdxUser::find($id);
         if(!$user){
-            return return_data(2, '', '非法操作', 'json');
+            return return_data(2, '', '非法操作');
         }
         $res = IdxUser::where('user_id', $id)->delete();
         if($res){
@@ -246,9 +246,9 @@ class User extends Admin{
             IdxUserFund::where('user_id', $id)->delete();
             $control_user_identity = $this->user_identity;
             LogAdminOperation::create_data('会员信息删除：'.$user->$control_user_identity, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -285,7 +285,7 @@ class User extends Admin{
         $input_number = Request::instance()->param('input_number', 0);
         $validate = new \app\admin\validate\UserRecharge;
         if(!$validate->check(['fund_type'=> $fund_type, 'radio_number'=> $radio_number, 'input_number'=> $input_number])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $control_user_identity = $this->user_identity;
         $user = IdxUser::field('user_id, ' . $control_user_identity)->where('user_id', $id)->find();
@@ -296,9 +296,9 @@ class User extends Admin{
         if($res){
             $fund_type_array = array_flip($this->user_fund_type);
             LogAdminOperation::create_data('会员充值：给'.$user->$control_user_identity.'充值'.$add_number.$fund_type_array[$fund_type], 'operation');
-            return return_data(1, '', '充值成功', 'json');
+            return return_data(1, '', '充值成功');
         }else{
-            return return_data(3, '', '充值失败,请联系管理员', 'json');
+            return return_data(3, '', '充值失败,请联系管理员');
         }
     }
 }

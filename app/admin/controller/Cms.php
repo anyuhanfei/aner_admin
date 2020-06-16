@@ -61,12 +61,12 @@ class Cms extends Admin{
         $tag_image = Request::instance()->file('tag_image');
         $validate = new \app\admin\validate\Tag;
         if(!$validate->scene('add')->check(['tag_name'=> $tag_name, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $path = '';
         if($this->cms_tag_image_onoff == true){
             if(!$tag_image){
-                return return_data(2, '', '请上传标签图片', 'json');
+                return return_data(2, '', '请上传标签图片');
             }
             $image_res = file_upload($tag_image, 'tag');
             $path = $image_res['file_path'];
@@ -74,12 +74,12 @@ class Cms extends Admin{
         $res = CmsTag::create(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_image'=> $path]);
         if($res){
             LogAdminOperation::create_data('文章标签信息添加：'.$tag_name, 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
             if($path != ''){
                 delete_image($path);
             }
-            return return_data(2, '', '添加失败，请联系管理员', 'json');
+            return return_data(2, '', '添加失败，请联系管理员');
         }
     }
 
@@ -110,7 +110,7 @@ class Cms extends Admin{
         $tag_image = Request::instance()->file('tag_image');
         $validate = new \app\admin\validate\Tag;
         if(!$validate->scene('update')->check(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $path = '';
         if($this->cms_tag_image_onoff == true){
@@ -129,10 +129,10 @@ class Cms extends Admin{
         if($res){
             $path != '' ? delete_image($old_path) : false;
             LogAdminOperation::create_data('文章标签信息修改：'.$old_tag_name.'->'.$tag->tag_name, 'operation');
-            return return_data(1, array('tag_id'=> $tag->tag_id, 'tag_image'=> $tag->tag_image), '修改成功', 'json');
+            return return_data(1, array('tag_id'=> $tag->tag_id, 'tag_image'=> $tag->tag_image), '修改成功');
         }else{
             $path != '' ? delete_image($path) : false;
-            return return_data(2, '', '修改失败或没有要修改的信息', 'json');
+            return return_data(2, '', '修改失败或没有要修改的信息');
         }
     }
 
@@ -147,9 +147,9 @@ class Cms extends Admin{
         if($res){
             delete_image($tag->tag_image);
             LogAdminOperation::create_data('文章标签信息删除：'.$tag->tag_name, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -189,7 +189,7 @@ class Cms extends Admin{
         $path = '';
         if($this->cms_category_image_onoff == true){
             if(!$category_image){
-                return return_data(2, '', '请上传标签图片', 'json');
+                return return_data(2, '', '请上传标签图片');
             }
             $image_res = file_upload($category_image, 'category');
             $path = $image_res['file_path'];
@@ -197,12 +197,12 @@ class Cms extends Admin{
         $res = CmsCategory::create(['category_name'=> $category_name, 'sort'=> $sort, 'category_image'=> $path]);
         if($res){
             LogAdminOperation::create_data('文章分类信息添加：'.$category_name, 'operation');
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
             if($path != ''){
                 delete_image($path);
             }
-            return return_data(2, '', '添加失败，请联系管理员', 'json');
+            return return_data(2, '', '添加失败，请联系管理员');
         }
     }
 
@@ -233,7 +233,7 @@ class Cms extends Admin{
         $category_image = Request::instance()->file('category_image');
         $validate = new \app\admin\validate\Category;
         if(!$validate->scene('update')->check(['category_name'=> $category_name, 'sort'=> $sort, 'category_id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $path = '';
         if($this->cms_category_image_onoff == true){
@@ -252,10 +252,10 @@ class Cms extends Admin{
         if($res){
             $path != '' ? delete_image($old_path) : false;
             LogAdminOperation::create_data('文章分类信息修改：'.$old_category_name.'->'.$category->category_name, 'operation');
-            return return_data(1, array('category_id'=> $category->category_id, 'category_image'=> $category->category_image), '修改成功', 'json');
+            return return_data(1, array('category_id'=> $category->category_id, 'category_image'=> $category->category_image), '修改成功');
         }else{
             $path != '' ? delete_image($path) : false;
-            return return_data(2, '', '修改失败或没有要修改的信息', 'json');
+            return return_data(2, '', '修改失败或没有要修改的信息');
         }
     }
 
@@ -270,9 +270,9 @@ class Cms extends Admin{
         if($res){
             delete_image($category->category_image);
             LogAdminOperation::create_data('文章分类信息删除：'.$category->category_name, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -350,7 +350,7 @@ class Cms extends Admin{
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Article;
         if(!$validate->scene('add')->check(['title'=> $title, 'sort'=> $sort, 'category_id'=> $category_id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         if($author == ''){
             $author = $this->admin->nickname;
@@ -359,7 +359,7 @@ class Cms extends Admin{
             if($k != 'image'){
                 if($v == true && $v != 'stick' && $v != 'hot' && $v != 'recomment'){
                     if($$k == ''){
-                        return return_data(2, '', $this->cms_hint_array[$k], 'json');
+                        return return_data(2, '', $this->cms_hint_array[$k]);
                     }else{
                         $data[$k] = $$k;
                     }
@@ -371,7 +371,7 @@ class Cms extends Admin{
                 $image_res = file_upload($image, 'article');
                 $data['image'] = $image_res['file_path'];
             }else{
-                return return_data(2, '', '请上传图片', 'json');
+                return return_data(2, '', '请上传图片');
             }
         }
         $data['title'] = $title;
@@ -383,12 +383,12 @@ class Cms extends Admin{
             $this->remove_content_image($content, 'cookie', 'article_content_images');
             LogAdminOperation::create_data('文章信息添加：'.$title, 'operation');
             CmsArticleData::create(['article_id'=> $article->article_id]);
-            return return_data(1, '', '添加成功', 'json');
+            return return_data(1, '', '添加成功');
         }else{
             if($data['image'] != ''){
                 delete_image($data['image']);
             }
-            return return_data(2, '', '添加失败，请联系管理员', 'json');
+            return return_data(2, '', '添加失败，请联系管理员');
         }
     }
 
@@ -439,7 +439,7 @@ class Cms extends Admin{
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Article;
         if(!$validate->scene('update')->check(['article_id'=> $id, 'title'=> $title, 'sort'=> $sort, 'category_id'=> $category_id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $article = CmsArticle::find($id);
         $article->author = $author == '' ? $this->admin->nickname : $author;
@@ -447,7 +447,7 @@ class Cms extends Admin{
             if($k != 'image'){
                 if($v == true){
                     if($$k == ''){
-                        return return_data(2, '', $this->cms_hint_array[$k], 'json');
+                        return return_data(2, '', $this->cms_hint_array[$k]);
                     }else{
                         $article->$k = $$k;
                     }
@@ -474,12 +474,12 @@ class Cms extends Admin{
             $this->remove_content_image($content, 'cookie', 'article_content_images');
             $this->remove_content_image($content, 'update', $old_content);
             LogAdminOperation::create_data('文章信息修改：'.$old_title . '->' . $title, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
             if($old_image != ''){
                 delete_image($old_image);
             }
-            return return_data(2, '', '修改失败，请联系管理员', 'json');
+            return return_data(2, '', '修改失败，请联系管理员');
         }
     }
 
@@ -497,9 +497,9 @@ class Cms extends Admin{
             $this->remove_content_image($article->content, 'delete');
             LogAdminOperation::create_data('文章信息删除：'.$article->title, 'operation');
             CmsArticleData::where('article_id', $id)->delete();
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -511,7 +511,7 @@ class Cms extends Admin{
      */
     public function article_content($id){
         $article = CmsArticle::field('article_id, content_type, content')->where('article_id', $id)->find();
-        return return_data(1, $article, '内容', 'json');
+        return return_data(1, $article, '内容');
     }
 
     /**
@@ -528,12 +528,12 @@ class Cms extends Admin{
     public function article_status($id){
         $status_type = Request::instance()->param('status_type', '');
         if($status_type != 'recomment' && $status_type != 'stick' && $status_type != 'hot'){
-            return return_data(2, '', '非法操作', 'json');
+            return return_data(2, '', '非法操作');
         }
         $status_type = 'is_' . $status_type;
         $article = CmsArticle::find($id);
         if(!$article){
-            return return_data(2, '', '非法操作', 'json');
+            return return_data(2, '', '非法操作');
         }
         $article_data = CmsArticleData::find($id);
         $article_data->$status_type = $article_data->$status_type == 0 ? 1 : 0;
@@ -542,9 +542,9 @@ class Cms extends Admin{
             $status_type_text = array('is_recomment'=> '推荐', 'is_stick'=> '置顶', 'is_hot'=> '热门');
             $status_text = array('取消', '开启');
             LogAdminOperation::create_data('文章文章属性修改：'.$article->title . $status_text[$article_data->$status_type] . $status_type_text[$status_type], 'operation');
-            return return_data(1, '', '设置成功', 'json');
+            return return_data(1, '', '设置成功');
         }else{
-            return return_data(3, '', '设置失败,请联系管理员', 'json');
+            return return_data(3, '', '设置失败,请联系管理员');
         }
     }
 }

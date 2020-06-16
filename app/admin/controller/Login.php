@@ -31,7 +31,7 @@ class Login extends Base{
         $ip = get_ip();
         $freeze_ip = AdmFreezeIp::where('ip', $ip)->where('freeze_end_time', '> time', time())->find();
         if($freeze_ip){
-            return return_data(2, '', '此账号已被冻结', 'json');
+            return return_data(2, '', '此账号已被冻结');
         }
         $account = Request::instance()->param('account', '');
         $password = Request::instance()->param('password', '');
@@ -39,11 +39,11 @@ class Login extends Base{
         if(!$validate->check(['account'=> $account, 'password'=> $password])){
             $this->update_admin_login($ip, 'error');
             LogAdminOperation::create_data('登录失败：'.$validate->getError(), 'login');
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $this->update_admin_login($ip, 'success');
         LogAdminOperation::create_data('登录成功，账号：'.$account, 'login');
-        return return_data(1, '', '登录成功', 'json');
+        return return_data(1, '', '登录成功');
     }
 
     public function login_out(){

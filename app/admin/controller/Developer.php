@@ -47,7 +47,7 @@ class Developer extends Admin{
         $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Module;
         if(!$validate->scene('add')->check(['title'=> $title])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $res = SysModule::create([
             'title'=> $title,
@@ -57,9 +57,9 @@ class Developer extends Admin{
         if($res){
             $max_sort = SysModule::order('sort desc')->value('sort');
             LogAdminOperation::create_data('模块信息添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功', 'json');
+            return return_data(1, $max_sort, '添加成功');
         }else{
-            return return_data(3, '', '添加失败，请联系管理员', 'json');
+            return return_data(3, '', '添加失败，请联系管理员');
         }
     }
 
@@ -90,7 +90,7 @@ class Developer extends Admin{
         $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Module;
         if(!$validate->scene('update')->check(['module_id'=> $id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $module = SysModule::find($id);
         $old_module_title = $module->title;
@@ -100,9 +100,9 @@ class Developer extends Admin{
         $res = $module->save();
         if($res){
             LogAdminOperation::create_data('模块信息修改：'.$old_module_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败,请联系管理员', 'json');
+            return return_data(3, '', '修改失败,请联系管理员');
         }
     }
 
@@ -116,9 +116,9 @@ class Developer extends Admin{
         $res = SysModule::where('module_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('模块信息删除：'.$module->title, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -160,7 +160,7 @@ class Developer extends Admin{
         $module_id = Request::instance()->param('module_id', 0);
         $validate = new \app\admin\validate\Action;
         if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'module_id'=> $module_id, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $res = SysModuleAction::create([
             'title'=> $title,
@@ -173,9 +173,9 @@ class Developer extends Admin{
         if($res){
             $max_sort = SysModuleAction::order('sort desc')->value('sort');
             LogAdminOperation::create_data('方法信息添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功', 'json');
+            return return_data(1, $max_sort, '添加成功');
         }else{
-            return return_data(3, '', '添加失败，请联系管理员', 'json');
+            return return_data(3, '', '添加失败，请联系管理员');
         }
     }
 
@@ -211,7 +211,7 @@ class Developer extends Admin{
         $module_id = Request::instance()->param('module_id', 0);
         $validate = new \app\admin\validate\Action;
         if(!$validate->scene('update')->check(['action_id'=> $id, 'path'=> $path, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $module = SysModuleAction::find($id);
         $old_module_title = $module->title;
@@ -224,9 +224,9 @@ class Developer extends Admin{
         $res = $module->save();
         if($res){
             LogAdminOperation::create_data('方法信息修改：'.$old_module_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败,请联系管理员', 'json');
+            return return_data(3, '', '修改失败,请联系管理员');
         }
     }
 
@@ -240,9 +240,9 @@ class Developer extends Admin{
         $res = SysModuleAction::where('action_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('方法信息删除：'.$action->title, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 
@@ -288,7 +288,7 @@ class Developer extends Admin{
         $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Catalog;
         if(!$validate->scene('add')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $action_path = $action_id != 0 ? SysModuleAction::field('path, route')->where('action_id', $action_id)->find() : '';
         $res = SysCatalog::create([
@@ -304,9 +304,9 @@ class Developer extends Admin{
         if($res){
             $max_sort = SysCatalog::order('sort desc')->value('sort');
             LogAdminOperation::create_data('后台目录添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功', 'json');
+            return return_data(1, $max_sort, '添加成功');
         }else{
-            return return_data(3, '', '添加失败,请联系管理员', 'json');
+            return return_data(3, '', '添加失败,请联系管理员');
         }
     }
 
@@ -346,7 +346,7 @@ class Developer extends Admin{
         $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Catalog;
         if(!$validate->scene('update')->check(['title'=> $title, 'icon'=> $icon, 'action_id'=> $action_id, 'module_id'=> $module_id, 'sort'=> $sort, 'top_id'=> $top_id, 'catalog_id'=> $id])){
-            return return_data(2, '', $validate->getError(), 'json');
+            return return_data(2, '', $validate->getError());
         }
         $action_path = SysModuleAction::field('path, route')->where('action_id', $action_id)->find();
         $action_path = $action_id != 0 ? SysModuleAction::field('path, route')->where('action_id', $action_id)->find() : '';
@@ -363,9 +363,9 @@ class Developer extends Admin{
         $res = $catalog->save();
         if($res){
             LogAdminOperation::create_data('后台目录修改：'.$old_catalog_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功', 'json');
+            return return_data(1, '', '修改成功');
         }else{
-            return return_data(3, '', '修改失败，请联系管理员', 'json');
+            return return_data(3, '', '修改失败，请联系管理员');
         }
     }
 
@@ -379,9 +379,9 @@ class Developer extends Admin{
         $res = SysCatalog::where('catalog_id', $id)->delete();
         if($res){
             LogAdminOperation::create_data('后台目录删除：'.$catalog->title, 'operation');
-            return return_data(1, '', '删除成功', 'json');
+            return return_data(1, '', '删除成功');
         }else{
-            return return_data(3, '', '删除失败,请联系管理员', 'json');
+            return return_data(3, '', '删除失败,请联系管理员');
         }
     }
 }
