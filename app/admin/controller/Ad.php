@@ -20,7 +20,7 @@ class Ad extends Admin{
      */
     public function ad(){
         $ad = SysAd::order('sort asc')->select();
-        $adv = SysAdv::order('sort asc')->select();
+        $adv = SysAdv::order('adv_id asc')->select();
         View::assign('ad', $ad);
         View::assign('adv', $adv);
         //删除未被上传的图片
@@ -41,8 +41,6 @@ class Ad extends Admin{
      * @return void
      */
     public function ad_adv_add(){
-        $max_sort = SysAdv::order('sort desc')->value('sort');
-        View::assign('max_sort', $max_sort);
         return View::fetch();
     }
 
@@ -54,20 +52,17 @@ class Ad extends Admin{
     public function ad_adv_add_submit(){
         $adv_name = Request::instance()->param('adv_name', '');
         $sign = Request::instance()->param('sign', '');
-        $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Adv;
-        if(!$validate->scene('add')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort])){
+        if(!$validate->scene('add')->check(['adv_name'=> $adv_name, 'sign'=> $sign])){
             return return_data(2, '', $validate->getError());
         }
         $res = SysAdv::create([
             'adv_name'=> $adv_name,
             'sign'=> $sign,
-            'sort'=> $sort,
         ]);
         if($res){
-            $max_sort = SysAdv::order('sort desc')->value('sort');
             LogAdminOperation::create_data('广告位信息添加：'.$adv_name, 'operation');
-            return return_data(1, $max_sort, '添加成功');
+            return return_data(1, '', '添加成功');
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
@@ -97,16 +92,14 @@ class Ad extends Admin{
     public function ad_adv_update_submit($id){
         $adv_name = Request::instance()->param('adv_name', '');
         $sign = Request::instance()->param('sign', '');
-        $sort = Request::instance()->param('sort', 0);
         $validate = new \app\admin\validate\Adv;
-        if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'sort'=> $sort, 'adv_id'=> $id])){
+        if(!$validate->scene('update')->check(['adv_name'=> $adv_name, 'sign'=> $sign, 'adv_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
         $adv = SysAdv::find($id);
         $old_adv_name = $adv->adv_name;
         $adv->adv_name = $adv_name;
         $adv->sign = $sign;
-        $adv->sort = $sort;
         $res = $adv->save();
         if($res){
             LogAdminOperation::create_data('广告位信息修改：'.$old_adv_name.'->'.$adv_name, 'operation');
@@ -138,9 +131,7 @@ class Ad extends Admin{
      * @return void
      */
     public function ad_ad_add(){
-        $max_sort = SysAd::order('sort desc')->value('sort');
-        View::assign('max_sort', $max_sort);
-        $adv = SysAdv::order('sort asc')->select();
+        $adv = SysAdv::order('adv_id asc')->select();
         View::assign('adv', $adv);
         return View::fetch();
     }
@@ -156,10 +147,9 @@ class Ad extends Admin{
         $sign = Request::instance()->param('sign', '');
         $value = Request::instance()->param('value', '');
         $content = Request::instance()->param('content', '');
-        $sort = Request::instance()->param('sort', '');
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Ad;
-        if(!$validate->scene('add')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort])){
+        if(!$validate->scene('add')->check(['title'=> $title, 'adv_id'=> $adv_id])){
             return return_data(2, '', $validate->getError());
         }
         if($image){
@@ -178,7 +168,6 @@ class Ad extends Admin{
             'sign'=> $sign,
             'value'=> $value,
             'content'=> $content,
-            'sort'=> $sort,
             'image'=> $path
         ]);
         if($res){
@@ -198,7 +187,7 @@ class Ad extends Admin{
      */
     public function ad_ad_update($id){
         $ad = SysAd::find($id);
-        $adv = SysAdv::order('sort asc')->select();
+        $adv = SysAdv::order('adv_id asc')->select();
         $has_data = "true";
         if(!$ad){
             $has_data = "false";
@@ -219,10 +208,9 @@ class Ad extends Admin{
         $adv_id = Request::instance()->param('adv_id', '');
         $value = Request::instance()->param('value', '');
         $content = Request::instance()->param('content', '');
-        $sort = Request::instance()->param('sort', '');
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Ad;
-        if(!$validate->scene('update')->check(['title'=> $title, 'adv_id'=> $adv_id, 'sort'=> $sort, 'ad_id'=> $id])){
+        if(!$validate->scene('update')->check(['title'=> $title, 'adv_id'=> $adv_id, 'ad_id'=> $id])){
             return return_data(2, '', $validate->getError());
         }
         $path = '';
@@ -237,7 +225,6 @@ class Ad extends Admin{
         $ad->adv_id = $adv_id;
         $ad->value = $value;
         $ad->content = $content;
-        $ad->sort = $sort;
         $ad->image = $path == '' ? $ad->image : $path;
         $res = $ad->save();
         if($res){

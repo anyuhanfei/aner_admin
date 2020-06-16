@@ -9,7 +9,6 @@ class Adv extends Validate{
     protected $rule = [
         'adv_name'=> 'require|checkAdvName|checkUpdateAdvName',
         'sign'=> 'require|checkSign|checkUpdateSign',
-        'sort'=> 'checkSort',
         'adv_id'=> 'checkAdv'
     ];
 
@@ -64,13 +63,6 @@ class Adv extends Validate{
             if($adv->adv_id != $data['adv_id']){
                 return "此广告位标题已存在";
             }
-        }
-        return true;
-    }
-
-    protected function checkSort($value, $rule, $data){
-        if($value < 0){
-            return "排序请勿使用负数";
         }
         return true;
     }
