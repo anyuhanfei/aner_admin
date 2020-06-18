@@ -19,8 +19,8 @@ class Ad extends Admin{
      * @return void
      */
     public function ad(){
-        $ad = SysAd::order('sort asc')->select();
-        $adv = SysAdv::order('adv_id asc')->select();
+        $ad = SysAd::order('ad_id desc')->select();
+        $adv = SysAdv::order('adv_id desc')->select();
         View::assign('ad', $ad);
         View::assign('adv', $adv);
         //删除未被上传的图片
