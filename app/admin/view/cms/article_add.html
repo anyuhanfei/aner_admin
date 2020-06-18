@@ -69,19 +69,13 @@
                             <label for="keyword">关键字*</label>
                             <input type="text" class="form-control" id="keyword">
                         </div>
-                        <div class="form-group">
-                            <label for="sort">排序*</label>
-                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
-                        </div>
                         {if condition="$cms_article['intro'] == true"}
                         <div class="form-group">
                         {else /}
                         <div class="form-group" style="display: none;">
                         {/if}
                             <label for="intro">简介</label>
-                            <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="intro" id="intro">
-
-                            </textarea>
+                            <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="intro" id="intro"></textarea>
                         </div>
                         {if condition="$cms_article['content_type'] == true"}
                         <div class="form-group">
@@ -96,16 +90,12 @@
                         </div>
                         <div class="form-group" id="html">
                             <label for="content">内容*</label>
-                            <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="content_html">
-
-                            </textarea>
+                            <textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="content_html"></textarea>
                         </div>
                         <div class="form-group" id="markdown" style="display: None;justify-content: space-between;">
                             <div style="width: 48%; float:left;">
                                 <label for="content">编写</label>
-                                <textarea class="form-control" rows="20" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="content_write">
-
-                                </textarea>
+                                <textarea class="form-control" rows="20" style="margin-top: 0px; margin-bottom: 0px;" name="content" id="content_write"></textarea>
                             </div>
                             <div style="width: 48%; float:right;">
                                 <label for="content">展示</label>
@@ -177,7 +167,6 @@ $("#submit").click(function(){
     fd.append('intro', $("#intro").val());
     var content_type = $("#content_type").val();
     fd.append('content_type', content_type);
-    fd.append('sort', $("#sort").val());
     fd.append("image", $('#image')[0].files[0]);
     if(content_type == 'html'){
         fd.append('content', editor.getData());

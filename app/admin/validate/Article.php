@@ -10,8 +10,7 @@ class Article extends Validate{
 
     protected $rule = [
         'title'=> 'require|checkTitle|checkUpdateTitle',
-        'category_id'=> 'require|checkCategoryId',
-        'sort'=> 'checkSort'
+        'category_id'=> 'require|checkCategoryId'
     ];
 
     protected $message = [
@@ -22,13 +21,11 @@ class Article extends Validate{
     protected $scene = [
         'add'=> [
             'title'=> 'require|checkTitle',
-            'category_id'=> 'require|checkCategoryId',
-            'sort'=> 'checkSort'
+            'category_id'=> 'require|checkCategoryId'
         ],
         'update'=> [
             'title'=> 'require|checkUpdateTitle',
-            'category_id'=> 'require|checkCategoryId',
-            'sort'=> 'checkSort'
+            'category_id'=> 'require|checkCategoryId'
         ]
     ];
 
@@ -52,13 +49,6 @@ class Article extends Validate{
         $article = CmsCategory::where('category_id', $value)->find();
         if(!$article){
             return "请选择正确的文章分类";
-        }
-        return true;
-    }
-
-    protected function checkSort($value, $rule, $data){
-        if($value < 0){
-            return "排序请勿使用负数";
         }
         return true;
     }

@@ -247,7 +247,7 @@ class Adm extends Admin{
         $old_admin_account = $admin->account;
         $admin->account = $account;
         $admin->nickname = $nickname;
-        $admin->password = $password == '' ? $admin->password : md5($password);
+        $admin->password = $password == '' ? $admin->password : md5($password . $admin->password_salt);
         $res = $admin->save();
         if($res){
             LogAdminOperation::create_data('管理员信息修改：'.$old_admin_account.'->'.$account, 'operation');

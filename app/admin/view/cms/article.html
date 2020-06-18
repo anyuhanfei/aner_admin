@@ -47,6 +47,24 @@
                                 <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="搜索作者" style="width: 150px;">
                             </div>
                             {/if}
+                            <div class="form-group">
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="stick" {if condition="$trait == 'stick'"}checked{/if}>
+                                    <span class="form-radio-sign">置顶</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="hot" {if condition="$trait == 'hot'"}checked{/if}>
+                                    <span class="form-radio-sign">热门</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="recomment" {if condition="$trait == 'recomment'"}checked{/if}>
+                                    <span class="form-radio-sign">推荐</span>
+                                </label>
+                            </div>
                             <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
                             <button type="button" class="btn btn-default" id="from_close">清空</button>
                         </form>
@@ -54,15 +72,14 @@
                             <thead>
                                 <tr>
                                     <th scope="col" width="4%">#</th>
-                                    <th scope="col" width="5%">id</th>
                                     {if condition="$cms_article['stick'] == true"}
-                                    <th scope="col" width="5%">推荐</th>
-                                    {/if}
-                                    {if condition="$cms_article['hot'] == true"}
                                     <th scope="col" width="5%">置顶</th>
                                     {/if}
-                                    {if condition="$cms_article['recomment'] == true"}
+                                    {if condition="$cms_article['hot'] == true"}
                                     <th scope="col" width="5%">热门</th>
+                                    {/if}
+                                    {if condition="$cms_article['recomment'] == true"}
+                                    <th scope="col" width="5%">推荐</th>
                                     {/if}
                                     {if condition="$cms_article['image'] == true"}
                                     <th scope="col" width="10%">图片</th>
@@ -83,26 +100,25 @@
                             <tbody>
                                 {volist name="list" id="vo"}
                                 <tr id="tr{$vo.article_id}">
-                                    <td>{$vo.sort}</td>
                                     <td>{$vo.article_id}</td>
                                     {if condition="$cms_article['stick'] == true"}
-                                    <td>
-                                        <div id="divrecomment{$vo.article_id}" onclick="status('recomment', '{$vo.article_id}')">
-                                            <input id="recomment{$vo.article_id}" type="checkbox" {if condition="$vo.artdata.is_recomment == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
-                                        </div>
-                                    </td>
-                                    {/if}
-                                    {if condition="$cms_article['hot'] == true"}
                                     <td>
                                         <div onclick="status('stick', '{$vo.article_id}')">
                                             <input type="checkbox" {if condition="$vo.artdata.is_stick == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
                                     {/if}
-                                    {if condition="$cms_article['recomment'] == true"}
+                                    {if condition="$cms_article['hot'] == true"}
                                     <td>
                                         <div onclick="status('hot', '{$vo.article_id}')">
                                             <input type="checkbox" {if condition="$vo.artdata.is_hot == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
+                                        </div>
+                                    </td>
+                                    {/if}
+                                    {if condition="$cms_article['recomment'] == true"}
+                                    <td>
+                                        <div id="divrecomment{$vo.article_id}" onclick="status('recomment', '{$vo.article_id}')">
+                                            <input id="recomment{$vo.article_id}" type="checkbox" {if condition="$vo.artdata.is_recomment == 1"}checked{/if} data-toggle="toggle" data-onstyle="danger">
                                         </div>
                                     </td>
                                     {/if}
@@ -209,6 +225,7 @@
         $("#category_id").val('');
         $("#tag_id").val('');
         $("#author").val('');
+        $('input[name="trait"]:checked').attr('checked', false)
         $("#search_submit").click();
     })
 

@@ -286,15 +286,20 @@ class Cms extends Admin{
         $category_id = Request::instance()->param('category_id', '');
         $tag_id = Request::instance()->param('tag_id', '');
         $author = Request::instance()->param('author', '');
+        $trait = Request::instance()->param('trait', '');
 
         $field = 'article_id, category_id, tag_ids, title, author, intro, keyword, image, sort, content_type';
         $article = new CmsArticle;
         $article = $article->field($field);
+        if($trait != ''){
+            $trait_ids = CmsArticleData::where('is_' . $trait, 1)->column('article_id');
+        }
+        $article = ($trait != '') ? $article->where('article_id', 'in', $trait_ids) : $article;
         $article = ($title != '') ? $article->where('title', 'like', '%' . $title . '%') : $article;
         $article = ($category_id != '') ? $article->where('category_id', $category_id) : $article;
         $article = ($tag_id != '') ? $article->where('tag_ids', 'like', '%,' . $tag_id . ',%') : $article;
         $article = ($author != '') ? $article->where('author', 'like', '%' . $author . '%') : $article;
-        $list = $article->order('sort asc, article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
+        $list = $article->order('article_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
         foreach($list as &$l){
             $l['tag_ids'] = CmsTag::where('tag_id', 'in', $l['tag_ids'])->column('tag_name');
             $l['tag_ids'] = implode(',', $l['tag_ids']);
@@ -308,7 +313,7 @@ class Cms extends Admin{
             }
         }
         Session::set('article_content_images', array());
-        $this->many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'tag_id'=> $tag_id, 'author'=> $author]);
+        $this->many_assign(['list'=> $list, 'title'=> $title, 'category_id'=> $category_id, 'tag_id'=> $tag_id, 'author'=> $author, 'trait'=> $trait]);
         //分类和标签
         $category = CmsCategory::field('category_id, category_name, sort')->order('sort asc')->select();
         $tag = CmsTag::field('tag_id, tag_name, sort')->order('sort asc')->select();
@@ -323,8 +328,6 @@ class Cms extends Admin{
      * @return void
      */
     public function article_add(){
-        $max_sort = CmsArticle::order('sort desc')->value('sort');
-        View::assign('max_sort', $max_sort);
         $category = CmsCategory::field('category_id, category_name, sort')->order('sort asc')->select();
         $tag = CmsTag::field('tag_id, tag_name, sort')->order('sort asc')->select();
         View::assign('category', $category);
@@ -345,24 +348,21 @@ class Cms extends Admin{
         $keyword = Request::instance()->param('keyword', '');
         $intro = Request::instance()->param('intro', '');
         $content_type = Request::instance()->param('content_type', '');
-        $sort = Request::instance()->param('sort', '');
         $content = Request::instance()->param('content', '');
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Article;
-        if(!$validate->scene('add')->check(['title'=> $title, 'sort'=> $sort, 'category_id'=> $category_id])){
+        if(!$validate->scene('add')->check(['title'=> $title, 'category_id'=> $category_id])){
             return return_data(2, '', $validate->getError());
         }
         if($author == ''){
             $author = $this->admin->nickname;
         }
         foreach($this->cms_article as $k => $v){
-            if($k != 'image'){
-                if($v == true && $v != 'stick' && $v != 'hot' && $v != 'recomment'){
-                    if($$k == ''){
-                        return return_data(2, '', $this->cms_hint_array[$k]);
-                    }else{
-                        $data[$k] = $$k;
-                    }
+            if($k != 'image' && $v == true && $k != 'stick' && $k != 'hot' && $k != 'recomment'){
+                if($$k == ''){
+                    return return_data(2, '', $this->cms_hint_array[$k]);
+                }else{
+                    $data[$k] = $$k;
                 }
             }
         }
@@ -376,7 +376,6 @@ class Cms extends Admin{
         }
         $data['title'] = $title;
         $data['category_id'] = $category_id;
-        $data['sort'] = $sort;
         $data['content'] = $content;
         $article = CmsArticle::create($data);
         if($article){
@@ -434,23 +433,20 @@ class Cms extends Admin{
         $keyword = Request::instance()->param('keyword', '');
         $intro = Request::instance()->param('intro', '');
         $content_type = Request::instance()->param('content_type', '');
-        $sort = Request::instance()->param('sort', '');
         $content = Request::instance()->param('content', '');
         $image = Request::instance()->file('image');
         $validate = new \app\admin\validate\Article;
-        if(!$validate->scene('update')->check(['article_id'=> $id, 'title'=> $title, 'sort'=> $sort, 'category_id'=> $category_id])){
+        if(!$validate->scene('update')->check(['article_id'=> $id, 'title'=> $title, 'category_id'=> $category_id])){
             return return_data(2, '', $validate->getError());
         }
         $article = CmsArticle::find($id);
         $article->author = $author == '' ? $this->admin->nickname : $author;
         foreach($this->cms_article as $k => $v){
-            if($k != 'image'){
-                if($v == true){
-                    if($$k == ''){
-                        return return_data(2, '', $this->cms_hint_array[$k]);
-                    }else{
-                        $article->$k = $$k;
-                    }
+            if($k != 'image' && $v == true && $k != 'stick' && $k != 'hot' && $k != 'recomment'){
+                if($$k == ''){
+                    return return_data(2, '', $this->cms_hint_array[$k]);
+                }else{
+                    $article->$k = $$k;
                 }
             }
         }
@@ -466,7 +462,6 @@ class Cms extends Admin{
         $old_content = $article->content;
         $article->title = $title;
         $article->category_id = $category_id;
-        $article->sort = $sort;
         $article->content = $content;
         $res = $article->save();
         if($res){

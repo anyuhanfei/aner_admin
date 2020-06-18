@@ -113,11 +113,11 @@ class Base{
      */
     protected function remove_content_image($content, $type="cookie", $remark = ''){
         $editor_images_array = $this->get_editor_images($content);
-        if($editor_images_array){
+        if(empty($editor_images_array)){
             return array();
         }
         if($type == 'cookie'){
-            assert($remark != ''); //数据无回滚
+            assert($remark != ''); //无数据回滚
             $content_images = Session::get($remark) ? Session::get($remark) : array();
             Session::set($remark, array_diff($content_images, $editor_images_array));
         }elseif($type == 'delete'){
