@@ -153,17 +153,18 @@ class Developer extends Admin{
      */
     public function action_add_submit(){
         $title = Request::instance()->param('title', '');
+        $type = Request::instance()->param('type', '');
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $path = Request::instance()->param('path', '');
         $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = new \app\admin\validate\Action;
-        if(!$validate->scene('add')->check(['title'=> $title, 'path'=> $path, 'module_id'=> $module_id, 'sort'=> $sort])){
+        if(!$validate->scene('add')->check(['title'=> $title, $type=> 'type', 'path'=> $path, 'module_id'=> $module_id, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
         $res = SysModuleAction::create([
-            'title'=> $title,
+            'title'=> $title . '--' . $type,
             'module_id'=> $module_id,
             'path'=> $path,
             'route'=> $route,
@@ -191,6 +192,8 @@ class Developer extends Admin{
             $has_data = "false";
         }
         $module = SysModule::order('sort asc')->select();
+        $action->type = explode('--', $action->title)[1];
+        $action->title = explode('--', $action->title)[0];
         View::assign('has_data', $has_data);
         View::assign('detail', $action);
         View::assign('module', $module);
@@ -204,18 +207,19 @@ class Developer extends Admin{
      */
     public function action_update_submit($id){
         $title = Request::instance()->param('title', '');
+        $type = Request::instance()->param('type', '');
         $remark = Request::instance()->param('remark', '');
         $sort = Request::instance()->param('sort', '');
         $path = Request::instance()->param('path', '');
         $route = Request::instance()->param('route', '');
         $module_id = Request::instance()->param('module_id', 0);
         $validate = new \app\admin\validate\Action;
-        if(!$validate->scene('update')->check(['action_id'=> $id, 'path'=> $path, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['action_id'=> $id, 'type'=> $type, 'path'=> $path, 'module_id'=> $module_id, 'title'=> $title, 'remark'=> $remark, 'sort'=> $sort])){
             return return_data(2, '', $validate->getError());
         }
         $module = SysModuleAction::find($id);
         $old_module_title = $module->title;
-        $module->title = $title;
+        $module->title = $title . '--' . $type;
         $module->path = $path;
         $module->route = $route;
         $module->module_id = $module_id;

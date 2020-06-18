@@ -15,6 +15,33 @@
                             <input type="text" class="form-control" id="title" value="{$detail.title}">
                             <small  class="form-text text-muted text-danger">请输入方法名称，不能超过30个字符</small>
                         </div>
+                        <div class="form-check">
+                            <label>所属类型*</label><br>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="type" value="展示页" {if condition="$detail.type == '展示页'"}checked{/if}>
+                                <span class="form-radio-sign">展示页</span>
+                            </label>
+                            <label class="form-radio-label">
+                                <input class="form-radio-input" type="radio" name="type" value="列表" {if condition="$detail.type == '列表'"}checked{/if}>
+                                <span class="form-radio-sign">列表</span>
+                            </label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="type" value="表单" {if condition="$detail.type == '表单'"}checked{/if}>
+                                <span class="form-radio-sign">表单</span>
+                            </label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="type" value="提交" {if condition="$detail.type == '提交'"}checked{/if}>
+                                <span class="form-radio-sign">提交</span>
+                            </label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="type" value="操作" {if condition="$detail.type == '操作'"}checked{/if}>
+                                <span class="form-radio-sign">操作</span>
+                            </label>
+                            <label class="form-radio-label ml-3">
+                                <input class="form-radio-input" type="radio" name="type" value="其他" {if condition="$detail.type == '其他'"}checked{/if}>
+                                <span class="form-radio-sign">其他</span>
+                            </label>
+                        </div>
                         <div class="form-group">
                             <label for="module_id">所属模块*</label>
                             <select class="form-control form-control-sm" id="module_id">
@@ -74,6 +101,7 @@ $("#cancel").click(function(){
 //提交
 $("#submit").click(function(){
     var title = $("#title").val();
+    var type = $('input[name="type"]:checked').val();
     var module_id = $("#module_id").val();
     var action_id = $("#action_id").val();
     var path = $("#path").val();
@@ -95,7 +123,7 @@ $("#submit").click(function(){
     $.ajax({
         url: "/admin/action/update/submit/" + action_id,
         type: "post",
-        data: {title: title, remark: remark, sort: sort, module_id: module_id, path: path, route: route},
+        data: {title: title, type: type, remark: remark, sort: sort, module_id: module_id, path: path, route: route},
         success: function(data){
             data = JSON.parse(data);
             if(data.code == 3){
