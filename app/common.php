@@ -65,7 +65,14 @@ function create_captcha($number, $type = 'figure'){
  */
 function file_upload($file, $save_path, $file_validate = array('size'=>156780000, 'ext'=>'jpg,png,gif')){
     if($file){
-        validate(['image'=>"filesize:{$file_validate['size']}|fileExt:{$file_validate['ext']}"])->check(array($file));
+        try{
+            validate(['file'=>[
+                'fileSize'=> $file_validate['size'],
+                'fileExt'=> $file_validate['ext']
+            ]])->check(['file'=> $file]);
+        }catch(\think\exception\ValidateException $e){
+            return array('status'=>2, 'file_path'=>'', 'error'=>'图片审核未通过');
+        }
         $info = \think\facade\Filesystem::disk('public')->putFile($save_path, $file);
         if($info){
             $res = array('status'=>1, 'file_path'=>'/storage' . '/' . $info, 'error'=>'');

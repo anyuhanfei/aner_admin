@@ -47,24 +47,30 @@
                                 <input type="text" class="form-control" name="author" id="author" value="{$author}" placeholder="搜索作者" style="width: 150px;">
                             </div>
                             {/if}
+                            {if condition="$cms_article['stick'] == true"}
                             <div class="form-group">
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="stick" {if condition="$trait == 'stick'"}checked{/if}>
                                     <span class="form-radio-sign">置顶</span>
                                 </label>
                             </div>
+                            {/if}
+                            {if condition="$cms_article['hot'] == true"}
                             <div class="form-group">
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="hot" {if condition="$trait == 'hot'"}checked{/if}>
                                     <span class="form-radio-sign">热门</span>
                                 </label>
                             </div>
+                            {/if}
+                            {if condition="$cms_article['recomment'] == true"}
                             <div class="form-group">
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" name="trait" type="radio" name="optionsRadios" value="recomment" {if condition="$trait == 'recomment'"}checked{/if}>
                                     <span class="form-radio-sign">推荐</span>
                                 </label>
                             </div>
+                            {/if}
                             <button type="submit" class="btn btn-default" id="search_submit">搜索</button>&nbsp&nbsp
                             <button type="button" class="btn btn-default" id="from_close">清空</button>
                         </form>
