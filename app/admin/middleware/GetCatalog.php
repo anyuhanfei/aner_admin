@@ -28,7 +28,7 @@ class GetCatalog{
         $admin = AdmAdmin::find($admin_id);
 
         //权限控制
-        if($admin_power_onoff == 'on'){
+        if($admin_power_onoff == true){
             if($action != 'index'){
                 if($admin->role_id == 0){
                     return redirect('/admin/login');
