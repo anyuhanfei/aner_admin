@@ -29,7 +29,7 @@ class LogUserOperation extends Model{
      * @param string $insert_time 创建时间
      * @return bool
      */
-    public function create_data($user_id, $content, $remark='', $insert_time=''){
+    public static function create_data($user_id, $content, $remark='', $insert_time=''){
         $user_identity_set = Env::get('USER_IDENTITY', 'phone');
         $user_identity = IdxUser::where('user_id', $user_id)->value($user_identity_set);
         $res = self::create([
