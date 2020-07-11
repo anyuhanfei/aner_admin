@@ -11,7 +11,6 @@ use app\admin\model\IdxUser;
 use app\admin\model\IdxUserCount;
 use app\admin\model\IdxUserFund;
 use app\admin\model\IdxUserData;
-use app\admin\model\LogAdminOperation;
 
 
 class User extends Admin{
@@ -79,8 +78,7 @@ class User extends Admin{
         $top_user_id = $top_user_id == null ? 0 : $top_user_id;
         $res = IdxUser::create_data($user_identity, $password, $top_user_id, $nickname, $level_password);
         if($res){
-            LogAdminOperation::create_data('会员信息添加：'.$user_identity, 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '会员信息添加：'.$user_identity);
         }else{
             return return_data(2, '', '添加失败，请联系管理员');
         }
@@ -195,8 +193,7 @@ class User extends Admin{
         $res = $user->save();
         if($res){
             $update_type = array('detail'=> '信息编辑', 'password'=> '密码修改', 'level_password'=> '二级密码修改');
-            LogAdminOperation::create_data('会员信息--'.$update_type[$type].'：'.$user->$control_user_identity, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '会员信息--'.$update_type[$type].'：'.$user->$control_user_identity);
         }else{
             return return_data(2, '', '修改失败或未修改信息');
         }
@@ -218,8 +215,7 @@ class User extends Admin{
         if($res){
             $control_user_identity = $this->user_identity;
             $operation_type = $user->is_login == 1 ? '解冻' : '冻结';
-            LogAdminOperation::create_data('会员登录权限-'.$operation_type.'：'.$user->$control_user_identity, 'operation');
-            return return_data(1, $user->is_login, '修改成功');
+            return return_data(1, $user->is_login, '修改成功', '会员登录权限-'.$operation_type.'：'.$user->$control_user_identity);
         }else{
             return return_data(2, '', '修改失败或未修改信息');
         }
@@ -245,8 +241,7 @@ class User extends Admin{
             IdxUserData::where('user_id', $id)->delete();
             IdxUserFund::where('user_id', $id)->delete();
             $control_user_identity = $this->user_identity;
-            LogAdminOperation::create_data('会员信息删除：'.$user->$control_user_identity, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '会员信息删除：'.$user->$control_user_identity);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -295,8 +290,7 @@ class User extends Admin{
         $res = $user_fund->save();
         if($res){
             $fund_type_array = array_flip($this->user_fund_type);
-            LogAdminOperation::create_data('会员充值：给'.$user->$control_user_identity.'充值'.$add_number.$fund_type_array[$fund_type], 'operation');
-            return return_data(1, '', '充值成功');
+            return return_data(1, '', '充值成功', '会员充值：给'.$user->$control_user_identity.'充值'.$add_number.$fund_type_array[$fund_type]);
         }else{
             return return_data(3, '', '充值失败,请联系管理员');
         }

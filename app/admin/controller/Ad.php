@@ -9,7 +9,6 @@ use app\admin\controller\Admin;
 
 use app\admin\model\SysAd;
 use app\admin\model\SysAdv;
-use app\admin\model\LogAdminOperation;
 
 
 class Ad extends Admin{
@@ -61,8 +60,7 @@ class Ad extends Admin{
             'sign'=> $sign,
         ]);
         if($res){
-            LogAdminOperation::create_data('广告位信息添加：'.$adv_name, 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '广告位信息添加：'.$adv_name);
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
@@ -102,8 +100,7 @@ class Ad extends Admin{
         $adv->sign = $sign;
         $res = $adv->save();
         if($res){
-            LogAdminOperation::create_data('广告位信息修改：'.$old_adv_name.'->'.$adv_name, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '广告位信息修改：'.$old_adv_name.'->'.$adv_name);
         }else{
             return return_data(2, '', '修改失败，请联系管理员');
         }
@@ -118,8 +115,7 @@ class Ad extends Admin{
         $adv = SysAdv::where('adv_id', $id)->find();
         $res = SysAdv::where('adv_id', $id)->delete();
         if($res){
-            LogAdminOperation::create_data('广告位信息删除：'.$adv->adv_name, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '广告位信息删除：'.$adv->adv_name);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -172,8 +168,7 @@ class Ad extends Admin{
         ]);
         if($res){
             $this->remove_content_image($content, 'cookie', 'ad_content_images');
-            LogAdminOperation::create_data('广告信息添加：'.$title, 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '广告信息添加：'.$title);
         }else{
             delete_image($path);
             return return_data(3, '', '添加失败,请联系管理员');
@@ -231,8 +226,7 @@ class Ad extends Admin{
             //删除编辑中删除掉的已上传图片，删除旧文本中被删除的图片
             $this->remove_content_image($content, 'cookie', 'ad_content_images');
             $this->remove_content_image($content, 'update', $old_ad_content);
-            LogAdminOperation::create_data('广告信息修改：'.$old_ad_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '广告信息修改：'.$old_ad_title.'->'.$title);
         }else{
             delete_image($path);
             return return_data(3, '', '修改失败或没有修改信息');
@@ -250,8 +244,7 @@ class Ad extends Admin{
         if($res){
             delete_image($ad->image);
             $this->remove_content_image($ad->content, 'delete');
-            LogAdminOperation::create_data('广告信息删除：'.$ad->title, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '广告信息删除：'.$ad->title);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }

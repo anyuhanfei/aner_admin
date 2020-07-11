@@ -7,10 +7,11 @@
  * @param int $code 状态,1成功2失败
  * @param int|array $data 数据
  * @param string $msg 提示信息
+ * @param string $operation 日志内容
  * @return void
  */
-function return_data($code, $data, $msg){
-    return json_encode(array('code'=>$code, 'data'=>$data, 'msg'=>$msg));
+function return_data($code, $data, $msg, $operation = ''){
+    return json_encode(array('code'=>$code, 'data'=>$data, 'msg'=>$msg, 'operation'=> $operation));
 }
 
 /**

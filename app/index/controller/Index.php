@@ -11,6 +11,7 @@ class Index extends Base{
     protected $user = null;
     protected $middleware = [
         \app\index\middleware\CheckIndex::class,
+        \app\index\middleware\LogOperation::class,
     ];
 
     public function __construct(){

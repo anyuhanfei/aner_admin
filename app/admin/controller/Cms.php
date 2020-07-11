@@ -9,7 +9,6 @@ use app\admin\controller\Admin;
 
 use app\admin\model\CmsTag;
 use app\admin\model\CmsCategory;
-use app\admin\model\LogAdminOperation;
 use app\admin\model\CmsArticle;
 use app\admin\model\CmsArticleData;
 
@@ -73,8 +72,7 @@ class Cms extends Admin{
         }
         $res = CmsTag::create(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_image'=> $path]);
         if($res){
-            LogAdminOperation::create_data('文章标签信息添加：'.$tag_name, 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '文章标签信息添加：'.$tag_name);
         }else{
             if($path != ''){
                 delete_image($path);
@@ -128,8 +126,7 @@ class Cms extends Admin{
         $res = $tag->save();
         if($res){
             $path != '' ? delete_image($old_path) : false;
-            LogAdminOperation::create_data('文章标签信息修改：'.$old_tag_name.'->'.$tag->tag_name, 'operation');
-            return return_data(1, array('tag_id'=> $tag->tag_id, 'tag_image'=> $tag->tag_image), '修改成功');
+            return return_data(1, array('tag_id'=> $tag->tag_id, 'tag_image'=> $tag->tag_image), '修改成功', '文章标签信息修改：'.$old_tag_name.'->'.$tag->tag_name);
         }else{
             $path != '' ? delete_image($path) : false;
             return return_data(2, '', '修改失败或没有要修改的信息');
@@ -146,8 +143,7 @@ class Cms extends Admin{
         $res = CmsTag::where('tag_id', $id)->delete();
         if($res){
             delete_image($tag->tag_image);
-            LogAdminOperation::create_data('文章标签信息删除：'.$tag->tag_name, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '文章标签信息删除：'.$tag->tag_name);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -196,8 +192,7 @@ class Cms extends Admin{
         }
         $res = CmsCategory::create(['category_name'=> $category_name, 'sort'=> $sort, 'category_image'=> $path]);
         if($res){
-            LogAdminOperation::create_data('文章分类信息添加：'.$category_name, 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '文章分类信息添加：'.$category_name);
         }else{
             if($path != ''){
                 delete_image($path);
@@ -251,8 +246,7 @@ class Cms extends Admin{
         $res = $category->save();
         if($res){
             $path != '' ? delete_image($old_path) : false;
-            LogAdminOperation::create_data('文章分类信息修改：'.$old_category_name.'->'.$category->category_name, 'operation');
-            return return_data(1, array('category_id'=> $category->category_id, 'category_image'=> $category->category_image), '修改成功');
+            return return_data(1, array('category_id'=> $category->category_id, 'category_image'=> $category->category_image), '修改成功', '文章分类信息修改：'.$old_category_name.'->'.$category->category_name);
         }else{
             $path != '' ? delete_image($path) : false;
             return return_data(2, '', '修改失败或没有要修改的信息');
@@ -269,8 +263,7 @@ class Cms extends Admin{
         $res = CmsCategory::where('category_id', $id)->delete();
         if($res){
             delete_image($category->category_image);
-            LogAdminOperation::create_data('文章分类信息删除：'.$category->category_name, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '文章分类信息删除：'.$category->category_name);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -380,9 +373,8 @@ class Cms extends Admin{
         $article = CmsArticle::create($data);
         if($article){
             $this->remove_content_image($content, 'cookie', 'article_content_images');
-            LogAdminOperation::create_data('文章信息添加：'.$title, 'operation');
             CmsArticleData::create(['article_id'=> $article->article_id]);
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '文章信息添加：'.$title);
         }else{
             if($data['image'] != ''){
                 delete_image($data['image']);
@@ -468,8 +460,7 @@ class Cms extends Admin{
             //删除编辑中删除掉的已上传图片，删除旧文本中被删除的图片
             $this->remove_content_image($content, 'cookie', 'article_content_images');
             $this->remove_content_image($content, 'update', $old_content);
-            LogAdminOperation::create_data('文章信息修改：'.$old_title . '->' . $title, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '文章信息修改：'.$old_title . '->' . $title);
         }else{
             if($old_image != ''){
                 delete_image($old_image);
@@ -490,9 +481,8 @@ class Cms extends Admin{
         if($res){
             delete_image($article->image);
             $this->remove_content_image($article->content, 'delete');
-            LogAdminOperation::create_data('文章信息删除：'.$article->title, 'operation');
             CmsArticleData::where('article_id', $id)->delete();
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '文章信息删除：'.$article->title);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -536,8 +526,7 @@ class Cms extends Admin{
         if($res){
             $status_type_text = array('is_recomment'=> '推荐', 'is_stick'=> '置顶', 'is_hot'=> '热门');
             $status_text = array('取消', '开启');
-            LogAdminOperation::create_data('文章文章属性修改：'.$article->title . $status_text[$article_data->$status_type] . $status_type_text[$status_type], 'operation');
-            return return_data(1, '', '设置成功');
+            return return_data(1, '', '设置成功', '文章文章属性修改：'.$article->title . $status_text[$article_data->$status_type] . $status_type_text[$status_type]);
         }else{
             return return_data(3, '', '设置失败,请联系管理员');
         }

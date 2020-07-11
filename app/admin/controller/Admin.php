@@ -17,7 +17,8 @@ class Admin extends Base{
     protected $admin = null;
     protected $middleware = [
         \app\admin\middleware\CheckAdmin::class,
-        \app\admin\middleware\GetCatalog::class
+        \app\admin\middleware\GetCatalog::class,
+        \app\admin\middleware\LogOperation::class
     ];
 
     public function __construct(){

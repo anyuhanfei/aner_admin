@@ -10,7 +10,6 @@ use app\admin\controller\Admin;
 use app\admin\model\SysModule;
 use app\admin\model\SysModuleAction;
 use app\admin\model\SysCatalog;
-use app\admin\model\LogAdminOperation;
 
 
 class Developer extends Admin{
@@ -56,8 +55,7 @@ class Developer extends Admin{
         ]);
         if($res){
             $max_sort = SysModule::order('sort desc')->value('sort');
-            LogAdminOperation::create_data('模块信息添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功');
+            return return_data(1, $max_sort, '添加成功', '模块信息添加：'.$title);
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
@@ -99,8 +97,7 @@ class Developer extends Admin{
         $module->sort = $sort;
         $res = $module->save();
         if($res){
-            LogAdminOperation::create_data('模块信息修改：'.$old_module_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '模块信息修改：'.$old_module_title.'->'.$title);
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
         }
@@ -115,8 +112,7 @@ class Developer extends Admin{
         $module = SysModule::where('module_id', $id)->find();
         $res = SysModule::where('module_id', $id)->delete();
         if($res){
-            LogAdminOperation::create_data('模块信息删除：'.$module->title, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '模块信息删除：'.$module->title);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -173,8 +169,7 @@ class Developer extends Admin{
         ]);
         if($res){
             $max_sort = SysModuleAction::order('sort desc')->value('sort');
-            LogAdminOperation::create_data('方法信息添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功');
+            return return_data(1, $max_sort, '添加成功', '方法信息添加：'.$title);
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
@@ -227,8 +222,7 @@ class Developer extends Admin{
         $module->sort = $sort;
         $res = $module->save();
         if($res){
-            LogAdminOperation::create_data('方法信息修改：'.$old_module_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '方法信息修改：'.$old_module_title.'->'.$title);
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
         }
@@ -243,8 +237,7 @@ class Developer extends Admin{
         $action = SysModuleAction::where('action_id', $id)->find();
         $res = SysModuleAction::where('action_id', $id)->delete();
         if($res){
-            LogAdminOperation::create_data('方法信息删除：'.$action->title, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '方法信息删除：'.$action->title);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }
@@ -307,8 +300,7 @@ class Developer extends Admin{
         ]);
         if($res){
             $max_sort = SysCatalog::order('sort desc')->value('sort');
-            LogAdminOperation::create_data('后台目录添加：'.$title, 'operation');
-            return return_data(1, $max_sort, '添加成功');
+            return return_data(1, $max_sort, '添加成功', '后台目录添加：'.$title);
         }else{
             return return_data(3, '', '添加失败,请联系管理员');
         }
@@ -366,8 +358,7 @@ class Developer extends Admin{
         $catalog->route = $action_path ? $action_path->route : '';
         $res = $catalog->save();
         if($res){
-            LogAdminOperation::create_data('后台目录修改：'.$old_catalog_title.'->'.$title, 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '后台目录修改：'.$old_catalog_title.'->'.$title);
         }else{
             return return_data(3, '', '修改失败，请联系管理员');
         }
@@ -382,8 +373,7 @@ class Developer extends Admin{
         $catalog = SysCatalog::where('catalog_id', $id)->find();
         $res = SysCatalog::where('catalog_id', $id)->delete();
         if($res){
-            LogAdminOperation::create_data('后台目录删除：'.$catalog->title, 'operation');
-            return return_data(1, '', '删除成功');
+            return return_data(1, '', '删除成功', '后台目录删除：'.$catalog->title);
         }else{
             return return_data(3, '', '删除失败,请联系管理员');
         }

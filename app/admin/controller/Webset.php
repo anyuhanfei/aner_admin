@@ -10,7 +10,6 @@ use app\admin\controller\Admin;
 use app\admin\model\SysBasic;
 use app\admin\model\SysSet;
 use app\admin\model\SysSetCategory;
-use app\admin\model\LogAdminOperation;
 use app\admin\model\SysSetting;
 
 
@@ -40,8 +39,7 @@ class Webset extends Admin{
         $basic = SysBasic::find(1);
         $res = $basic->save($data);
         if($res){
-            LogAdminOperation::create_data('基本信息修改', 'operation');
-            return return_data(1, '', '修改成功');
+            return return_data(1, '', '修改成功', '基本信息修改');
         }else{
             return return_data(3, '', '修改失败,请联系管理员');
         }
@@ -83,8 +81,7 @@ class Webset extends Admin{
                 }
             }
         }
-        LogAdminOperation::create_data('网站设置修改', 'operation');
-        return return_data(1, '', '操作完成');
+        return return_data(1, '', '操作完成', '网站设置修改');
     }
 
     /**
@@ -129,8 +126,7 @@ class Webset extends Admin{
         }
         $res = SysSetting::create(['type'=> $type, 'category_name'=> $category_name, 'title'=> $title, 'sign'=> $sign, 'input_type'=> $input_type, 'sort'=> $sort, 'remark'=> $remark]);
         if($res){
-            LogAdminOperation::create_data('网站设置添加', 'operation');
-            return return_data(1, '', '添加成功');
+            return return_data(1, '', '添加成功', '网站设置添加');
         }else{
             return return_data(2, '', '添加失败');
         }

@@ -13,6 +13,9 @@ use app\admin\model\AdmAdminLogin;
 
 
 class Login extends Base{
+    protected $middleware = [
+        \app\admin\middleware\LogLogin::class
+    ];
     /**
      * 登录页面
      *
@@ -38,12 +41,10 @@ class Login extends Base{
         $validate = new  \app\admin\validate\Login;
         if(!$validate->check(['account'=> $account, 'password'=> $password])){
             $this->update_admin_login($ip, 'error');
-            LogAdminOperation::create_data('登录失败：'.$validate->getError(), 'login');
-            return return_data(2, '', $validate->getError());
+            return return_data(2, '', $validate->getError(), '登录失败：' . $account . '-' . $password);
         }
         $this->update_admin_login($ip, 'success');
-        LogAdminOperation::create_data('登录成功，账号：'.$account, 'login');
-        return return_data(1, '', '登录成功');
+        return return_data(1, '', '登录成功', '登录成功，账号：'.$account);
     }
 
     public function login_out(){

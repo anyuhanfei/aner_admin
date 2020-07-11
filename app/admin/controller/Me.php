@@ -8,7 +8,6 @@ use think\facade\Request;
 use app\admin\controller\Admin;
 
 use app\admin\model\AdmAdmin;
-use app\admin\model\LogAdminOperation;
 
 
 class Me extends Admin{
@@ -55,8 +54,7 @@ class Me extends Admin{
             if($via != ''){
                 delete_image($old_admin_via);
             }
-            LogAdminOperation::create_data('修改个人资料', 'operation');
-            return return_data(1, '', '个人资料修改成功');
+            return return_data(1, '', '个人资料修改成功', '修改个人资料');
         }else{
             delete_image($via);
             return return_data(2, '', '个人资料修改失败或没有要修改的资料');
@@ -90,8 +88,7 @@ class Me extends Admin{
         $admin->password = md5($password . $admin->password_salt);
         $res = $admin->save();
         if($res){
-            LogAdminOperation::create_data('修改个人登录密码', 'operation');
-            return return_data(1, '', '密码修改成功');
+            return return_data(1, '', '密码修改成功', '修改个人登录密码');
         }else{
             return return_data(2, '', '密码修改失败，请查明错误原因');
         }
