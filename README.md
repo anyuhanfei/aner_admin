@@ -1,7 +1,7 @@
 # aner_admin3
 当前版本: 3.2.0
 
-使用框架：`ThinkPHP6.0.2`
+使用框架：`ThinkPHP6.0.3`
 
 ## 使用前置操作
 - 在项目根目录下打开命令行输入 "composer install" 命令来安装更新扩展
