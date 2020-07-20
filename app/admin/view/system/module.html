@@ -55,12 +55,12 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "/admin/module/add";
+        location.href = "/admin/system/module/add";
     })
 
     //修改
     function update(module_id){
-        location.href = "/admin/module/update/" + module_id;
+        location.href = "/admin/system/module/update/" + module_id;
     }
 
     //删除
@@ -69,7 +69,7 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "/admin/module/delete/submit/" + module_id,
+                url: "/admin/system/module/delete/submit/" + module_id,
                 type: "post",
                 data: {module_id: module_id},
                 success: function(data){

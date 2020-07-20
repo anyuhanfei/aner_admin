@@ -7,38 +7,38 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">方法信息修改</div>
+                        <div class="card-title">方法信息添加</div>
                     </div>
                     <div class="card-body" style="padding: 15px 200px 10px;">
                         <div class="form-group">
                             <label for="title">方法名称*</label>
-                            <input type="text" class="form-control" id="title" value="{$detail.title}">
+                            <input type="text" class="form-control" id="title">
                             <small  class="form-text text-muted text-danger">请输入方法名称，不能超过30个字符</small>
                         </div>
                         <div class="form-check">
                             <label>所属类型*</label><br>
                             <label class="form-radio-label ml-3">
-                                <input class="form-radio-input" type="radio" name="type" value="展示页" {if condition="$detail.type == '展示页'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="展示页">
                                 <span class="form-radio-sign">展示页</span>
                             </label>
                             <label class="form-radio-label">
-                                <input class="form-radio-input" type="radio" name="type" value="列表" {if condition="$detail.type == '列表'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="列表">
                                 <span class="form-radio-sign">列表</span>
                             </label>
                             <label class="form-radio-label ml-3">
-                                <input class="form-radio-input" type="radio" name="type" value="表单" {if condition="$detail.type == '表单'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="表单">
                                 <span class="form-radio-sign">表单</span>
                             </label>
                             <label class="form-radio-label ml-3">
-                                <input class="form-radio-input" type="radio" name="type" value="提交" {if condition="$detail.type == '提交'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="提交">
                                 <span class="form-radio-sign">提交</span>
                             </label>
                             <label class="form-radio-label ml-3">
-                                <input class="form-radio-input" type="radio" name="type" value="操作" {if condition="$detail.type == '操作'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="操作">
                                 <span class="form-radio-sign">操作</span>
                             </label>
                             <label class="form-radio-label ml-3">
-                                <input class="form-radio-input" type="radio" name="type" value="其他" {if condition="$detail.type == '其他'"}checked{/if}>
+                                <input class="form-radio-input" type="radio" name="type" value="其他">
                                 <span class="form-radio-sign">其他</span>
                             </label>
                         </div>
@@ -47,30 +47,29 @@
                             <select class="form-control form-control-sm" id="module_id">
                                 <option value="0">请选择所属模块</option>
                                 {volist name="module" id="mo"}
-                                <option value="{$mo.module_id}" {if condition="$detail.module_id == $mo.module_id"}selected{/if}>{$mo.title}</option>
+                                <option value="{$mo.module_id}">{$mo.title}</option>
                                 {/volist}
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="path">方法路径*</label>
-                            <input type="text" class="form-control" id="path" value="{$detail.path}">
+                            <input type="text" class="form-control" id="path">
                             <small class="form-text text-muted text-danger">请输入方法路径，模块名和方法名，例如：方法信息添加表单--developer/action_add</small>
                         </div>
                         <div class="form-group">
                             <label for="route">方法路由</label>
-                            <input type="text" class="form-control" id="route" value="{$detail.route}">
-                            <small class="form-text text-muted text-danger">请输入方法路由，如果不需要添加至后台目录中可不用填写，请输入完整路径（即可访问路径），例如：方法信息添加表单--/admin/action/add</small>
+                            <input type="text" class="form-control" id="route">
+                            <small class="form-text text-muted text-danger">请输入方法路由，如果不需要添加至后台目录中可不用填写，请输入完整路径（即可访问路径），例如：方法信息添加表单--/admin/system/action/add</small>
                         </div>
                         <div class="form-group">
                             <label for="remark">备注</label>
-                            <input type="remark" class="form-control" id="remark" value="{$detail.remark}">
+                            <input type="remark" class="form-control" id="remark">
                             <small class="form-text text-muted text-danger">请输入备注，选填，不能超过30个字符</small>
                         </div>
                         <div class="form-group">
                             <label for="sort">排序*</label>
-                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
                         </div>
-                        <input type="hidden" title="action_id" id="action_id" value="{$detail.action_id}" />
                         <div class="card-action" style="display: flex; justify-content: center;">
                             <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
                             <button class="btn btn-danger" id="cancel">返回</button>
@@ -84,54 +83,51 @@
 
 {block name="custom_js"}
 <script>
-//非法操作
-var has_data = "{$has_data}";
-if(has_data == "false"){
-    custom_notify('danger', '方法修改', '非法操作');
-    setTimeout(() => {
-        location.href = "/admin/action";
-    }, 1000);
-}
-
 //取消
 $("#cancel").click(function(){
-    location.href = "/admin/action";
+    location.href = "/admin/system/action";
 })
 
 //提交
 $("#submit").click(function(){
     var title = $("#title").val();
-    var type = $('input[name="type"]:checked').val();
     var module_id = $("#module_id").val();
-    var action_id = $("#action_id").val();
     var path = $("#path").val();
+    var type = $('input[name="type"]:checked').val();
     var route = $("#route").val();
     var remark = $("#remark").val();
     var sort = $("#sort").val();
     if(title == ''){
-        custom_notify('warning', '方法修改', '请输入方法名称');
+        custom_notify('warning', '方法添加', '请输入方法名称');
         return;
     }
     if(module_id == 0){
-        custom_notify('warning', '方法修改', '请选择所属模块');
+        custom_notify('warning', '方法添加', '请选择所属模块');
         return;
     }
     if(path == ''){
-        custom_notify('warning', '方法修改', '请输入方法路径');
+        custom_notify('warning', '方法添加', '请输入方法路径');
         return;
     }
     $.ajax({
-        url: "/admin/action/update/submit/" + action_id,
+        url: "/admin/system/action/add/submit",
         type: "post",
         data: {title: title, type: type, remark: remark, sort: sort, module_id: module_id, path: path, route: route},
         success: function(data){
             data = JSON.parse(data);
             if(data.code == 3){
-                custom_notify('danger', '方法修改', data.msg);
+                custom_notify('danger', '方法添加', data.msg);
             }else if(data.code == 2){
-                custom_notify('warning', '方法修改', data.msg);
+                custom_notify('warning', '方法添加', data.msg);
             }else{
-                custom_notify('success', '方法修改', data.msg);
+                $("#title").val('');
+                $("#remark").val('');
+                $("#path").val('');
+                $("#route").val('');
+                $("#module_id").val('0');
+                $('input[name="type"]:checked').attr('checked', false)
+                $("#sort").val(parseInt(data.data) + 1);
+                custom_notify('success', '方法添加', data.msg);
             }
         }
     })

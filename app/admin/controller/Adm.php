@@ -20,7 +20,7 @@ class Adm extends Admin{
      * @return void
      */
     public function role(){
-        $list = Admrole::order('sort asc')->select();
+        $list = Admrole::order('role_id asc')->select();
         View::assign('list', $list);
         return View::fetch();
     }
@@ -44,7 +44,6 @@ class Adm extends Admin{
     public function role_add_submit(){
         $role_name = Request::instance()->param('role_name', '');
         $remark = Request::instance()->param('remark', '');
-        $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Role;
         if(!$validate->scene('add')->check(['role_name'=> $role_name])){
             return return_data(2, '', $validate->getError());
@@ -52,7 +51,6 @@ class Adm extends Admin{
         $res = Admrole::create([
             'role_name'=> $role_name,
             'remark'=> $remark,
-            'sort'=> $sort
         ]);
         if($res){
             $max_sort = Admrole::order('sort desc')->value('sort');

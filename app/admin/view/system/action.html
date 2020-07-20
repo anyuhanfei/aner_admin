@@ -71,7 +71,7 @@
 <script>
     //添加
     $("#add").click(function(){
-        location.href = "/admin/action/add";
+        location.href = "/admin/system/action/add";
     })
 
     //展示
@@ -92,7 +92,7 @@
 
     //修改
     function update(action_id){
-        location.href = "/admin/action/update/" + action_id;
+        location.href = "/admin/system/action/update/" + action_id;
     }
 
     //删除
@@ -101,7 +101,7 @@
             btn: ['是','否']
         }, function(){
             $.ajax({
-                url: "/admin/action/delete/submit/" + action_id,
+                url: "/admin/system/action/delete/submit/" + action_id,
                 type: "get",
                 data: {action_id: action_id},
                 success: function(data){

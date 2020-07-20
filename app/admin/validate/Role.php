@@ -11,7 +11,6 @@ class Role extends Validate{
         'role_id'=> 'require',
         'role_name'=> 'require|checkNameRole',
         'remark'=> 'checkData',
-        'sort'=> 'checkSort',
     ];
 
     protected $message = [
@@ -35,13 +34,6 @@ class Role extends Validate{
         $res = AdmRole::where('role_name', $value)->find();
         if($res){
             return "此角色名称已存在";
-        }
-        return true;
-    }
-
-    protected function checkSort($value, $role, $data){
-        if($value < 0){
-            return "排序请勿使用负数";
         }
         return true;
     }

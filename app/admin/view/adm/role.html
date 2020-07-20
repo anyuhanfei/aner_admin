@@ -18,7 +18,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col" width="7%">#</th>
-                                    <th scope="col" width="8%">id</th>
                                     <th scope="col" width="30%">角色名称</th>
                                     <th scope="col" width="25%">备注</th>
                                     <th scope="col" width="30%"></th>
@@ -27,14 +26,15 @@
                             <tbody>
                                 {volist name="list" id="vo"}
                                 <tr id="tr{$vo.role_id}">
-                                    <td>{$vo.sort}</td>
                                     <td>{$vo.role_id}</td>
                                     <td>{$vo.role_name}</td>
                                     <td>{$vo.remark}</td>
                                     <td>
                                         <button class="btn btn-warning btn-xs" onclick="update('{$vo.role_id}')">修改</button>
                                         <button class="btn btn-warning btn-xs" onclick="power('{$vo.role_id}')">权限</button>
+                                        {if condition="$vo.role_id != 1"}
                                         <button class="btn btn-danger btn-xs" onclick="item_delete('{$vo.role_id}')">删除</button>
+                                        {/if}
                                     </td>
                                 </tr>
                                 {/volist}

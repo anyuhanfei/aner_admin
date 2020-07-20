@@ -43,13 +43,13 @@ var has_data = "{$has_data}";
 if(has_data == "false"){
     custom_notify('danger', '模块修改', '非法操作');
     setTimeout(() => {
-        location.href = "/admin/module";
+        location.href = "/admin/system/module";
     }, 1000);
 }
 
 //取消
 $("#cancel").click(function(){
-    location.href = "/admin/module";
+    location.href = "/admin/system/module";
 })
 
 //提交
@@ -63,7 +63,7 @@ $("#submit").click(function(){
         return;
     }
     $.ajax({
-        url: "/admin/module/update/submit/" + module_id,
+        url: "/admin/system/module/update/submit/" + module_id,
         type: "post",
         data: {title: title, remark: remark, sort: sort},
         success: function(data){

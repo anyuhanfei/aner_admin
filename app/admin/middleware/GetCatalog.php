@@ -15,9 +15,6 @@ use app\admin\model\AdmAdmin;
 
 class GetCatalog{
     public function handle($request, \Closure $next){
-        //管理员权限开关
-        $admin_power_onoff = Env::get('ANER_ADMIN.ADMIN_POWER_ONOFF');
-
         //后台目录高亮
         $controller = Request::instance()->controller();
         $action = Request::instance()->action();
@@ -28,10 +25,13 @@ class GetCatalog{
         $admin = AdmAdmin::find($admin_id);
 
         //权限控制
-        if($admin_power_onoff == true){
-            if($action != 'index'){
+        if(Env::get('ANER_ADMIN.ADMIN_POWER_ONOFF') == true){
+            if($controller != 'Index'){ // 首页不限制
                 if($admin->role_id == 0){
                     return redirect('/admin/login');
+                }
+                if(Env::get('ANER_ADMIN.DEVELOPER_MODEL') == true && $controller == 'System' && $admin->role_id == 1){ //后台管理系统调试模式开启, 不检测系统模块
+                    return $next($request);
                 }
                 $current_url_id = SysModuleAction::where('path', $current_url)->value('action_id');
                 if(!$current_url_id){

@@ -12,7 +12,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">后台目录修改</div>
+                        <div class="card-title">后台目录添加</div>
                         <div class="card-sub text-warning">
                             一级目录请勿选择上级目录，当一级目录绑定了模块和方法则为一级页面；选择上级目录后为二级页面，必需绑定模块和方法。
                         </div>
@@ -20,7 +20,7 @@
                     <div class="card-body" style="padding: 15px 200px 10px;">
                         <div class="form-group">
                             <label for="title">目录名称*</label>
-                            <input type="text" class="form-control" id="title" value="{$detail.title}">
+                            <input type="text" class="form-control" id="title">
                             <small  class="form-text text-muted text-danger">请输入目录名称，不能超过30个字符</small>
                         </div>
                         <div class="form-group">
@@ -28,15 +28,16 @@
                             <select class="form-control form-control-sm" id="top_id">
                                 <option value="0">请选择上级目录</option>
                                 {volist name="catalog" id="ca"}
-                                <option value="{$ca.catalog_id}" {if condition="$ca.catalog_id == $detail.top_id"}selected{/if}>{$ca.title}</option>
+                                <option value="{$ca.catalog_id}">{$ca.title}</option>
                                 {/volist}
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="icon">图标*</label>
                             <div style="width: 100%; display: flex; justify-content: space-between;">
-                                <input type="text" class="form-control" id="icon" style="width: 90%;" value="{$detail.icon}">
-                                <i id="icon_show" class="{$detail.icon}" style="width: 10%; font-size: 40px;"></i>
+                                <input type="text" class="form-control" id="icon" style="width: 70%;">
+                                <i id="icon_show" class="" style="width: 10%; font-size: 40px;"></i>
+                                <a class="btn btn-success" style="margin-right: 10px; color: #fff" href="/admin/system/resource/icon" target="view_window" id="go_icons">进入图标库</a>
                             </div>
                             <small  class="form-text text-muted text-danger">请输入图标的class值，图标信息请前往静态资源中查看</small>
                         </div>
@@ -45,7 +46,7 @@
                             <select class="form-control form-control-sm" id="module_id">
                                 <option value="0">请选择绑定模块</option>
                                 {volist name="module" id="mo"}
-                                <option value="{$mo.module_id}" {if condition="$mo.module_id == $detail.module_id"}selected{/if}>{$mo.title}</option>
+                                <option value="{$mo.module_id}">{$mo.title}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -54,15 +55,14 @@
                             <select class="form-control form-control-sm" id="action_id">
                                 <option value="0">请选择绑定方法</option>
                                 {volist name="action" id="ac"}
-                                <option value="{$ac.action_id}" class="module module{$ac.module_id}" {if condition="$ac.module_id != $detail.module_id"}style="display: none;"{/if} {if condition="$ac.action_id == $detail.action_id"}selected{/if}>{$ac.title}</option>
+                                <option value="{$ac.action_id}" class="module module{$ac.module_id}" style="display: none;">{$ac.title}</option>
                                 {/volist}
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="sort">排序*</label>
-                            <input type="number" class="form-control" id="sort" value="{$detail.sort}">
+                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
                         </div>
-                        <input type="hidden" id="catalog_id" value="{$detail.catalog_id}"/>
                         <div class="card-action" style="display: flex; justify-content: center;">
                             <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
                             <button class="btn btn-danger" id="cancel">返回</button>
@@ -76,15 +76,6 @@
 
 {block name="custom_js"}
 <script>
-//非法操作
-var has_data = "{$has_data}";
-if(has_data == "false"){
-    custom_notify('danger', '方法修改', '非法操作');
-    setTimeout(() => {
-        location.href = "/admin/action";
-    }, 1000);
-}
-
 //图标展示
 $("#icon").change(function(){
     $("#icon_show").addClass($("#icon").val());
@@ -98,7 +89,7 @@ $("#module_id").change(function(){
 
 //取消
 $("#cancel").click(function(){
-    location.href = "/admin/catalog";
+    location.href = "/admin/system/catalog";
 })
 
 //提交
@@ -107,30 +98,35 @@ $("#submit").click(function(){
     var module_id = $("#module_id").val();
     var action_id = $("#action_id").val();
     var action_id = $("#action_id").val();
-    var catalog_id = $("#catalog_id").val();
     var top_id = $("#top_id").val();
     var icon = $("#icon").val();
     var sort = $("#sort").val();
     if(title == ''){
-        custom_notify('warning', '目录修改', '请输入方法名称');
+        custom_notify('warning', '目录添加', '请输入方法名称');
         return;
     }
     if(icon == ''){
-        custom_notify('warning', '目录修改', '请输入图标');
+        custom_notify('warning', '目录添加', '请输入图标');
         return;
     }
     $.ajax({
-        url: "/admin/catalog/update/submit/" + catalog_id,
+        url: "/admin/system/catalog/add/submit",
         type: "post",
         data: {title: title, icon: icon, sort: sort, module_id: module_id, action_id: action_id, top_id: top_id},
         success: function(data){
             data = JSON.parse(data);
             if(data.code == 3){
-                custom_notify('danger', '目录修改', data.msg);
+                custom_notify('danger', '目录添加', data.msg);
             }else if(data.code == 2){
-                custom_notify('warning', '目录修改', data.msg);
+                custom_notify('warning', '目录添加', data.msg);
             }else{
-                custom_notify('success', '目录修改', data.msg);
+                $("#title").val('');
+                $("#icon").val('');
+                $("#action_id").val('0');
+                $("#module_id").val('0');
+                $("#top_id").val('0');
+                $("#sort").val(parseInt(data.data) + 1);
+                custom_notify('success', '目录添加', data.msg);
             }
         }
     })

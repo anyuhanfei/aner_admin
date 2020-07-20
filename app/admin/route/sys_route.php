@@ -41,24 +41,24 @@ Route::get('admin/delete/submit/:id', 'admin/adm/admin_delete_submit');
 Route::post('admin/allot', 'admin/adm/admin_allot');
 
 //模块管理
-Route::get('module', 'admin/developer/module');
-Route::get('module/add', 'admin/developer/module_add');
-Route::post('module/add/submit', 'admin/developer/module_add_submit');
-Route::get('module/update/:id', 'admin/developer/module_update');
-Route::post('module/update/submit/:id', 'admin/developer/module_update_submit');
-Route::post('module/delete/submit/:id', 'admin/developer/module_delete_submit');
-Route::get('action', 'admin/developer/action');
-Route::get('action/add', 'admin/developer/action_add');
-Route::post('action/add/submit', 'admin/developer/action_add_submit');
-Route::get('action/update/:id', 'admin/developer/action_update');
-Route::post('action/update/submit/:id', 'admin/developer/action_update_submit');
-Route::get('action/delete/submit/:id', 'admin/developer/action_delete_submit');
-Route::get('catalog', 'admin/developer/catalog');
-Route::get('catalog/add', 'admin/developer/catalog_add');
-Route::post('catalog/add/submit', 'admin/developer/catalog_add_submit');
-Route::get('catalog/update/:id', 'admin/developer/catalog_update');
-Route::post('catalog/update/submit/:id', 'admin/developer/catalog_update_submit');
-Route::post('catalog/delete/submit/:id', 'admin/developer/catalog_delete_submit');
+Route::get('system/module', 'admin/system/module');
+Route::get('system/module/add', 'admin/system/module_add');
+Route::post('system/module/add/submit', 'admin/system/module_add_submit');
+Route::get('system/module/update/:id', 'admin/system/module_update');
+Route::post('system/module/update/submit/:id', 'admin/system/module_update_submit');
+Route::post('system/module/delete/submit/:id', 'admin/system/module_delete_submit');
+Route::get('system/action', 'admin/system/action');
+Route::get('system/action/add', 'admin/system/action_add');
+Route::post('system/action/add/submit', 'admin/system/action_add_submit');
+Route::get('system/action/update/:id', 'admin/system/action_update');
+Route::post('system/action/update/submit/:id', 'admin/system/action_update_submit');
+Route::get('system/action/delete/submit/:id', 'admin/system/action_delete_submit');
+Route::get('system/catalog', 'admin/system/catalog');
+Route::get('system/catalog/add', 'admin/system/catalog_add');
+Route::post('system/catalog/add/submit', 'admin/system/catalog_add_submit');
+Route::get('system/catalog/update/:id', 'admin/system/catalog_update');
+Route::post('system/catalog/update/submit/:id', 'admin/system/catalog_update_submit');
+Route::post('system/catalog/delete/submit/:id', 'admin/system/catalog_delete_submit');
 
 // 日志模块
 Route::rule('admin/operation/log', 'admin/log/admin_operation_log');
@@ -71,12 +71,12 @@ Route::get('me/update/password', 'admin/me/update_password');
 Route::post('me/update/password/submit', 'admin/me/update_password_submit');
 
 //资源模块
-Route::get('resource/table', 'admin/resource/table');
-Route::get('resource/form', 'admin/resource/form');
-Route::get('resource/icon', 'admin/resource/icon');
-Route::get('resource/button', 'admin/resource/button');
-Route::get('resource/text', 'admin/resource/text');
-Route::get('resource/notify', 'admin/resource/notify');
+Route::get('system/resource/table', 'admin/system/table');
+Route::get('system/resource/form', 'admin/system/form');
+Route::get('system/resource/icon', 'admin/system/icon');
+Route::get('system/resource/button', 'admin/system/button');
+Route::get('system/resource/text', 'admin/system/text');
+Route::get('system/resource/notify', 'admin/system/notify');
 
 //网站设置
 Route::get('basic', 'admin/webset/basic');
