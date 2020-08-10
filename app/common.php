@@ -76,6 +76,8 @@ function file_upload($file, $save_path, $file_validate = array('size'=>156780000
         }
         $info = \think\facade\Filesystem::disk('public')->putFile($save_path, $file);
         if($info){
+            $image = \think\Image::open('./storage' . '/' . $info);
+            $image->water('./static/watermark.png')->save('./storage' . '/' . $info);
             $res = array('status'=>1, 'file_path'=>'/storage' . '/' . $info, 'error'=>'');
             unset($file);
             return $res;
