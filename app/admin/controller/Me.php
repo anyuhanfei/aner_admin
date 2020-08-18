@@ -38,6 +38,9 @@ class Me extends Admin{
         $via = '';
         if($via_img){
             $image_res = file_upload($via_img, 'admin_via');
+            if($image_res['status'] == 2){
+                return return_data(2, '', $image_res['error']);
+            }
             $via = $image_res['file_path'];
         }
         $admin_id = Session::get('admin_id');

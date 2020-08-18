@@ -1,6 +1,9 @@
 <?php
 // 应用公共文件
 
+use think\facade\Env;
+use app\qiniu;
+
 /**
  * 前后端数据传输格式
  *
@@ -65,28 +68,45 @@ function create_captcha($number, $type = 'figure'){
  * @return void
  */
 function file_upload($file, $save_path, $file_validate = array('size'=>156780000, 'ext'=>'jpg,png,gif')){
-    if($file){
-        try{
-            validate(['file'=>[
-                'fileSize'=> $file_validate['size'],
-                'fileExt'=> $file_validate['ext']
-            ]])->check(['file'=> $file]);
-        }catch(\think\exception\ValidateException $e){
-            return array('status'=>2, 'file_path'=>'', 'error'=>'图片审核未通过');
-        }
-        $info = \think\facade\Filesystem::disk('public')->putFile($save_path, $file);
-        if($info){
-            $image = \think\Image::open('./storage' . '/' . $info);
-            $image->water('./static/watermark.png')->save('./storage' . '/' . $info);
-            $res = array('status'=>1, 'file_path'=>'/storage' . '/' . $info, 'error'=>'');
-            unset($file);
-            return $res;
-        }else{
-            $res = array('status'=>2, 'file_path'=>'', 'error'=>$file->getError());
-            unset($file);
-            return $res;
-        }
+    if(!$file){
+        return array('status'=>2, 'file_path'=>'', 'error'=>'请上传文件');
     }
+    // 验证
+    try{
+        validate(['file'=>[
+            'fileSize'=> $file_validate['size'],
+            'fileExt'=> $file_validate['ext']
+        ]])->check(['file'=> $file]);
+    }catch(\think\exception\ValidateException $e){
+        return array('status'=>2, 'file_path'=>'', 'error'=>'图片审核未通过');
+    }
+    // 图片上传至服务器
+    $info = str_replace('\\', '/', \think\facade\Filesystem::disk('public')->putFile($save_path, $file));
+    if($info){
+        // 图片添加水印(可将图片中的php木马去除)
+        $image = \think\Image::open('./storage' . '/' . $info);
+        $image->water('./static/watermark.png')->save('./storage' . '/' . $info);
+        // 上传七牛云判断
+        if(Env::get('QINIU.UPLOAD2QINIU') == true){
+            //上传
+            $qiniu = new qiniu;
+            list($res, $file_path) = $qiniu->upload('./storage' . '/' . $info, $info);
+            //结果判断
+            if($res == false){
+                $res = array('status'=>2, 'file_path'=>'', 'error'=>'七牛云上传失败');
+            }else{
+                $res = array('status'=>1, 'file_path'=> $file_path, 'error'=>'');
+            }
+            //删除服务器上的文件
+            delete_image('./storage' . '/' . $info);
+        }else{
+            $res = array('status'=>1, 'file_path'=>'/storage' . '/' . $info, 'error'=>'');
+        }
+    }else{
+        $res = array('status'=>2, 'file_path'=>'', 'error'=>$file->getError());
+    }
+    unset($file);
+    return $res;
 }
 
 /**

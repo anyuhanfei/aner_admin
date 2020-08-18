@@ -68,6 +68,9 @@ class Cms extends Admin{
                 return return_data(2, '', '请上传标签图片');
             }
             $image_res = file_upload($tag_image, 'tag');
+            if($image_res['status'] == 2){
+                return return_data(2, '', $image_res['error']);
+            }
             $path = $image_res['file_path'];
         }
         $res = CmsTag::create(['tag_name'=> $tag_name, 'sort'=> $sort, 'tag_image'=> $path]);
@@ -114,6 +117,9 @@ class Cms extends Admin{
         if($this->cms_tag_image_onoff == true){
             if($tag_image){
                 $image_res = file_upload($tag_image, 'tag');
+                if($image_res['status'] == 2){
+                    return return_data(2, '', $image_res['error']);
+                }
                 $path = $image_res['file_path'];
             }
         }
@@ -188,6 +194,9 @@ class Cms extends Admin{
                 return return_data(2, '', '请上传标签图片');
             }
             $image_res = file_upload($category_image, 'category');
+            if($image_res['status'] == 2){
+                return return_data(2, '', $image_res['error']);
+            }
             $path = $image_res['file_path'];
         }
         $res = CmsCategory::create(['category_name'=> $category_name, 'sort'=> $sort, 'category_image'=> $path]);
@@ -234,6 +243,9 @@ class Cms extends Admin{
         if($this->cms_category_image_onoff == true){
             if($category_image){
                 $image_res = file_upload($category_image, 'category');
+                if($image_res['status'] == 2){
+                    return return_data(2, '', $image_res['error']);
+                }
                 $path = $image_res['file_path'];
             }
         }
@@ -362,6 +374,9 @@ class Cms extends Admin{
         if($this->cms_article['image'] == true){
             if($image){
                 $image_res = file_upload($image, 'article');
+                if($image_res['status'] == 2){
+                    return return_data(2, '', $image_res['error']);
+                }
                 $data['image'] = $image_res['file_path'];
             }else{
                 return return_data(2, '', '请上传图片');
@@ -446,6 +461,9 @@ class Cms extends Admin{
         if($this->cms_article['image'] == true){
             if($image){
                 $image_res = file_upload($image, 'article');
+                if($image_res['status'] == 2){
+                    return return_data(2, '', $image_res['error']);
+                }
                 $article->image = $image_res['file_path'];
                 $old_image = $article->image;
             }

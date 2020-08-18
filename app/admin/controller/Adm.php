@@ -164,7 +164,7 @@ class Adm extends Admin{
     public function admin(){
         $list = AdmAdmin::order('admin_id desc')->select();
         View::assign('list', $list);
-        $role = AdmRole::order('sort asc')->select();
+        $role = AdmRole::select();
         View::assign('role', $role);
         return View::fetch();
     }

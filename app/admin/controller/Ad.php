@@ -150,6 +150,9 @@ class Ad extends Admin{
         }
         if($image){
             $image_res = file_upload($image, 'ad');
+            if($image_res['status'] == 2){
+                return return_data(2, '', $image_res['error']);
+            }
             $path = $image_res['file_path'];
         }else{
             $path = '';
@@ -211,6 +214,9 @@ class Ad extends Admin{
         $path = '';
         if($image){
             $image_res = file_upload($image, 'ad');
+            if($image_res['status'] == 2){
+                return return_data(2, '', $image_res['error']);
+            }
             $path = $image_res['file_path'];
         }
         $ad = SysAd::find($id);
