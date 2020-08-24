@@ -31,4 +31,4 @@
 
 ## 更新日志
 
-查看更新日志请点击 https://github.com/anyuhanfei/aner_admin/blob/master/public/log.md
+查看更新日志请点击 https://github.com/anyuhanfei/aner_admin/blob/master/log.md
