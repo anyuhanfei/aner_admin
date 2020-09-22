@@ -125,6 +125,7 @@ $("#submit").click(function(){
                 $("#action_id").val('0');
                 $("#module_id").val('0');
                 $("#top_id").val('0');
+                $("#icon_show").removeClass();
                 $("#sort").val(parseInt(data.data) + 1);
                 custom_notify('success', '目录添加', data.msg);
             }

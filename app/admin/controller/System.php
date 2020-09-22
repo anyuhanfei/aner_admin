@@ -263,7 +263,7 @@ class System extends Admin{
         $module = SysModule::order('sort asc')->select();
         $action = SysModuleAction::where('route', '<>', '')->order('sort asc')->select();
         $max_sort = SysCatalog::order('sort desc')->value('sort');
-        $catalog = SysCatalog::where('top_id', 0)->where('path', '')->select();
+        $catalog = SysCatalog::where('top_id', 0)->where('path', '')->order('sort asc')->select();
         View::assign('module', $module);
         View::assign('action', $action);
         View::assign('max_sort', $max_sort);
