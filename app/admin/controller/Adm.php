@@ -31,8 +31,6 @@ class Adm extends Admin{
      * @return void
      */
     public function role_add(){
-        $max_sort = Admrole::order('sort desc')->value('sort');
-        View::assign('max_sort', $max_sort);
         return View::fetch();
     }
 
@@ -53,8 +51,7 @@ class Adm extends Admin{
             'remark'=> $remark,
         ]);
         if($res){
-            $max_sort = Admrole::order('sort desc')->value('sort');
-            return return_data(1, $max_sort, '添加成功', '角色信息添加：'.$role_name);
+            return return_data(1, '', '添加成功', '角色信息添加：'.$role_name);
         }else{
             return return_data(3, '', '添加失败，请联系管理员');
         }
@@ -84,16 +81,14 @@ class Adm extends Admin{
     public function role_update_submit($id){
         $role_name = Request::instance()->param('role_name', '');
         $remark = Request::instance()->param('remark', '');
-        $sort = Request::instance()->param('sort', '');
         $validate = new \app\admin\validate\Role;
-        if(!$validate->scene('update')->check(['role_id'=> $id, 'role_name'=> $role_name, 'remark'=> $remark, 'sort'=> $sort])){
+        if(!$validate->scene('update')->check(['role_id'=> $id, 'role_name'=> $role_name, 'remark'=> $remark])){
             return return_data(2, '', $validate->getError());
         }
         $role = Admrole::find($id);
         $old_role_name = $role->role_name;
         $role->role_name = $role_name;
         $role->remark = $remark;
-        $role->sort = $sort;
         $res = $role->save();
         if($res){
             return return_data(1, '', '修改成功', '角色信息修改：'.$old_role_name.'->'.$role_name);

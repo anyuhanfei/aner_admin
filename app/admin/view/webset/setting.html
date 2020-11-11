@@ -38,7 +38,7 @@
                             {elseif condition="$s.input_type == 'onoff'"}
                             <div class="form-group">
                                 <label for="{$s.sign}">{$s.title}</label><br/>
-                                <input class="value" type="checkbox" id="{$s.sign}" name="{$s.sign}" data-toggle="toggle" data-onstyle="danger" data-style="btn-round" {if condition="$s.value == 'on'"}checked{/if}>
+                                <input class="value" type="checkbox" id="{$s.sign}" name="{$s.sign}" data-toggle="toggle" data-onstyle="danger" data-style="btn-round" {if condition="$s.value == 'on'"}checked value="on"{else /}value="off"{/if}>
                             </div>
                             {elseif condition="$s.input_type == 'select'"}
                             <!-- <div class="form-group" id="div{$s.sign}">

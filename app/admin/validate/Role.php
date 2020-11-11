@@ -25,8 +25,7 @@ class Role extends Validate{
         'update'=> [
             'role_id',
             'role_name'=> 'require',
-            'remark',
-            'sort'
+            'remark'
         ]
     ];
 

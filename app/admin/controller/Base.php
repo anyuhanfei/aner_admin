@@ -41,8 +41,10 @@ class Base{
         /*会员*/
         //会员标识，用于会员与其他表之间的关联标识（user_id是计算机识别的关联标识，此设置为会员识别的关联标识）
         $this->user_identity = Env::get('ANER_ADMIN.USER_IDENTITY');
+        View::assign('user_identity', $this->user_identity);
         //会员唯一标识说明
         $this->user_identity_text = Env::get('ANER_ADMIN.USER_IDENTITY_TEXT');
+        View::assign('user_identity_text', $this->user_identity_text);
         //会员资金种类，key为资金类型说明，value为字段名
         $this->user_fund_type = $this->env_array('USER_FUND_TYPE');
         //会员删除操作的开关
@@ -88,11 +90,11 @@ class Base{
      */
     public function where_time($model, $start_time, $end_time){
         if($start_time != '' && $end_time == ''){
-            $model->where('insert_time', '>= time', $start_time);
+            $model = $model->where('insert_time', '>= time', $start_time);
         }elseif($start_time == '' && $end_time != ''){
-            $model->where('insert_time', '<= time', $start_time);
+            $model = $model->where('insert_time', '<= time', $end_time);
         }elseif($start_time != '' && $end_time != ''){
-            $model->where('insert_time', 'between time', [$start_time, $end_time]);
+            $model = $model->where('insert_time', 'between time', [$start_time, $end_time]);
         }
         return $model;
     }

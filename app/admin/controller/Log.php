@@ -17,8 +17,6 @@ class Log extends Admin{
         parent::__construct();
         View::assign('user_fund_type', $this->user_fund_type);
         View::assign('user_delete_onoff', $this->user_delete_onoff);
-        View::assign('user_identity', $this->user_identity);
-        View::assign('user_identity_text', $this->user_identity_text);
     }
 
     /**

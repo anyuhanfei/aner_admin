@@ -20,10 +20,6 @@
                             <input type="remark" class="form-control" id="remark" placeholder="请输入备注">
                             <small id="emailHelp" class="form-text text-muted text-danger">选填，不能超过30个字符</small>
                         </div>
-                        <div class="form-group">
-                            <label for="sort">排序*</label>
-                            <input type="number" class="form-control" id="sort" value="{$max_sort + 1}">
-                        </div>
                         <div class="card-action" style="display: flex; justify-content: center;">
                             <button class="btn btn-success" style="margin-right: 10px;" id="submit">提交</button>
                             <button class="btn btn-danger" id="cancel">返回</button>
@@ -46,7 +42,6 @@ $("#cancel").click(function(){
 $("#submit").click(function(){
     var role_name = $("#role_name").val();
     var remark = $("#remark").val();
-    var sort = $("#sort").val();
     if(role_name == ''){
         custom_notify('warning', '角色添加', '请输入角色名称');
         return;
@@ -54,7 +49,7 @@ $("#submit").click(function(){
     $.ajax({
         url: "/admin/role/add/submit",
         type: "post",
-        data: {role_name: role_name, remark: remark, sort: sort},
+        data: {role_name: role_name, remark: remark},
         success: function(data){
             data = JSON.parse(data);
             if(data.code == 3){
@@ -64,7 +59,6 @@ $("#submit").click(function(){
             }else{
                 $("#role_name").val('');
                 $("#remark").val('');
-                $("#sort").val(parseInt(data.data) + 1);
                 custom_notify('success', '角色添加', data.msg);
             }
         }

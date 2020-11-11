@@ -51,12 +51,12 @@ class Webset extends Admin{
      * @return void
      */
     public function setting($cgory=''){
-        $setting_category = SysSetting::where('type', 'cgory')->select();
+        $setting_category = SysSetting::where('type', 'cgory')->order('sort asc')->select();
         $category = SysSetting::where('type', 'cgory')->where('category_name', $cgory)->find();
         if($category){
             $cgory = $category->category_name;
         }else{
-            $category = SysSetting::where('type', 'cgory')->order('id asc')->find();
+            $category = SysSetting::where('type', 'cgory')->order('sort asc')->find();
             if($category){
                 $cgory = $category->category_name;
             }else{
@@ -71,17 +71,21 @@ class Webset extends Admin{
     }
 
     public function setting_value_submit(){
-        $data = Request::instance()->param();
+        $data = Request::instance()->post();
+        $log = '网站设置修改: ';
         foreach($data as $k=> $v){
             if($v != ''){
                 $setting = SysSetting::where('sign', $k)->find();
                 if($setting){
-                    $setting->value = $v;
-                    $setting->save();
+                    if($setting->value != $v){
+                        $setting->value = $v;
+                        $setting->save();
+                        $log .= $setting->title . ' ';
+                    }
                 }
             }
         }
-        return return_data(1, '', '操作完成', '网站设置修改');
+        return return_data(1, '', '操作完成', ($log == '网站设置修改: ' ? '' : $log));
     }
 
     /**
@@ -90,7 +94,7 @@ class Webset extends Admin{
      * @return void
      */
     public function setting_add(){
-        $setting_category = SysSetting::where('type', 'cgory')->select();
+        $setting_category = SysSetting::where('type', 'cgory')->order('sort asc')->select();
         $category_sort_maximum = SysSetting::where('type', 'cgory')->order('sort desc')->value('sort');
         $value_sort_maximum = SysSetting::where('type', 'value')->order('sort desc')->value('sort');
         View::assign('setting_category', $setting_category);
@@ -126,7 +130,7 @@ class Webset extends Admin{
         }
         $res = SysSetting::create(['type'=> $type, 'category_name'=> $category_name, 'title'=> $title, 'sign'=> $sign, 'input_type'=> $input_type, 'sort'=> $sort, 'remark'=> $remark]);
         if($res){
-            return return_data(1, '', '添加成功', '网站设置添加');
+            return return_data(1, '', '添加成功', '网站设置添加: ' .  $title);
         }else{
             return return_data(2, '', '添加失败');
         }
