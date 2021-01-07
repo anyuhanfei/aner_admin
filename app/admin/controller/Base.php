@@ -88,13 +88,13 @@ class Base{
      * @param [type] $end_time 检索结束时间
      * @return void
      */
-    public function where_time($model, $start_time, $end_time){
+    public function where_time($model, $start_time, $end_time, $time_field='insert_time'){
         if($start_time != '' && $end_time == ''){
-            $model = $model->where('insert_time', '>= time', $start_time);
+            $model = $model->where($time_field, '>= time', $start_time);
         }elseif($start_time == '' && $end_time != ''){
-            $model = $model->where('insert_time', '<= time', $end_time);
+            $model = $model->where($time_field, '<= time', $end_time);
         }elseif($start_time != '' && $end_time != ''){
-            $model = $model->where('insert_time', 'between time', [$start_time, $end_time]);
+            $model = $model->where($time_field, 'between time', [$start_time, $end_time]);
         }
         return $model;
     }

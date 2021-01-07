@@ -16,4 +16,21 @@ class LogUserFund extends Model{
     public static function fund_type_text(){
         return ['提现', '提现手续费'];
     }
+
+    public static function create_data($user_id, $number, $coin_type, $fund_type, $content, $remark='', $insert_time=''){
+        $user_identity_set = Env::get('ANER_ADMIN.USER_IDENTITY', 'phone');
+        $user_identity = IdxUser::where('user_id', $user_id)->value($user_identity_set);
+        $res = self::create([
+            'user_id'=> $user_id,
+            'user_identity'=> $user_identity,
+            'content'=> $content,
+            'number'=> $number,
+            'coin_type'=> $coin_type,
+            'fund_type'=> $fund_type,
+            'content'=> $content,
+            'remark'=> $remark,
+            'insert_time'=> ($insert_time == '' ? date("Y-m-d H:i:s", time()) : $insert_time)
+        ]);
+        return $res;
+    }
 }

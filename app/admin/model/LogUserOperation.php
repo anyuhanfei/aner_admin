@@ -30,7 +30,7 @@ class LogUserOperation extends Model{
      * @return bool
      */
     public static function create_data($user_id, $content, $remark='', $insert_time=''){
-        $user_identity_set = Env::get('USER_IDENTITY', 'phone');
+        $user_identity_set = Env::get('ANER_ADMIN.USER_IDENTITY', 'phone');
         $user_identity = IdxUser::where('user_id', $user_id)->value($user_identity_set);
         $res = self::create([
             'user_id'=> $user_id,

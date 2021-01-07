@@ -106,7 +106,7 @@ class Log extends Admin{
         $ip = Request::instance()->param('ip', '');
         $start_time = Request::instance()->param('start_time', '');
         $end_time = Request::instance()->param('end_time', '');
-        $log = new LogUserFund;
+        $log = new LogUserOperation;
         $log = $this->where_time($log, $start_time, $end_time);
         $log = ($user_identity != '') ? $log->where('user_identity', $user_identity) : $log;
         $log = ($ip != '') ? $log->where('ip', $ip) : $log;
