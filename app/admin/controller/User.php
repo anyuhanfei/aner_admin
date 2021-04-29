@@ -31,11 +31,13 @@ class User extends Admin{
         $nickname = Request::instance()->param('nickname', '');
         $user_identity = Request::instance()->param('user_identity', '');
         $top_user_identity = Request::instance()->param('top_user_identity', '');
+        $highlight = Request::instance()->param('highlight', '');
         $user = new IdxUser;
         $user = ($user_id != '') ? $user->where('user_id', $user_id) : $user;
         $user = ($top_user_id != '') ? $user->where('top_id', $top_user_id) : $user;
         $user = ($nickname != '') ? $user->where('nickname', 'like', '%' . $nickname . '%') : $user;
         $user = ($user_identity != '') ? $user->where($this->user_identity, 'like', '%'. $user_identity . '%') : $user;
+        $user = ($highlight != '') ? $user->where('highlight', $highlight) : $user;
         if($top_user_identity != ''){
             $top_id = IdxUser::where($this->user_identity, 'like', '%' . $top_user_identity . '%')->find();
             if($top_id){
@@ -43,7 +45,7 @@ class User extends Admin{
             }
         }
         $list = $user->order('user_id desc')->paginate($this->page_number, false,['query'=>request()->param()]);
-        $this->many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity]);
+        $this->many_assign(['list'=> $list, 'user_id'=> $user_id, 'nickname'=> $nickname, 'top_user_id'=> $top_user_id, 'top_user_identity'=> $top_user_identity, 'search_user_identity'=> $user_identity, 'highlight'=> $highlight]);
         return View::fetch();
     }
 
@@ -292,5 +294,13 @@ class User extends Admin{
         }else{
             return return_data(3, '', '充值失败,请联系管理员');
         }
+    }
+
+    public function highlight($id){
+        $highlight = Request::instance()->param('highlight', 'count');
+        $user = IdxUser::find($id);
+        $user->highlight = $highlight;
+        $res = $user->save();
+        return $res ? return_data(1, '', '会员标记修改成功', '修改会员标记') : return_data(2, '', '会员标记修改失败');
     }
 }

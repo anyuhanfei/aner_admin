@@ -138,13 +138,12 @@ function delete_image($oldImg, $is_full = false){
  * @param [type] $phone
  * @return void
  */
-function png_erwei($url, $phone)
-{
-   include_once '../extend/phpqrcode/phpqrcode.php';//放在extend中
+function png_erwei($url, $phone){
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/../extend/phpqrcode/phpqrcode.php';//放在extend中
     //vendor('phpqrcode.phpqrcode');//放在vender中
     $errorCorrectionLevel = 'H';//容错级别
     $matrixPointSize = 5;//图片大小慢慢自己调整，只要是int就行
-    $path = '../public/storage/qrcode/';
+    $path = $_SERVER['DOCUMENT_ROOT'] . '/storage/qrcode/';
     $QR = $QRB = $path . $phone . ".png";
     \QRcode::png($url, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
     if(file_exists($path . $phone . ".png")){
